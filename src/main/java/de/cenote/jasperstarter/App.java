@@ -166,7 +166,9 @@ public class App {
                 .append(" ").append(applicationProperties.getProperty("application.revision.date"))
                 .append("\n").append(" - JasperReports: " + jasperversion);
 
-        ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-/", "@")
+        // @todo on windows prfixChars should be "-/" but on Linux this
+        //       is the path separator
+        ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-", "@")
                 .version(sb.toString());
 
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
