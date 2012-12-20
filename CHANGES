@@ -1,0 +1,56 @@
+
+JasperStarter - Running JasperReports from command line
+========================================================
+
+Changes
+--------
+
+V 0.9.0 First public release
+        Switched from Commons CLI to argparse4j.
+        Project documentation in generated site.
+        README uses markdown syntay, renamed to README.md.
+        Applied Apache License 2.0 to the software.
+        JasperStarter now starts via executable files in ./bin.
+        Windows binary jasperstarter.exe is generated with launch4j.
+
+V 0.8.0 Switched to maven.
+
+V 0.7.1 Fixed issue: duplicated option -n
+
+V 0.7.0 new option --set-report-name to temporary change the reportname when
+        printing. This is useful if you want to change the printjob name for
+        printing to a pdf printer like cups-pfd which uses the document name as
+        part of the pdf name by default.
+
+V 0.6.0 new options --printer-name --with-print-dialog --list-printers
+        printername matches .toLowercase().startWith() and spaces can be escaped
+        by the underline character _.
+        print dialog and viewer appear in system look an feel.
+
+V 0.5.0 support for postgres, oracle and generic jdbc
+        password is no longer a required option except for oracle
+        jrprint file is stored in system temp dir and deleted after processing
+        new options --jdbc-dir, --debug, --keep-jrprint
+        file extension .jasper is added to input if omitted
+        output can be omitted or can be file or directory
+
+V 0.4.0 jdbc drivers are loaded from jdbc dir
+        new parameter: db-type: none, mysql (none provides JREmptyDataSource()
+           for a non database report)
+        support for barcode4j
+
+V 0.3.1 Bugfix: removed jasperreports-javaflow
+        added barbecue barcode lib
+
+V 0.3.0 Print preview
+        nicer help message
+        package renamed
+ 
+V 0.2.0 Print support added
+        Added exportformats html, odt
+        Added report parameter type date.
+        New parameter db-name - database name
+
+V 0.1.0 First working version
+        Supports export to PDF, DOCX, RTF.
+        Simple report parameters of type string and int.

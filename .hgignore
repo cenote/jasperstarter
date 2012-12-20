@@ -1,0 +1,5 @@
+syntax: glob
+nb*.xml
+jdbc
+target
+src/site/markdown/index.md

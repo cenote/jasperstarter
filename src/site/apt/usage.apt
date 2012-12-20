@@ -1,0 +1,274 @@
+~~ Copyright 2012 Cenote GmbH.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+  ---
+  Usage
+  ---
+
+Usage
+
+%{toc|fromDepth=2}
+
+* Installation
+
+** Windows users
+
+  Unzip the distribution archive to a directory of your choice for example:
+
++---
+C:\App\jasperstarter
++---
+
+  Add the directory
+
++---
+C:\App\jasperstarter\bin
++---
+
+  to your user or system path variable.
+
+** Linux users
+
+  Extract the distribution archive to a directory of your choice for example:
+
++---
+/opt/jasperstarter
++---
+
+  Add the directory
+
++---
+/opt/jasperstarter/bin
++---
+
+  to your user or system path.
+
+* Invoking JasperStarter
+
+  If you put the bin dir on the seach path, just type
+
++---
+jasperstarter
++---
+
+  to invoke the program.
+
+  If not, you can use an absolute path. On Linux:
+
++---
+/opt/jasperstarter/bin/jasperstarter
++---
+
+  and on Windows:
+
++---
+C:\App\jasperstarter\bin\jasperstarter.exe
++---
+
+  if you followed the example in the install section.
+
+  If you have any problem with the binary or shell script or you need to specify
+  some extra options to your java vm, you can invoke the program directly:
+
++---
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
++---
+
+  or
+
++---
+$ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
++---
+
+
+* Concepts
+
+** JasperReport files
+
+  JasperReports know three types of files:
+
+  * The report definition file <<myreport.jrxml>>
+
+    This file is an xml file that defines the report, You can create it by hand
+    but usually you will use one of the nice available GUI tools.
+
+  * The compiled report file <<myreport.jasper>>
+
+    This file is the result of compiling an <.jrxml> file.
+
+  * The filled report file <<myreport.jrprint>>
+
+    This file is the result of running a report. The data which is retrieved
+    from the defined datasource is filled in the compiled report and can be
+    stored in a _.jrprint_ file.
+
+** Stages of processing
+
+  There are three stages of processing a JasperReport:
+
+    * <<compiling>>
+
+    * <<filling>>
+
+    * <<viewing, printing or exporting>> to one or more of the supported formats
+
+  JasperStarter can carry out the last two of them in one commanding call.
+
+
+
+
+* JasperStarter options
+
+  JasperStarter has the following options:
+
++---
+$ jasperstarter -h
+usage: jasperstarter -f <fmt> [<fmt> ...] -i <file> [-o <file>] [-h]
+                     [--debug] [--version] [-P <p> [<p> ...]] [-k]
+                     -t <dbtype> [-H <dbhost>] [-u <dbuser>]
+                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
+                     [--db-port <port>] [--db-driver <name>]
+                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
+                     [-N <printername>] [-d] [-l] [-s <reportname>]
+
+options:
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, docx, odt, html
+  -i <file>              compiled report file (.jasper)
+  -o <file>              directory or basename of outputfile(s)
+  -h, --help             show this help message and exit
+  --debug                display additional messages
+  --version              display version information and exit
+
+fill options:
+  -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
+                         string, int, date
+  -k, --keep             don't delete the temporary .jrprint file
+
+db options:
+  -t <dbtype>            database type: none, mysql, postgres, oracle,
+                         generic
+  -H <dbhost>            database host
+  -u <dbuser>            database user
+  -p <dbpasswd>          database password
+  -n <dbname>            database name
+  --db-sid <sid>         oracle sid
+  --db-port <port>       database port
+  --db-driver <name>     jdbc driver class name for use with type: generic
+  --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
+  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+                         Defaults to ./jdbc
+
+print options:
+  -N <printername>       name of printer
+  -d                     show print dialog when printing
+  -l, --list-printers    list availible printers
+  -s <reportname>        set internal report/document name when printing
++---
+
+* Processing reports
+
+  To process a report you must provide the following options:
+
+    * <<<-i>>> an inputfile (compiled report).
+
+    * <<<-f>>> a space separated list of output formats.
+
+        * <<<view>>> and <<<print>>> are mutaly exclusive thus print is ignored
+          if view is given.
+
+    * <<<-t>>> a database type.
+
+        * if database type is not <<<none>>> you must specify the needed
+
+          connection information.
+
+  All other options are optional.
+
+  For output <<<-o>>> see section "File handling".
+
+** The minimum non database report
+
+  The minimum options needed, to process a report with an empty datasource:
+
++---
+$ jasperstarter -i myreport.jasper -f view -t none
++---
+
+** The minimum database report
+
+  The minimum options required to process a report that needs a database
+  connection:
+
++---
+$jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
++---
+
+
+* Filehandling
+
+  If <input> is not found, <.jasper> is added to the filename. So you can omitt 
+  the file extension.
+
+  If <output> is omitted, parent of <input> is used as dir and the basename of
+  <input> is used for <output>:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper
++---
+
+  results in:
+
++---
+myreports/report1.odt
+myreports/report1.pdf
++---
+
+  If <output> is an existing directory, basename of input is used as filename in
+  that directory:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/
++---
+
+  results in:
+
++---
+month01/report1.odt
+month01/report1.pdf
++---
+
+  If <output> is NOT an existing directory, its name is used as basename for
+  filenames:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/journal.xyz
++---
+
+  results in:
+
++---
+month01/journal.xyz.odt
+month01/journal.xyz.pdf
++---
+
+  With the additional option <--keep-jrprint> the result will be:
+
++---
+month01/journal.xyz.jrprint
+month01/journal.xyz.odt
+month01/journal.xyz.pdf
++---
+
+  Otherwise the <.jrprint> file will be stored in the system temp dir and deleted
+  after processing.
