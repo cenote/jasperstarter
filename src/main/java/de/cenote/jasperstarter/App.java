@@ -95,7 +95,7 @@ public class App {
                 //
                 ApplicationClasspath.addJars(jdbcDir.getAbsolutePath());
             } else {
-                ApplicationClasspath.addJarsRelative("jdbc");
+                ApplicationClasspath.addJarsRelative("../jdbc");
             }
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
