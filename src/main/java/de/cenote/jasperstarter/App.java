@@ -87,7 +87,7 @@ public class App {
 
         // add the jdbc dir to classpath
         try {
-            if (app.namespace.getAttrs().containsKey(Dest.JDBC_DIR)) {
+            if (app.namespace.get(Dest.JDBC_DIR) != null) {
                 File jdbcDir = new File(app.namespace.get(Dest.JDBC_DIR).toString());
                 if (app.namespace.getBoolean(Dest.DEBUG)) {
                     System.out.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
@@ -155,7 +155,6 @@ public class App {
         return this.applicationProperties;
     }
 
-
     private ArgumentParser createArgumentParser() {
         ArgumentAction ListPrintersAction = new ListPrintersAction();
         this.allArguments = new HashMap<String, Argument>();
@@ -165,7 +164,7 @@ public class App {
                 .append(applicationProperties.getProperty("application.version"))
                 .append(" Rev ").append(applicationProperties.getProperty("application.revision"))
                 .append(" ").append(applicationProperties.getProperty("application.revision.date"))
-                .append("\n").append(" - JasperReports: "+jasperversion);
+                .append("\n").append(" - JasperReports: " + jasperversion);
 
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-/", "@")
                 .version(sb.toString());
@@ -193,7 +192,7 @@ public class App {
         Argument argDbPort = groupDbOptions.addArgument("--db-port").metavar("<port>").dest(Dest.DB_PORT).type(Integer.class).help("database port");
         Argument argDbDriver = groupDbOptions.addArgument("--db-driver").metavar("<name>").dest(Dest.DB_DRIVER).help("jdbc driver class name for use with type: generic");
         Argument argDbUrl = groupDbOptions.addArgument("--db-url").metavar("<jdbcUrl>").dest(Dest.DB_URL).help("jdbc url without user, passwd with type:generic");
-        groupDbOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).setDefault("jdbc").help("directory where jdbc driver jars are located. Defaults to ./jdbc");
+        groupDbOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).help("directory where jdbc driver jars are located. Defaults to ./jdbc");
 
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
