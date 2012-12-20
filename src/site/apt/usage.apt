@@ -111,7 +111,7 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
 
     This file is the result of running a report. The data which is retrieved
     from the defined datasource is filled in the compiled report and can be
-    stored in a _.jrprint_ file.
+    stored in a <.jrprint> file.
 
 ** Stages of processing
 
@@ -175,6 +175,31 @@ print options:
   -l, --list-printers    list availible printers
   -s <reportname>        set internal report/document name when printing
 +---
+
+** Configuration file
+
+  You can specify a configuration file which contains one option/argument per
+  line. It can be provided to JasperStarter with the @ sign:
+
+  Example file (example.config):
+
++---
+-t
+mysql
+-H
+localhost
+-n
+mydb
+-u
+volker
++---
+
+  Example command with configuration file:
+
++---
+$ jasperstarter -f view -i myreport @example.config
++---
+
 
 * Processing reports
 
