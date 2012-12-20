@@ -5,6 +5,9 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
+ 0.10.0 --version shows included JasperReports version
+
+
 V 0.9.0 First public release
         Switched from Commons CLI to argparse4j.
         Project documentation in generated site.
