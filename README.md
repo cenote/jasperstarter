@@ -2,7 +2,7 @@
 JasperStarter - Running JasperReports from command line
 --------------------------------------------------------
 
-JasperStarter is a command line launcher for [JasperReports][].
+JasperStarter is an opensource command line launcher for [JasperReports][].
 
 It has the following features:
 

@@ -43,6 +43,10 @@ limitations under the License.
         <developerConnection>scm:hg:ssh://hg@bitbucket.org/cenote/jasperstarter</developerConnection>
         <url>https://bitbucket.org/cenote/jasperstarter/src</url>
     </scm>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://jasperstarter-issues.atlassian.net</url>
+    </issueManagement>
 
     <developers>
         <developer>
