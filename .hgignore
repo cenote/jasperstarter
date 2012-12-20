@@ -1,5 +1,5 @@
 syntax: glob
 nb*.xml
-jdbc
+jdbc/*.jar
 target
 src/site/markdown/index.md
