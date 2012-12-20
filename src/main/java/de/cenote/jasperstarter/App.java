@@ -155,22 +155,17 @@ public class App {
         return this.applicationProperties;
     }
 
-    private void printVersion() {
-        Properties app = getApplicationProperties();
-        String name = app.getProperty("application.name");
-        String ver = app.getProperty("application.version");
-        String rev = app.getProperty("application.revision");
-        String date = app.getProperty("application.revision.date");
-        System.out.println(name + "-" + ver + " Rev: " + rev + " " + date);
-    }
 
     private ArgumentParser createArgumentParser() {
         ArgumentAction ListPrintersAction = new ListPrintersAction();
         this.allArguments = new HashMap<String, Argument>();
-
-        StringBuffer sb = new StringBuffer(applicationProperties.getProperty("application.version"))
+        String jasperversion = Package.getPackage("net.sf.jasperreports.engine").
+                getImplementationVersion();
+        StringBuffer sb = new StringBuffer("JasperStarter ")
+                .append(applicationProperties.getProperty("application.version"))
                 .append(" Rev ").append(applicationProperties.getProperty("application.revision"))
-                .append(" ").append(applicationProperties.getProperty("application.revision.date"));
+                .append(" ").append(applicationProperties.getProperty("application.revision.date"))
+                .append("\n").append(" - JasperReports: "+jasperversion);
 
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-/", "@")
                 .version(sb.toString());
