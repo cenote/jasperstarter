@@ -140,6 +140,9 @@ limitations under the License.
                         <manifest>
                             <mainClass>de.cenote.jasperstarter.App</mainClass>
                             <addClasspath>true</addClasspath>
+                            <!--  the projcet jar resides in ./lib as .jar
+                                  and ./bin wraped inside the .exe
+                                  so classpath ../lib matches for both -->
                             <classpathPrefix>../lib/</classpathPrefix>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
@@ -159,8 +162,9 @@ limitations under the License.
                         </goals>
                         <configuration>
                             <headerType>console</headerType>
-                            <outfile>target/jasperstarter.exe</outfile>
-                            <jar>target/jasperstarter.jar</jar>
+                            <errTitle>${project.name}</errTitle>
+                            <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
+                            <jar>${project.build.directory}/${project.artifactId}.jar</jar>
                             <classPath>
                                 <mainClass>de.cenote.jasperstarter.App</mainClass>
                             </classPath>
@@ -171,6 +175,18 @@ limitations under the License.
                                 <!-- <initialHeapSize>128</initialHeapSize> -->
                                 <!-- <maxHeapSize>1024</maxHeapSize> -->
                             </jre>
+                            <versionInfo>
+                                <fileVersion>0.0.0.0</fileVersion>
+                                <txtFileVersion>${project.version}</txtFileVersion>
+                                <fileDescription>${project.name} ${project.version}</fileDescription>
+                                <copyright>Copyright ${project.inceptionYear} ${project.organization.name}</copyright>
+                                <productVersion>0.0.0.0</productVersion>
+                                <txtProductVersion>${project.version}</txtProductVersion>
+                                <productName>${project.name}</productName>
+                                <companyName>${project.organization.name}</companyName>
+                                <internalName>${project.artifactId}</internalName>
+                                <originalFilename>${project.artifactId}.exe</originalFilename>
+                            </versionInfo>
                         </configuration>
                     </execution>
                 </executions>
