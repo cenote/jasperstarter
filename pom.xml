@@ -140,9 +140,11 @@ limitations under the License.
                         <manifest>
                             <mainClass>de.cenote.jasperstarter.App</mainClass>
                             <addClasspath>true</addClasspath>
-                            <!--  the projcet jar resides in ./lib as .jar
-                                  and ./bin wraped inside the .exe
-                                  so classpath ../lib matches for both -->
+                            <!--
+                            The projcet jar resides in ./lib as .jar
+                            and in ./bin wraped inside the .exe
+                            so classpath ../lib matches for both
+                            -->
                             <classpathPrefix>../lib/</classpathPrefix>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
@@ -208,26 +210,6 @@ limitations under the License.
                             </descriptors>                    
                         </configuration>
                     </execution>
-                    <!-- this file is not distributed but useful for quick tests -->
-                    <!--
-                    <execution>
-                        <id>make-jar-with-deps</id> 
-                        <phase>package</phase> 
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>de.cenote.jasperstarter.App</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                    -->
                 </executions>                
             </plugin>
             <!-- add site generation to the package phase -->
@@ -263,6 +245,7 @@ limitations under the License.
                 <version>2.6</version>
                 <reportSets>
                     <reportSet>
+                        <id>project-reports</id>
                         <reports>
                             <report>summary</report>
                             <report>license</report>
@@ -285,13 +268,6 @@ limitations under the License.
                     </reportSet>
                 </reportSets>
             </plugin>
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
-            </plugin>
-            -->
         </plugins>
     </reporting>
     
@@ -407,4 +383,141 @@ limitations under the License.
             <version>2.0.5</version>
         </dependency>
     </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <!--
+            developement profile:
+            quick build, no archives, no long run reports,
+            result in dir target/jasperstarter-de-bin
+            -->
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <configuration>
+                                    <finalName>${project.artifactId}</finalName>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dev-bin.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                            <!--
+                            <execution>
+                                <id>make-jar-with-deps</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>de.cenote.jasperstarter.App</mainClass>
+                                        </manifest>
+                                    </archive>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                </configuration>
+                            </execution>
+                            -->
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-project-info-reports-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>project-reports</id>
+                                <reports>
+                                    <!--
+                                    <report>summary</report>
+                                    <report>license</report>
+                                    <report>project-team</report>
+                                    <report>scm</report>
+                                    <report>issue-tracking</report>
+                                    -->
+                                    <!-- <report>cim</report> -->
+                                    <!-- <report>distribution-management</report> -->
+                                    <!-- <report>mailing-list</report> -->
+                                    <!-- <report>dependency-info</report> -->
+                                    <!-- <report>dependency-management</report> -->
+                                    <!-- <report>dependencies</report> -->
+                                    <!--
+                                    <report>dependency-convergence</report>
+                                    <report>plugins</report>
+                                    <report>plugin-management</report>
+                                    <report>modules</report>
+                                    -->
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+                    <!--
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9</version>
+                    </plugin>
+                    -->
+                </plugins>
+            </reporting>
+        </profile>
+
+        <profile>
+            <id>release</id>
+            <!--
+            release profile:
+            adds the long running reports to the default build
+            -->
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-project-info-reports-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>project-reports</id>
+                                <reports>
+                                    <report>summary</report>
+                                    <report>license</report>
+                                    <report>project-team</report>
+                                    <report>scm</report>
+                                    <report>issue-tracking</report>
+                                    <!-- <report>cim</report> -->
+                                    <!-- <report>distribution-management</report> -->
+                                    <!-- <report>mailing-list</report> -->
+                                    <!-- <report>dependency-info</report> -->
+                                    <!-- <report>dependency-management</report> -->
+                                    <report>dependencies</report>
+                                    <!--
+                                    <report>dependency-convergence</report>
+                                    <report>plugins</report>
+                                    <report>plugin-management</report>
+                                    <report>modules</report>
+                                    -->
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+
+    </profiles>
 </project>
