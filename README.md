@@ -52,10 +52,7 @@ For more information take a look in the docs directory of the distibution
 archive or read the [Usage][] page online.
 
 
-### Release Note 0.9.1
-
-This release fixes a bug regarding the --jdbc-dir parameter on linux. The bug
-was not recorded as an issue as the tracker is just now configured.
+### Release Note 
 
 As the leading zero in the version number indicates, this software is in beta
 state! Nevertheless it is in use in a production environment but has missing
@@ -63,7 +60,7 @@ features or bugs we are not aware of in the moment.
 
 #### Known Bugs
 
-None on this date. For upcoming issues see [Issues][]
+For upcoming issues see [Issues][]
 
 
 ### Feedback

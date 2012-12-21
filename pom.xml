@@ -21,8 +21,7 @@ limitations under the License.
     <groupId>de.cenote</groupId>
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
-    <version>0.9.1</version>
-    <!-- <version>0.10-SNAPSHOT</version> -->
+    <version>0.10-SNAPSHOT</version>
 
     <url>http://jasperstarter.sourceforge.net/</url>
     <description>JasperStarter is a command line launcher for JasperReports.</description>
@@ -194,9 +193,10 @@ limitations under the License.
                         </configuration>
                     </execution>
                     <!-- this file is not distributed but useful for quick tests -->
+                    <!--
                     <execution>
-                        <id>make-jar-with-deps</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <id>make-jar-with-deps</id> 
+                        <phase>package</phase> 
                         <goals>
                             <goal>single</goal>
                         </goals>
@@ -210,7 +210,8 @@ limitations under the License.
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                         </configuration>
-                    </execution>                     
+                    </execution>
+                    -->
                 </executions>                
             </plugin>
             <!-- add site generation to the package phase -->
@@ -257,7 +258,7 @@ limitations under the License.
                             <!-- <report>mailing-list</report> -->
                             <!-- <report>dependency-info</report> -->
                             <!-- <report>dependency-management</report> -->
-                            <report>dependencies</report>
+                            <!-- <report>dependencies</report> -->
                             <!--
                             <report>dependency-convergence</report>
                             <report>plugins</report>
