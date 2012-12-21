@@ -21,7 +21,8 @@ limitations under the License.
     <groupId>de.cenote</groupId>
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
-    <version>0.10-SNAPSHOT</version>
+    <version>0.9.1</version>
+    <!-- <version>0.10-SNAPSHOT</version> -->
 
     <url>http://jasperstarter.sourceforge.net/</url>
     <description>JasperStarter is a command line launcher for JasperReports.</description>
