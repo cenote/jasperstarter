@@ -20,6 +20,12 @@ It has the following features:
   * Print and export in one commanding call
   * Integrate in non Java applications (for example PHP, Python)
   * Binary executable on Windows
+  * Includes JasperReports so this is the only tool you need to install
+
+Requirements
+
+  * Java 1.6 or higher.
+  * A JDBC driver for your database
 
 
 ### Quickstart
