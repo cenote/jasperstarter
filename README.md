@@ -25,7 +25,7 @@ It has the following features:
 Requirements
 
   * Java 1.6 or higher.
-  * A JDBC driver for your database
+  * A JDBC 2.1 driver for your database
 
 
 ### Quickstart
