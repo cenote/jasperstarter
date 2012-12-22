@@ -525,5 +525,81 @@ limitations under the License.
             </reporting>
         </profile>
 
+        <profile>
+            <id>windows-setup</id>
+            <!--
+            additional profile for windows setup
+            -->
+            <activation>
+                <!-- @todo: only on windows AND if NSIS is installed  -->
+                <activeByDefault>false</activeByDefault>
+                <os>
+                    <!-- <family>windows</family> -->
+                </os>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/setup</directory>
+                        <includes>
+                            <include>setup*.nsi</include>
+                        </includes>
+                        <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
+                        <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                        <directory>src/main/setup</directory>
+                        <includes>
+                            <include>*.nsh</include>
+                        </includes>
+                        <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
+                        <filtering>false</filtering>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>windows-setup-stage</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <finalName>${project.artifactId}</finalName>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/setup-w32.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>windows-setup-compile</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>makensis</executable>
+                                    <workingDirectory>${project.basedir}/target/${project.artifactId}-win32</workingDirectory>
+                                    <arguments>
+                                        <argument>setup-win32.nsi</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 </project>
