@@ -86,7 +86,8 @@ public class Report {
             // if output is an existing directory, add the basename of input
             this.output = new File(this.output, inputBasename);
         }
-        if (namespace.get(Dest.KEEP)!= null) {
+        if (namespace.getBoolean(Dest.KEEP)) {
+            System.out.println("option --keep found");
             this.jrprintFile = new File(this.output.getAbsolutePath() + ".jrprint");
         } else {
             try {
