@@ -20,7 +20,9 @@ Usage
 
 %{toc|fromDepth=2}
 
+
 * Installation
+
 
 ** Windows users
 
@@ -56,6 +58,7 @@ C:\App\jasperstarter\bin
 +---
 
   to your user or system path.
+
 
 * Invoking JasperStarter
 
