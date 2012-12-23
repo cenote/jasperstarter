@@ -128,6 +128,20 @@ public class App {
                     report.exportRtf();
                 } else if (OutputFormat.html.equals(f)) {
                     report.exportHtml();
+                } else if (OutputFormat.xml.equals(f)) {
+                    report.exportXml();
+                } else if (OutputFormat.xls.equals(f)) {
+                    report.exportXls();
+                } else if (OutputFormat.xlsx.equals(f)) {
+                    report.exportXlsx();
+                } else if (OutputFormat.csv.equals(f)) {
+                    report.exportCsv();
+                } else if (OutputFormat.ods.equals(f)) {
+                    report.exportOds();
+                } else if (OutputFormat.pptx.equals(f)) {
+                    report.exportPptx();
+                } else if (OutputFormat.xhtml.equals(f)) {
+                    report.exportXhtml();
                 }
             }
             if (viewIt) {

@@ -46,11 +46,18 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
+import net.sf.jasperreports.engine.export.JRXhtmlExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.oasis.JROdsExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRPptxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import net.sourceforge.argparse4j.inf.Namespace;
@@ -223,6 +230,77 @@ public class Report {
                 this.output.getAbsolutePath() + ".html");
     }
 
+    public void exportXml() throws JRException {
+        JasperExportManager.exportReportToXmlFile(this.jrprintFile.getAbsolutePath(),
+                this.output.getAbsolutePath() + ".xml", false);
+    }
+
+    public void exportXls() throws JRException {
+        Map dateFormats = new HashMap();
+        dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
+
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JRXlsExporter exporter = new JRXlsExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".xls");
+        exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        exporter.setParameter(JRXlsExporterParameter.FORMAT_PATTERNS_MAP, dateFormats);
+        exporter.exportReport();
+    }
+
+    public void exportXlsx() throws JRException {
+        Map dateFormats = new HashMap();
+        dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
+
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JRXlsxExporter exporter = new JRXlsxExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".xlsx");
+        //exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+        exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        exporter.setParameter(JRXlsExporterParameter.FORMAT_PATTERNS_MAP, dateFormats);
+        exporter.exportReport();
+    }
+
+    public void exportCsv() throws JRException {
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JRCsvExporter exporter = new JRCsvExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".csv");
+        exporter.exportReport();
+    }
+
+    public void exportOds() throws JRException {
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JROdsExporter exporter = new JROdsExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".ods");
+        exporter.exportReport();
+    }
+
+    public void exportPptx() throws JRException {
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JRPptxExporter exporter = new JRPptxExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".pptx");
+        exporter.exportReport();
+    }
+
+    public void exportXhtml() throws JRException {
+        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
+        JRXhtmlExporter exporter = new JRXhtmlExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                this.output.getAbsolutePath() + ".x.html");
+        exporter.exportReport();
+    }
+
     private Map getReportParams() {
         Namespace namespace = App.getInstance().getNamespace();
         Map parameters = new HashMap();
@@ -276,8 +354,8 @@ public class Report {
                 } catch (NumberFormatException e) {
                     System.err.println("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"");
                     System.exit(1);
-                }catch(java.text.ParseException e){
-                    System.err.println( e.getMessage() + "\" in \"" + p + "\"");
+                } catch (java.text.ParseException e) {
+                    System.err.println(e.getMessage() + "\" in \"" + p + "\"");
                     System.exit(1);
                 } catch (Exception e) {
                     //System.err.println(e.getMessage());

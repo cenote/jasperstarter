@@ -6,6 +6,7 @@ Changes
 --------
 
  0.10.0 New report parameter types: double, image.
+        New supported export formats: xls, xlsx, csv, ods, pptx, xhtml, xml.
         Windows setup available.
         --version shows included JasperReports version.
         Fixed some minor bugs

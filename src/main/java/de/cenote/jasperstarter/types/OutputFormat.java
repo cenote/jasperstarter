@@ -26,8 +26,20 @@ public enum OutputFormat {
     view,
     print,
     pdf,
+    // pdfa1,        // not implemented jet
     rtf,
     docx,
     odt,
-    html;
+    html,
+    xml,
+    // xmlembed,     // not implemented jet
+    xls,
+    xlsx,
+    // jxl,          // not implemented jet
+    // jxlMetadata,  // not implemented jet
+    csv,
+    // csvMetadata,  // not implemented jet
+    ods,
+    pptx,
+    xhtml;
 }
