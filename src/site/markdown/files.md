@@ -20,7 +20,7 @@ Version number for testing releases - not for production use:
 Types:
 
   * **bin** - means binary distribution
-  * **setup** - Installer (not available jet)
+  * **setup** - Windows Installer
 
 Choose your favorit archive type. The content is equal in each archive.
 

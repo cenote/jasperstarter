@@ -30,14 +30,14 @@ Requirements
 
 ### Quickstart
 
-Download JasperStarter from [Sourceforge][]
+  * Download JasperStarter from [Sourceforge][]
+  * Extract the distribution archive to any directory on your system.
+  * Add the _./bin_ directoy of your installation to your searchpath.
 
-Extract the distribution archive to any directory on your system.
+  * or just invoke _setup.exe_ on Windows
 
-Add the ./bin directoy of your installation to your searchpath.
-
-Put your jdbc drivers in the _./jdbc_ directory of your installation or use
- _\--jdbc-dir_ to point to a different directory.
+  * Put your jdbc drivers in the _./jdbc_ directory of your installation or
+    use _\--jdbc-dir_ to point to a different directory.
 
 Invoke JasperStarter with _\-h_ to get an overview:
 
@@ -86,7 +86,20 @@ project website is hosted at [Sourceforge][].
 
 JasperStarter is build with [Maven][]. To get a distribution package run:
 
-    $ mvn package
+    $ mvn package -P release
+
+If you want to build the Windows setup.exe, you need to have _nsis_ in your
+search path (works on linux too, you can find a compiled release in the 
+sourceforge download folder _build-tools_ for your convenience)
+an add the **windows-setup** profile to your build:
+
+    $ mvn package -P release,windows-setup
+
+While developing you may want to habe a quicker build. The **dev** profile
+excludes some long running reports and the compressed archives. Instead it puts
+the build result into _target/jasperstarter-dev-bin_.
+
+    $ mvn package -P dev
 
 To run JasperStarter from within your IDE add _\--jdbc-dir jdbc_ to the argument
 list of your run configuration. Otherwise you will get an error:
