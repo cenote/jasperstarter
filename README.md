@@ -10,12 +10,12 @@ It has the following features:
   * Use with any database for which a jdbc driver is available
   * Execute reports that need runtime parameters. The following parameter types
     are supported:
-    * string, int, date
+    * string, int, double, date, image (see usage)
   * Print directly to system default or given printer
   * Optionally show printer dialog to choose printer
   * Optionally Show printpreview
   * Export to file in the following formats:
-    * pdf, rtf, docx, odt, html
+    * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml
   * Export multiple formats in one commanding call
   * Print and export in one commanding call
   * Integrate in non Java applications (for example PHP, Python)
