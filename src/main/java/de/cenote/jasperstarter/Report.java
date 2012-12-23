@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.Dest;
 import de.cenote.tools.printing.Printerlookup;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Panel;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -65,7 +68,7 @@ public class Report {
 
     Report() {
         Namespace namespace = App.getInstance().getNamespace();
-        
+
         this.input = new File(namespace.getString(Dest.INPUT)).getAbsoluteFile();
         if (!this.input.isDirectory() & !this.input.isFile()) {
             // maybe the user omitted the file extension
@@ -76,7 +79,7 @@ public class Report {
         }
         // get the basename of inputfile
         String inputBasename = this.input.getName().split("\\.(?=[^\\.]+$)")[0];
-        if ( namespace.getString(Dest.OUTPUT)==null ) {
+        if (namespace.getString(Dest.OUTPUT) == null) {
             // if output is omitted, use parent dir of input file
             this.output = this.input.getParentFile();
         } else {
@@ -107,7 +110,7 @@ public class Report {
             System.out.println("Input:            " + input.getName());
             System.out.println("Input basename:   " + inputBasename);
             System.out.println("Jrprint:          " + jrprintFile.getAbsolutePath());
-            if (namespace.get(Dest.OUTPUT)!= null) {
+            if (namespace.get(Dest.OUTPUT) != null) {
                 File outputParam = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
                 System.out.println("OutputParam:      " + outputParam.getAbsolutePath());
             }
@@ -124,7 +127,7 @@ public class Report {
     }
 
     public void fill() {
-Namespace namespace = App.getInstance().getNamespace();
+        Namespace namespace = App.getInstance().getNamespace();
         try {
             Map parameters = getReportParams();
             if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
@@ -149,12 +152,12 @@ Namespace namespace = App.getInstance().getNamespace();
         //printServiceAttributeSet.add(new PrinterName("Fax", null));
         JRPrintServiceExporter exporter = new JRPrintServiceExporter();
         JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
-        if (namespace.get(Dest.REPORT_NAME)!= null ) {
+        if (namespace.get(Dest.REPORT_NAME) != null) {
             jasperPrint.setName(namespace.getString(Dest.REPORT_NAME));
         }
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         //exporter.setParameter(JRExporterParameter.INPUT_FILE, this.jrprintFile);
-        if (namespace.get(Dest.PRINTER_NAME)!= null) {
+        if (namespace.get(Dest.PRINTER_NAME) != null) {
             String printerName = namespace.getString(Dest.PRINTER_NAME);
             PrintService service = Printerlookup.getPrintservice(printerName, Boolean.TRUE, Boolean.TRUE);
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, service);
@@ -169,7 +172,7 @@ Namespace namespace = App.getInstance().getNamespace();
         exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
         exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
-        if (namespace.getBoolean(Dest.WITH_PRINT_DIALOG) ) {
+        if (namespace.getBoolean(Dest.WITH_PRINT_DIALOG)) {
             setLookAndFeel();
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.TRUE);
         } else {
@@ -224,34 +227,17 @@ Namespace namespace = App.getInstance().getNamespace();
         Namespace namespace = App.getInstance().getNamespace();
         Map parameters = new HashMap();
         List<String> params;
-        if (namespace.get(Dest.PARAMS) !=null ) {
+        if (namespace.get(Dest.PARAMS) != null) {
             params = namespace.getList(Dest.PARAMS);
             String paramName = null;
             String paramType = null;
             String paramValue = null;
 
-            //Preparing parameters
-//		Image image = 
-//			Toolkit.getDefaultToolkit().createImage(
-//				JRLoader.loadBytesFromResource("dukesign.jpg")
-//				);
-//		MediaTracker traker = new MediaTracker(new Panel());
-//		traker.addImage(image, 0);
-//		try
-//		{
-//			traker.waitForID(0);
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-
             for (String p : params) {
                 try {
-                    //System.out.println(p);
                     paramName = p.split("=")[0];
-                    paramType = p.split("=")[1].split(":")[0];
-                    paramValue = p.split("=")[1].split(":")[1];
+                    paramType = p.split("=")[1].split(":", 2)[0];
+                    paramValue = p.split("=")[1].split(":", 2)[1];
                     if (namespace.getBoolean(Dest.DEBUG)) {
                         System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
                     }
@@ -264,15 +250,38 @@ Namespace namespace = App.getInstance().getNamespace();
                         parameters.put(paramName, paramValue);
                     } else if ("int".equals(paramType.toLowerCase()) | "integer".equals(paramType.toLowerCase())) {
                         parameters.put(paramName, new Integer(paramValue));
+                    } else if ("double".equals(paramType.toLowerCase())) {
+                        parameters.put(paramName, new Double(paramValue));
                     } else if ("date".equals(paramType.toLowerCase())) {
                         // Date must be in ISO8601 format. Example 2012-12-31
                         DateFormat formatter = new SimpleDateFormat("yy-MM-dd");
                         parameters.put(paramName, (Date) formatter.parse(paramValue));
+                    } else if ("image".equals(paramType.toLowerCase())) {
+                        Image image =
+                                Toolkit.getDefaultToolkit().createImage(
+                                JRLoader.loadBytes(new File(paramValue)));
+                        MediaTracker traker = new MediaTracker(new Panel());
+                        traker.addImage(image, 0);
+                        try {
+                            traker.waitForID(0);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.exit(1);
+                        }
+                        parameters.put(paramName, image);
                     } else {
-                        throw new Exception("Invalid param type!");
+                        // @todo create on exception
+                        throw new Exception("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
                     }
+                } catch (NumberFormatException e) {
+                    System.err.println("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"");
+                    System.exit(1);
+                }catch(java.text.ParseException e){
+                    System.err.println( e.getMessage() + "\" in \"" + p + "\"");
+                    System.exit(1);
                 } catch (Exception e) {
-                    Logger.getLogger(Report.class.getName()).log(Level.SEVERE, "Invalid param type! " + p, e);
+                    //System.err.println(e.getMessage());
+                    e.printStackTrace();
                     System.exit(1);
                 }
             }

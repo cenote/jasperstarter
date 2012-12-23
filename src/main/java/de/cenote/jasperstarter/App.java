@@ -60,6 +60,7 @@ public class App {
                     getResourceAsStream("/de/cenote/jasperstarter/application.properties"));
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
         }
 
     }
@@ -100,8 +101,10 @@ public class App {
             }
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
         } catch (URISyntaxException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
         }
 
         Report report = new Report();
@@ -135,6 +138,7 @@ public class App {
             }
         } catch (JRException ex) {
             Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
         }
     }
 
@@ -182,7 +186,7 @@ public class App {
         groupOptions.addArgument("--version").action(Arguments.version()).help("display version information and exit");
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
-        groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS).nargs("+").help("report parameter: name=type:value [...] | types: string, int, date");
+        groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS).nargs("+").help("report parameter: name=type:value [...] | types: string, int, double, date, image");
         groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).help("don't delete the temporary .jrprint file");
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");

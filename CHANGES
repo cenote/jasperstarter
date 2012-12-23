@@ -5,8 +5,10 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
- 0.10.0 --version shows included JasperReports version
-
+ 0.10.0 New report parameter types: double, image.
+        Windows setup available.
+        --version shows included JasperReports version.
+        Fixed some minor bugs
 
 V 0.9.0 First public release
         Switched from Commons CLI to argparse4j.
