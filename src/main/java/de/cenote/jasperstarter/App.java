@@ -56,7 +56,8 @@ public class App {
 
         this.applicationProperties = new Properties();
         try {
-            this.applicationProperties.load(this.getClass().getResourceAsStream("/application.properties"));
+            this.applicationProperties.load(this.getClass().
+                    getResourceAsStream("/de/cenote/jasperstarter/application.properties"));
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
