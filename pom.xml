@@ -531,11 +531,8 @@ limitations under the License.
             additional profile for windows setup
             -->
             <activation>
-                <!-- @todo: only on windows AND if NSIS is installed  -->
+                <!-- @todo: only if NSIS is installed  -->
                 <activeByDefault>false</activeByDefault>
-                <os>
-                    <!-- <family>windows</family> -->
-                </os>
             </activation>
             <build>
                 <resources>
@@ -599,6 +596,20 @@ limitations under the License.
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+            <id>snapshot</id>
+            <!--
+            adding revision number to final name
+            -->
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <finalName>${project.artifactId}-${project.version}-${changeSet}</finalName>
+            </build>
+
         </profile>
 
     </profiles>
