@@ -5,11 +5,13 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
- 0.10.0 New report parameter types: double, image.
+ 0.10.0 New report parameter types: double, image (see usage).
         New supported export formats: xls, xlsx, csv, ods, pptx, xhtml, xml.
         Windows setup available.
         --version shows included JasperReports version.
-        Fixed some minor bugs
+        Fixed some minor bugs.
+
+V 0.9.1 Bugfix release fixed problems with --jdbc-dir option.
 
 V 0.9.0 First public release
         Switched from Commons CLI to argparse4j.

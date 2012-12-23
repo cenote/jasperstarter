@@ -15,7 +15,7 @@ Version number for production releases:
 
 Version number for testing releases - not for production use:
 
-    <major>.<minor>-SNAPSHOT
+    <major>.<minor>-SNAPSHOT-<Mercurial-Revision>
 
 Types:
 

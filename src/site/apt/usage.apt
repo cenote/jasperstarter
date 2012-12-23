@@ -36,7 +36,10 @@ C:\App\jasperstarter
 C:\App\jasperstarter\bin
 +---
 
-  to your user or system path variable.
+  to your user or system path variable
+
+  <<or simply use the setup.exe>>
+
 
 ** Linux users
 
@@ -94,6 +97,7 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
 
 * Concepts
 
+
 ** JasperReport files
 
   JasperReports know three types of files:
@@ -113,6 +117,7 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
     from the defined datasource is filled in the compiled report and can be
     stored in a <.jrprint> file.
 
+
 ** Stages of processing
 
   There are three stages of processing a JasperReport:
@@ -124,8 +129,6 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
     * <<viewing, printing or exporting>> to one or more of the supported formats
 
   JasperStarter can carry out the last two of them in one commanding call.
-
-
 
 
 * JasperStarter options
@@ -143,7 +146,8 @@ usage: jasperstarter -f <fmt> [<fmt> ...] -i <file> [-o <file>] [-h]
                      [-N <printername>] [-d] [-l] [-s <reportname>]
 
 options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, docx, odt, html
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+                         pptx, csv, html, xhtml, xml
   -i <file>              compiled report file (.jasper)
   -o <file>              directory or basename of outputfile(s)
   -h, --help             show this help message and exit
@@ -152,7 +156,7 @@ options:
 
 fill options:
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
-                         string, int, date
+                         string, int, double, date, image
   -k, --keep             don't delete the temporary .jrprint file
 
 db options:
@@ -175,6 +179,7 @@ print options:
   -l, --list-printers    list availible printers
   -s <reportname>        set internal report/document name when printing
 +---
+
 
 ** Configuration file
 
@@ -222,6 +227,7 @@ $ jasperstarter -f view -i myreport @example.config
 
   For output <<<-o>>> see section "File handling".
 
+
 ** The minimum non database report
 
   The minimum options needed, to process a report with an empty datasource:
@@ -229,6 +235,7 @@ $ jasperstarter -f view -i myreport @example.config
 +---
 $ jasperstarter -i myreport.jasper -f view -t none
 +---
+
 
 ** The minimum database report
 
@@ -240,13 +247,81 @@ $jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuse
 +---
 
 
+** Reports with runtime parameters
+
+  Report parameters can consist of several types. Most types are self-explanatory.
+  JasperStarter supports the following types:
+
+   * string, int, date, double, image
+
+  The date is in ISO format and has the form: <<YYYY-MM-DD>>
+
++---
+$ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
++---
+
+
+*** The image parameter
+
+  A simple way of customizing a report is to provide a logo or background image
+  as parameter. In the following example we use <background> as parameter name
+  for the image:
+
+   * Create a parameter in your report and change it's values:
+
+      * <<Name>> = <background>
+
+      * <<Parameter Class>> = <java.awt.image>
+
+   * Place an image in your report and change it's properties:
+
+      * <<Image Expression>> = <$P\{background\}>
+
+      * <<Expression Class>> = <java.awt.image>
+
+   * compile your report
+
+  Now you can process your report with JasperStarter:
+
++---
+$ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
++---
+
+
+** Quoting parameters that contain spaces
+
+  Particularly windows users may need to work with spaces in file names.
+  There are two ways you can do that:
+
++---
+c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:"C:\Temp Files\My Image.jpg"
++---
+
+  or
+
++---
+c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P "background=image:C:\Temp Files\My Image.jpg"
++---
+
+
 * Filehandling
 
-  If <input> is not found, <.jasper> is added to the filename. So you can omitt 
-  the file extension.
+  If the input file (option <<<-i>>> ) is not found, <.jasper> is added to the
+  filename. So you can omit the file extension.
 
-  If <output> is omitted, parent of <input> is used as dir and the basename of
-  <input> is used for <output>:
+  If the output file or directory ( option <<<-o>>> ) is omitted, parent of the
+  input file is used as output directory and the basename of the input file is
+  used for as output filename:
+
++---
+(...) -f pdf odt -i myreports/report1
++---
+
+  or
 
 +---
 (...) -f pdf odt -i myreports/report1.jasper
@@ -259,8 +334,8 @@ myreports/report1.odt
 myreports/report1.pdf
 +---
 
-  If <output> is an existing directory, basename of input is used as filename in
-  that directory:
+  If <output> is an existing directory, basename of <input> is used as filename
+  in that directory:
 
 +---
 (...) -f pdf odt -i myreports/report1.jasper -o month01/
@@ -295,5 +370,5 @@ month01/journal.xyz.odt
 month01/journal.xyz.pdf
 +---
 
-  Otherwise the <.jrprint> file will be stored in the system temp dir and deleted
-  after processing.
+  Otherwise the <.jrprint> file will be stored in the system temp dir and
+  deleted after processing.

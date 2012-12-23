@@ -191,7 +191,9 @@ public class App {
                 .version(sb.toString());
 
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
-        groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).help("view, print, pdf, rtf, docx, odt, html");
+        groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
+                required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
+                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml");
         groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("compiled report file (.jasper)");
         groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
 
