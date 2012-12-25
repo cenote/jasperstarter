@@ -107,13 +107,14 @@ public class App {
             System.exit(1);
         }
 
-        Report report = new Report();
-        report.fill();
+        Report report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
+        report.fill();  // produces visible output file if OutputFormat.jrprint is set
         List<OutputFormat> formats = app.namespace.getList(Dest.OUTPUT_FORMATS);
         Boolean viewIt = false;
         Boolean printIt = false;
         try {
             for (OutputFormat f : formats) {
+                // OutputFormat.jrprint is handled in fill()
                 if (OutputFormat.print.equals(f)) {
                     printIt = true;
                 } else if (OutputFormat.view.equals(f)) {
@@ -193,8 +194,8 @@ public class App {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
         groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
-                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml");
-        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("compiled report file (.jasper)");
+                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint");
+        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
         groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
 
         groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
@@ -206,7 +207,9 @@ public class App {
         groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).help("don't delete the temporary .jrprint file");
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
-        groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).required(true).type(Arguments.enumType(DbType.class)).help("database type: none, mysql, postgres, oracle, generic");
+        groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
+                required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none).  // @todo: default does not work
+                help("database type: none, mysql, postgres, oracle, generic");
         Argument argDbHost = groupDbOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDbOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
         Argument argDbPasswd = groupDbOptions.addArgument("-p").metavar("<dbpasswd>").dest(Dest.DB_PASSWD).setDefault("").help("database password");

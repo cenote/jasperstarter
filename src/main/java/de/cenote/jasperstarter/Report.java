@@ -17,6 +17,8 @@ package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.Dest;
+import de.cenote.jasperstarter.types.InputType;
+import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -43,9 +45,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
@@ -59,6 +64,8 @@ import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRPptxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import net.sourceforge.argparse4j.inf.Namespace;
 
@@ -69,26 +76,86 @@ import net.sourceforge.argparse4j.inf.Namespace;
  */
 public class Report {
 
-    private File input;
-    private File jrprintFile;
+    private InputType initialInputType;
+    private JasperDesign jasperDesign;
+    private JasperReport jasperReport;
+    private JasperPrint jasperPrint;
     private File output;
 
-    Report() {
+    Report(File inputFile) {
         Namespace namespace = App.getInstance().getNamespace();
 
-        this.input = new File(namespace.getString(Dest.INPUT)).getAbsoluteFile();
-        if (!this.input.isDirectory() & !this.input.isFile()) {
+        if (namespace.getBoolean(Dest.DEBUG)) {
+            System.out.println("Original input file: " + inputFile.getAbsolutePath());
+        }
+
+        if (!inputFile.exists()) {
+            File newInputfile;
             // maybe the user omitted the file extension
-            this.input = new File(this.input.getAbsolutePath() + ".jasper");
-            if (namespace.getBoolean(Dest.DEBUG)) {
-                System.out.println("Input: appending \".jasper\" to filename");
+            // first trying .jasper
+            newInputfile = new File(inputFile.getAbsolutePath() + ".jasper");
+            if (newInputfile.isFile()) {
+                inputFile = newInputfile;
+            }
+            if (!inputFile.exists()) {
+                // second trying .jrxml
+                newInputfile = new File(inputFile.getAbsolutePath() + ".jrxml");
+                if (newInputfile.isFile()) {
+                    inputFile = newInputfile;
+                }
             }
         }
+        if (namespace.getBoolean(Dest.DEBUG)) {
+            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+        }
+        if (!inputFile.exists()) {
+            System.err.println("Error: file not found: " + inputFile.getAbsolutePath());
+            System.exit(1);
+        } else if (inputFile.isDirectory()) {
+            System.err.println("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
+            System.exit(1);
+        }
+        Object inputObject = null;
+        // Load the input file and try to evaluate the filetype
+        // this fails in case of an jrxml file
+        try {
+            inputObject = JRLoader.loadObject(inputFile);
+            Boolean casterror = true;
+            try {
+                jasperReport = (JasperReport) inputObject;
+                casterror = false;
+                initialInputType = InputType.JASPER_REPORT;
+            } catch (ClassCastException ex) {
+                // nothing to do here
+            }
+            try {
+                jasperPrint = (JasperPrint) inputObject;
+                casterror = false;
+                initialInputType = InputType.JASPER_PRINT;
+            } catch (ClassCastException ex) {
+                // nothing to do here
+            }
+            if (casterror) {
+                System.err.println("Error: input file: " + inputFile + " is not of a valid type");
+                System.exit(1);
+            }
+        } catch (JRException ex) {
+            try {
+                // now try to load it as jrxml
+                jasperDesign = JRXmlLoader.load(inputFile.getAbsolutePath());
+                compile();
+            } catch (JRException ex1) {
+                System.err.println("Error: input file: " + inputFile + " is not of a valid type");
+                System.exit(1);
+            }
+        }
+
+        // generating output basename
         // get the basename of inputfile
-        String inputBasename = this.input.getName().split("\\.(?=[^\\.]+$)")[0];
+        String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
         if (namespace.getString(Dest.OUTPUT) == null) {
             // if output is omitted, use parent dir of input file
-            this.output = this.input.getParentFile();
+            this.output = inputFile.getParentFile();
         } else {
             this.output = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
         }
@@ -96,27 +163,15 @@ public class Report {
             // if output is an existing directory, add the basename of input
             this.output = new File(this.output, inputBasename);
         }
-        if (namespace.getBoolean(Dest.KEEP)) {
-            this.jrprintFile = new File(this.output.getAbsolutePath() + ".jrprint");
-        } else {
-            try {
-                this.jrprintFile = File.createTempFile("jasper", ".jrprint");
-            } catch (IOException ex) {
-                Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            this.jrprintFile.deleteOnExit();
-
-        }
         if (namespace.getBoolean(Dest.DEBUG)) {
-            System.out.println("Input absolute :  " + input.getAbsolutePath());
+            System.out.println("Input absolute :  " + inputFile.getAbsolutePath());
             try {
-                System.out.println("Input canonical:  " + input.getCanonicalPath());
+                System.out.println("Input canonical:  " + inputFile.getCanonicalPath());
             } catch (IOException ex) {
                 Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("Input:            " + input.getName());
+            System.out.println("Input:            " + inputFile.getName());
             System.out.println("Input basename:   " + inputBasename);
-            System.out.println("Jrprint:          " + jrprintFile.getAbsolutePath());
             if (namespace.get(Dest.OUTPUT) != null) {
                 File outputParam = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
                 System.out.println("OutputParam:      " + outputParam.getAbsolutePath());
@@ -128,26 +183,43 @@ public class Report {
                 Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (!this.input.isFile()) {
-            // Todo: This is an error
+    }
+
+    private void compile() {
+        try {
+            jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        } catch (JRException ex) {
+            System.err.println("Compile error: " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
         }
     }
 
     public void fill() {
-        Namespace namespace = App.getInstance().getNamespace();
-        try {
-            Map parameters = getReportParams();
-            if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
-                JasperFillManager.fillReportToFile(this.input.getAbsolutePath(), this.jrprintFile.getAbsolutePath(), parameters, new JREmptyDataSource());
-            } else {
-                Db db = new Db();
-                Connection con = db.getConnection();
-                JasperFillManager.fillReportToFile(this.input.getAbsolutePath(), this.jrprintFile.getAbsolutePath(), parameters, con);
-                con.close();
+        if (initialInputType != InputType.JASPER_PRINT) {
+            Namespace namespace = App.getInstance().getNamespace();
+            try {
+                Map parameters = getReportParams();
+                if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+                } else {
+                    Db db = new Db();
+                    Connection con = db.getConnection();
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
+                    con.close();
+                }
+                List<OutputFormat> formats = namespace.getList(Dest.OUTPUT_FORMATS);
+
+                if (formats.contains(OutputFormat.jrprint)) {
+                    JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
+                }
+                if (namespace.getBoolean(Dest.KEEP)) {
+                    JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
+                }
+            } catch (Exception e) {
+                Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, e);
+                System.exit(1);
             }
-        } catch (Exception e) {
-            Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, e);
-            System.exit(1);
         }
     }
 
@@ -158,7 +230,6 @@ public class Report {
         PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
         //printServiceAttributeSet.add(new PrinterName("Fax", null));
         JRPrintServiceExporter exporter = new JRPrintServiceExporter();
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         if (namespace.get(Dest.REPORT_NAME) != null) {
             jasperPrint.setName(namespace.getString(Dest.REPORT_NAME));
         }
@@ -190,16 +261,15 @@ public class Report {
 
     public void view() throws JRException {
         setLookAndFeel();
-        JasperViewer.viewReport(this.jrprintFile.getAbsolutePath(), false, false);
+        JasperViewer.viewReport(jasperPrint, false);
     }
 
     public void exportPdf() throws JRException {
-        JasperExportManager.exportReportToPdfFile(this.jrprintFile.getAbsolutePath(),
+        JasperExportManager.exportReportToPdfFile(jasperPrint,
                 this.output.getAbsolutePath() + ".pdf");
     }
 
     public void exportRtf() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRRtfExporter exporter = new JRRtfExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -208,7 +278,6 @@ public class Report {
     }
 
     public void exportDocx() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRDocxExporter exporter = new JRDocxExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -217,7 +286,6 @@ public class Report {
     }
 
     public void exportOdt() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JROdtExporter exporter = new JROdtExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -226,12 +294,12 @@ public class Report {
     }
 
     public void exportHtml() throws JRException {
-        JasperExportManager.exportReportToHtmlFile(this.jrprintFile.getAbsolutePath(),
+        JasperExportManager.exportReportToHtmlFile(jasperPrint,
                 this.output.getAbsolutePath() + ".html");
     }
 
     public void exportXml() throws JRException {
-        JasperExportManager.exportReportToXmlFile(this.jrprintFile.getAbsolutePath(),
+        JasperExportManager.exportReportToXmlFile(jasperPrint,
                 this.output.getAbsolutePath() + ".xml", false);
     }
 
@@ -239,7 +307,6 @@ public class Report {
         Map dateFormats = new HashMap();
         dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRXlsExporter exporter = new JRXlsExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -254,7 +321,6 @@ public class Report {
         Map dateFormats = new HashMap();
         dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -266,7 +332,6 @@ public class Report {
     }
 
     public void exportCsv() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRCsvExporter exporter = new JRCsvExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -275,7 +340,6 @@ public class Report {
     }
 
     public void exportOds() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JROdsExporter exporter = new JROdsExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -284,7 +348,6 @@ public class Report {
     }
 
     public void exportPptx() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRPptxExporter exporter = new JRPptxExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
@@ -293,7 +356,6 @@ public class Report {
     }
 
     public void exportXhtml() throws JRException {
-        JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(this.jrprintFile);
         JRXhtmlExporter exporter = new JRXhtmlExporter();
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,

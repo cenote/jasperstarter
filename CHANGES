@@ -5,6 +5,15 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
+ 1.0-SNAPSHOT
+        New input file types allowed:
+          jrxml    - compiles implicit
+          jrprint  - print, view or export previously filled reports.
+        New output type: jrprint. This makes --keep obsolete.
+        Parameter -t defaults to "none" and can therefore be omited if no
+        database is needed.
+        Input file is read once. No temporary files needed anymore.
+
  0.10.0 New report parameter types: double, image (see usage).
         New supported export formats: xls, xlsx, csv, ods, pptx, xhtml, xml.
         Windows setup available.

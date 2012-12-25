@@ -13,34 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cenote.jasperstarter.types;
 
 /**
  *
  * @author Volker Voßkämper <vvo at cenote.de>
- * @version $Revision: 5b92831f1a80:54 branch:default $
+ * @version $Revision$
  */
-public enum OutputFormat {
+public enum InputType {
 
-    view,
-    print,
-    jrprint,
-    pdf,
-    // pdfa1,        // not implemented jet
-    rtf,
-    docx,
-    odt,
-    html,
-    xml,
-    // xmlembed,     // not implemented jet
-    xls,
-    xlsx,
-    // jxl,          // not implemented jet
-    // jxlMetadata,  // not implemented jet
-    csv,
-    // csvMetadata,  // not implemented jet
-    ods,
-    pptx,
-    xhtml;
+    JASPER_DESIGN,
+    JASPER_REPORT,
+    JASPER_PRINT;
 }
