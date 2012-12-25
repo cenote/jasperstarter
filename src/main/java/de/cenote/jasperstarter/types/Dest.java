@@ -43,4 +43,5 @@ public interface Dest {
     public static String WITH_PRINT_DIALOG = "with-print-dialog";
     public static String LIST_PRINTERS = "list-printers";
     public static String REPORT_NAME = "set-report-name";
+    public static String WRITE_JASPER = "write-jasper";
 }

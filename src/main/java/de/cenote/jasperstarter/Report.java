@@ -76,6 +76,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
  */
 public class Report {
 
+    private File inputFile;
     private InputType initialInputType;
     private JasperDesign jasperDesign;
     private JasperReport jasperReport;
@@ -105,9 +106,6 @@ public class Report {
                 }
             }
         }
-        if (namespace.getBoolean(Dest.DEBUG)) {
-            System.out.println("Using input file: " + inputFile.getAbsolutePath());
-        }
         if (!inputFile.exists()) {
             System.err.println("Error: file not found: " + inputFile.getAbsolutePath());
             System.exit(1);
@@ -115,6 +113,11 @@ public class Report {
             System.err.println("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
             System.exit(1);
         }
+        if (namespace.getBoolean(Dest.DEBUG)) {
+            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+        }
+        this.inputFile = inputFile;
+
         Object inputObject = null;
         // Load the input file and try to evaluate the filetype
         // this fails in case of an jrxml file
@@ -188,10 +191,27 @@ public class Report {
     private void compile() {
         try {
             jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            Namespace namespace = App.getInstance().getNamespace();
+            if (namespace.getBoolean(Dest.WRITE_JASPER)) {
+                String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
+                String outputDir = inputFile.getParent();
+                File outputFile = new File(outputDir +"/"+ inputBasename + ".jasper");
+                JRSaver.saveObject(jasperReport, outputFile);
+            }
         } catch (JRException ex) {
             System.err.println("Compile error: " + ex.getMessage());
             ex.printStackTrace();
             System.exit(1);
+        }
+    }
+
+    public void compileToFile() {
+        if (initialInputType == InputType.JASPER_DESIGN) {
+            try {
+                JRSaver.saveObject(jasperReport, this.output.getAbsolutePath() + ".jasper");
+            } catch (JRException ex) {
+                Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

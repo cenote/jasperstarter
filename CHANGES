@@ -10,6 +10,8 @@ Changes
           jrxml    - compiles implicit
           jrprint  - print, view or export previously filled reports.
         New output type: jrprint. This makes --keep obsolete.
+        New parameter -w writes compiled file to imput dir if jrxml is
+        processed.
         Parameter -t defaults to "none" and can therefore be omited if no
         database is needed.
         Input file is read once. No temporary files needed anymore.

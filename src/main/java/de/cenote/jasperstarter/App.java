@@ -202,6 +202,10 @@ public class App {
         groupOptions.addArgument("--debug").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
         groupOptions.addArgument("--version").action(Arguments.version()).help("display version information and exit");
 
+        ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");
+        groupCompileOptions.addArgument("-w","--write-jasper").
+                dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is prcessed");
+
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
         groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS).nargs("+").help("report parameter: name=type:value [...] | types: string, int, double, date, image");
         groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).help("don't delete the temporary .jrprint file");
