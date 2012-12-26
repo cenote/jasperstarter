@@ -208,7 +208,8 @@ public class App {
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
         groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS).nargs("+").help("report parameter: name=type:value [...] | types: string, int, double, date, image");
-        groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).help("don't delete the temporary .jrprint file");
+        groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).
+                help("don't delete the temporary .jrprint file. OBSOLETE use output format jrprint");
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).

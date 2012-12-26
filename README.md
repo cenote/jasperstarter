@@ -15,9 +15,10 @@ It has the following features:
   * Optionally show printer dialog to choose printer
   * Optionally Show printpreview
   * Export to file in the following formats:
-    * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml
+    * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint
   * Export multiple formats in one commanding call
-  * Print and export in one commanding call
+  * Compile, Print and export in one commanding call
+  * View, print or export previously filled reports (use jrprint file as input)
   * Integrate in non Java applications (for example PHP, Python)
   * Binary executable on Windows
   * Includes JasperReports so this is the only tool you need to install
@@ -60,9 +61,19 @@ archive or read the [Usage][] page online.
 
 ### Release Note 
 
-As the leading zero in the version number indicates, this software is in beta
-state! Nevertheless it is in use in a production environment but has missing
-features or bugs we are not aware of in the moment.
+JasperStarter is going straight towards the final 1.0 release.
+
+  * New input file types allowed:
+    * jrxml    - compiles implicit
+    * jrprint  - print, view or export previously filled reports.
+  * New output type: jrprint. This makes \--keep obsolete.
+  * New parameter -w writes compiled file to imput dir if jrxml is
+    processed.
+  * Parameter -t defaults to "none" and can therefore be omited if no
+    database is needed.
+  * Input file is read once. No temporary files needed anymore.
+
+See CHANGES file for a history of changes.
 
 
 #### Known Bugs

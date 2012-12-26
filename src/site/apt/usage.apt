@@ -125,13 +125,13 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
 
   There are three stages of processing a JasperReport:
 
-    * <<compiling>>
+    * <<compiling>> results in a <.jasper> file
 
-    * <<filling>>
+    * <<filling>> can optionally be stored in a <.jrprint> file
 
     * <<viewing, printing or exporting>> to one or more of the supported formats
 
-  JasperStarter can carry out the last two of them in one commanding call.
+  JasperStarter can carry out all of them in one commanding call.
 
 
 * JasperStarter options
@@ -141,8 +141,8 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
 +---
 $ jasperstarter -h
 usage: jasperstarter -f <fmt> [<fmt> ...] -i <file> [-o <file>] [-h]
-                     [--debug] [--version] [-P <p> [<p> ...]] [-k]
-                     -t <dbtype> [-H <dbhost>] [-u <dbuser>]
+                     [--debug] [--version] [-w] [-P <p> [<p> ...]] [-k]
+                     [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
                      [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
                      [--db-port <port>] [--db-driver <name>]
                      [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
@@ -150,17 +150,22 @@ usage: jasperstarter -f <fmt> [<fmt> ...] -i <file> [-o <file>] [-h]
 
 options:
   -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
-                         pptx, csv, html, xhtml, xml
-  -i <file>              compiled report file (.jasper)
+                         pptx, csv, html, xhtml, xml, jrprint
+  -i <file>              input file (.jrxml|.jasper|.jrprint)
   -o <file>              directory or basename of outputfile(s)
   -h, --help             show this help message and exit
   --debug                display additional messages
   --version              display version information and exit
 
+compile options:
+  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+                         prcessed
+
 fill options:
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
                          string, int, double, date, image
-  -k, --keep             don't delete the temporary .jrprint file
+  -k, --keep             don't delete the temporary .jrprint file.
+                         OBSOLETE use output format jrprint
 
 db options:
   -t <dbtype>            database type: none, mysql, postgres, oracle,
@@ -217,12 +222,13 @@ $ jasperstarter -f view -i myreport @example.config
 
     * <<<-f>>> a space separated list of output formats.
 
-        * <<<view>>> and <<<print>>> are mutaly exclusive thus print is ignored
+        * <<view>> and <<print>> are mutaly exclusive thus print is ignored
           if view is given.
 
-    * <<<-t>>> a database type.
+    * <<<-t>>> a database type if your report needs a database connection.
+      Defaults to <<none>>.
 
-        * if database type is not <<<none>>> you must specify the needed
+        * if database type is not <<none>> you must specify the needed
 
           connection information.
 
@@ -246,7 +252,25 @@ $ jasperstarter -i myreport.jasper -f view -t none
   connection:
 
 +---
-$jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
+$ jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
++---
+
+
+** View, print or export previously filled reports
+
+  You can fill a report at one time and view, print or export it at a later
+  time.
+
+  Just fill one report:
+
++---
+$ jasperstarter -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
++---
+
+  View a previously filled report:
+
++---
+$ jasperstarter -i myreport.jrprint -f view
 +---
 
 
@@ -256,6 +280,14 @@ $jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuse
   JasperStarter supports the following types:
 
    * string, int, date, double, image
+
+  Multiple parameters con be separated by spaces. A parameter has the following
+  form:
+
+   * \<<<name>>\><<=>>\<<<type>>\><<:>>\<<<value>>\>
+
+  Replace <<name>> with the parameter name in your report. Parameter names are
+  <<case sensitive>> !
 
   The date is in ISO format and has the form: <<YYYY-MM-DD>>
 
@@ -296,25 +328,32 @@ $ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 ** Quoting parameters that contain spaces
 
   Particularly windows users may need to work with spaces in file names.
-  There are two ways you can do that:
+  There are two ways you can do that. Just quote the value:
 
 +---
 c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P background=image:"C:\Temp Files\My Image.jpg"
+-o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
 +---
 
-  or
+  or quote the whole parameter:
 
 +---
 c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P "background=image:C:\Temp Files\My Image.jpg"
+-o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
 +---
 
 
 * Filehandling
 
   If the input file (option <<<-i>>> ) is not found, <.jasper> is added to the
+  filename first, if the file is still not found <.jrxml> is added to the
   filename. So you can omit the file extension.
+
+  If the <.jrxml> file is used, it will be compiled in memory and used for
+  further processing except you provide option <<<-w>>> which causes the
+  compiled report to be written to the <<input>> directory.
+
+  A <.jrprint> file can be used as input but must specified with full filename.
 
   If the output file or directory ( option <<<-o>>> ) is omitted, parent of the
   input file is used as output directory and the basename of the input file is
@@ -328,6 +367,12 @@ c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 
 +---
 (...) -f pdf odt -i myreports/report1.jasper
++---
+
+  or
+
++---
+(...) -f pdf odt -i myreports/report1.jrxml
 +---
 
   results in:
@@ -364,14 +409,3 @@ month01/report1.pdf
 month01/journal.xyz.odt
 month01/journal.xyz.pdf
 +---
-
-  With the additional option <--keep-jrprint> the result will be:
-
-+---
-month01/journal.xyz.jrprint
-month01/journal.xyz.odt
-month01/journal.xyz.pdf
-+---
-
-  Otherwise the <.jrprint> file will be stored in the system temp dir and
-  deleted after processing.
