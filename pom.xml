@@ -402,6 +402,17 @@ limitations under the License.
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
+                <resources>
+                    <!--
+                    Copy all jdbc drivers from the projects basedir
+                    to the test directory.
+                    -->
+                    <resource>
+                        <directory>${project.basedir}/jdbc</directory>
+                        <targetPath>${project.build.directory}/${project.artifactId}-dev-bin/jdbc</targetPath>
+                        <filtering>false</filtering>
+                    </resource>
+                </resources>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
