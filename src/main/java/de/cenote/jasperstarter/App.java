@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -87,6 +88,10 @@ public class App {
         }
         app.namespace = app.parseArgumentParser(args, parser);
 
+        // setting locale if given
+        if (app.namespace.get(Dest.LOCALE) != null) {
+            Locale.setDefault(new Locale((String) app.namespace.get(Dest.LOCALE)));
+        }
         // add the jdbc dir to classpath
         try {
             if (app.namespace.get(Dest.JDBC_DIR) != null) {
@@ -199,11 +204,12 @@ public class App {
         groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
 
         groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
+        groupOptions.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>").help("set locale with two-letter ISO-639 code");
         groupOptions.addArgument("--debug").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
         groupOptions.addArgument("--version").action(Arguments.version()).help("display version information and exit");
 
         ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");
-        groupCompileOptions.addArgument("-w","--write-jasper").
+        groupCompileOptions.addArgument("-w", "--write-jasper").
                 dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is prcessed");
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
@@ -213,7 +219,7 @@ public class App {
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
-                required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none).  // @todo: default does not work
+                required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none). // @todo: default does not work
                 help("database type: none, mysql, postgres, oracle, generic");
         Argument argDbHost = groupDbOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDbOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
