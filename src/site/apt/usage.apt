@@ -154,12 +154,31 @@ optional arguments:
 
 commands:
   <cmd>                  type <cmd> -h to get help on command
+    cp                   compile - compile reports
     pr                   process - view, print or export an existing report
     lp                   list printers - lists available printers on this
                          system
 +---
 
   Every command has it's own help which can be invoked with <\<command\> -h>.
+
+
+** The command <cp>
+
+  The command <cp> is for compiling one report or all reports in a directory.
+
++---
+$ jasperstarter cp -h
+usage: jasperstarter cp [-h] -i <file> [-o <file>]
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or directory
+  -o <file>              directory or basename of outputfile(s)
++---
+
 
 ** The command <pr>
 
@@ -253,8 +272,8 @@ $ jasperstarter pr -f view -i myreport @example.config
 
 * Processing reports
 
-  To process a report you must provide the process command <<pr>> which has the
-  following options:
+  To process a report you must provide the process command <<pr>> which needs
+  the following options:
 
     * <<<-i>>> input file (report definition, compiled report or filled report).
 

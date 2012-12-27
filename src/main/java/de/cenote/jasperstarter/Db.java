@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
@@ -21,8 +20,6 @@ import de.cenote.jasperstarter.types.Dest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.sourceforge.argparse4j.inf.Namespace;
 
 /**
@@ -32,7 +29,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
  */
 public class Db {
 
-    public Connection getConnection() {
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
         Namespace namespace = App.getInstance().getNamespace();
         Connection conn = null;
         DbType dbtype = (DbType) namespace.get(Dest.DB_TYPE);
@@ -71,16 +68,10 @@ public class Db {
                 System.out.println("db-password is empty");
             }
         }
-        try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(connectString, user, passwd);
-        } catch (SQLException e) {
-            Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, e);
-            System.exit(1);
-        } catch (ClassNotFoundException e) {
-            Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, e);
-            System.exit(1);
-        }
+
+        Class.forName(driver);
+        conn = DriverManager.getConnection(connectString, user, passwd);
+
         return conn;
     }
 }

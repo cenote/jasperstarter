@@ -13,6 +13,11 @@ Version number for production releases:
 
     <major>.<minor>.<bugfix>
 
+Version number for release candidates - should be ready for production but needs
+some testing from YOU ;-) :
+
+    <major>.<minor>-RC<N>
+
 Version number for testing releases - not for production use:
 
     <major>.<minor>-SNAPSHOT-<Mercurial-Revision>

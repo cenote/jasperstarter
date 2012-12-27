@@ -21,6 +21,7 @@ import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.classpath.ApplicationClasspath;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -36,14 +37,14 @@ import net.sf.jasperreports.engine.JRException;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentAction;
 import net.sourceforge.argparse4j.inf.ArgumentGroup;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
-import net.sourceforge.argparse4j.internal.ArgumentImpl;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  *
@@ -96,30 +97,11 @@ public class App {
         if (app.namespace.get(Dest.LOCALE) != null) {
             Locale.setDefault(new Locale((String) app.namespace.get(Dest.LOCALE)));
         }
-        // add the jdbc dir to classpath
-        try {
-            if (app.namespace.get(Dest.JDBC_DIR) != null) {
-                File jdbcDir = new File(app.namespace.get(Dest.JDBC_DIR).toString());
-                if (app.namespace.getBoolean(Dest.DEBUG)) {
-                    System.out.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
-                }
-                //
-                ApplicationClasspath.addJars(jdbcDir.getAbsolutePath());
-            } else {
-                ApplicationClasspath.addJarsRelative("../jdbc");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        }
 
         switch (Command.getCommand(app.namespace.getString(Dest.COMMAND))) {
             case COMPILE:
             case CP:
-                // compile
+                app.compile();
                 break;
             case PROCESS:
             case PR:
@@ -132,9 +114,71 @@ public class App {
         }
     }
 
+    private void compile() {
+        boolean error = false;
+        App app = App.getInstance();
+        File input = new File(app.namespace.getString(Dest.INPUT));
+        if (input.isFile()) {
+            try {
+                Report report = new Report(input);
+                report.compileToFile();
+            } catch (IllegalArgumentException ex) {
+                System.err.println(ex.getMessage());
+                error = true;
+            }
+        } else if (input.isDirectory()) {
+            // compile all .jrxml files in this directory
+            FileFilter fileFilter = new WildcardFileFilter("*.jrxml", IOCase.INSENSITIVE);
+            File[] files = input.listFiles(fileFilter);
+            for (File file : files) {
+                try {
+                    System.out.println("Compiling: \"" + file + "\"");
+                    Report report = new Report(file);
+                    report.compileToFile();
+                } catch (IllegalArgumentException ex) {
+                    System.err.println(ex.getMessage());
+                    error = true;
+                }
+            }
+        } else {
+            System.err.println("Error: not a file: " + input.getName());
+            error = true;
+        }
+        if (error) {
+            System.exit(1);
+        } else {
+            System.exit(0);
+        }
+    }
+
     private void processReport() {
         App app = App.getInstance();
-        Report report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
+        // add the jdbc dir to classpath
+        try {
+            if (app.namespace.get(Dest.JDBC_DIR) != null) {
+                File jdbcDir = new File(app.namespace.get(Dest.JDBC_DIR).toString());
+                if (app.namespace.getBoolean(Dest.DEBUG)) {
+                    System.out.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
+                }
+                ApplicationClasspath.addJars(jdbcDir.getAbsolutePath());
+            } else {
+                ApplicationClasspath.addJarsRelative("../jdbc");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
+
+        Report report = null;
+        try {
+            report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
+        } catch (IllegalArgumentException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        }
         report.fill();  // produces visible output file if OutputFormat.jrprint is set
         List<OutputFormat> formats = app.namespace.getList(Dest.OUTPUT_FORMATS);
         Boolean viewIt = false;
@@ -227,7 +271,9 @@ public class App {
         Subparsers subparsers = parser.addSubparsers().title("commands").
                 help("type <cmd> -h to get help on command").metavar("<cmd>").
                 dest(Dest.COMMAND);
-        
+
+        Subparser parserCompile = subparsers.addParser("cp", true).help("compile - compile reports");
+        createCompileArguments(parserCompile);
         Subparser parserProcess = subparsers.addParser("pr", true).help("process - view, print or export an existing report");
         createProcessArguments(parserProcess);
         // @todo: creating aliases does not work for now because of the ambigoius allArguments elements !!
@@ -239,6 +285,12 @@ public class App {
                 help("list printers - lists available printers on this system");
 
         return parser;
+    }
+
+    private void createCompileArguments(Subparser parser) {
+        ArgumentGroup groupOptions = parser.addArgumentGroup("options");
+        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or directory");
+        groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
     }
 
     private void createProcessArguments(Subparser parser) {

@@ -83,7 +83,12 @@ public class Report {
     private JasperPrint jasperPrint;
     private File output;
 
-    Report(File inputFile) {
+    /**
+     *
+     * @param inputFile
+     * @throws IllegalArgumentException
+     */
+    Report(File inputFile) throws IllegalArgumentException {
         Namespace namespace = App.getInstance().getNamespace();
 
         if (namespace.getBoolean(Dest.DEBUG)) {
@@ -139,17 +144,18 @@ public class Report {
                 // nothing to do here
             }
             if (casterror) {
-                System.err.println("Error: input file: " + inputFile + " is not of a valid type");
-                System.exit(1);
+                throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not of a valid type");
             }
         } catch (JRException ex) {
             try {
                 // now try to load it as jrxml
                 jasperDesign = JRXmlLoader.load(inputFile.getAbsolutePath());
+                initialInputType = InputType.JASPER_DESIGN;
                 compile();
             } catch (JRException ex1) {
-                System.err.println("Error: input file: " + inputFile + " is not of a valid type");
-                System.exit(1);
+                throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file", ex1);
+                //System.err.println("Error: input file: " + inputFile + " is not of a valid type");
+                //System.exit(1);
             }
         }
 
@@ -158,7 +164,12 @@ public class Report {
         String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
         if (namespace.getString(Dest.OUTPUT) == null) {
             // if output is omitted, use parent dir of input file
-            this.output = inputFile.getParentFile();
+            File parent = inputFile.getParentFile();
+            if (parent != null) {
+                this.output = parent;
+            } else {
+                this.output = new File(inputBasename);
+            }
         } else {
             this.output = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
         }
@@ -188,20 +199,17 @@ public class Report {
         }
     }
 
-    private void compile() {
-        try {
-            jasperReport = JasperCompileManager.compileReport(jasperDesign);
-            Namespace namespace = App.getInstance().getNamespace();
+    private void compile() throws JRException {
+        jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        Namespace namespace = App.getInstance().getNamespace();
+        // this option is only available if command process is active
+        if (namespace.get(Dest.WRITE_JASPER) != null) {
             if (namespace.getBoolean(Dest.WRITE_JASPER)) {
                 String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
                 String outputDir = inputFile.getParent();
-                File outputFile = new File(outputDir +"/"+ inputBasename + ".jasper");
+                File outputFile = new File(outputDir + "/" + inputBasename + ".jasper");
                 JRSaver.saveObject(jasperReport, outputFile);
             }
-        } catch (JRException ex) {
-            System.err.println("Compile error: " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(1);
         }
     }
 
@@ -210,8 +218,11 @@ public class Report {
             try {
                 JRSaver.saveObject(jasperReport, this.output.getAbsolutePath() + ".jasper");
             } catch (JRException ex) {
-                Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
+                throw new IllegalArgumentException("outputFile" + this.output.getAbsolutePath() + ".jasper" + "could not be written");
+                //Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file");
         }
     }
 

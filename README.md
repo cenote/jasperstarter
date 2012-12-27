@@ -2,7 +2,8 @@
 JasperStarter - Running JasperReports from command line
 --------------------------------------------------------
 
-JasperStarter is an opensource command line launcher for [JasperReports][].
+JasperStarter is an opensource command line launcher and batch compiler for
+[JasperReports][].
 
 It has the following features:
 
@@ -19,6 +20,7 @@ It has the following features:
   * Export multiple formats in one commanding call
   * Compile, Print and export in one commanding call
   * View, print or export previously filled reports (use jrprint file as input)
+  * Can compile a whole directory of .jrxml files.
   * Integrate in non Java applications (for example PHP, Python)
   * Binary executable on Windows
   * Includes JasperReports so this is the only tool you need to install
@@ -63,14 +65,16 @@ For more information take a look in the docs directory of the distibution
 archive or read the [Usage][] page online.
 
 
-### Release Note 
+### Release Notes
 
 JasperStarter is going straight towards the final 1.0 release.
 
   * JasperStarter now has commands. Every command can have different arguments
     and options. Users of previous versions just must add **pr** to their
     existing command line.
-  * New input file types allowed:
+  * New command: cp - compile, can compile one file or all .jrxml in a
+    directory.
+  * New input file types for command pr allowed:
     * jrxml    - compiles implicit
     * jrprint  - print, view or export previously filled reports.
   * New output type: jrprint. This makes \--keep obsolete.

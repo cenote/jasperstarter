@@ -6,8 +6,10 @@ Changes
 --------
 
  1.0-SNAPSHOT
-        JasperStarter now has commands: cp - process, lp - list printers.
-        New input file types allowed:
+        JasperStarter now has commands: pr - process, lp - list printers.
+        New command: cp - compile, can compile one file or all .jrxml in a
+        directory.
+        New input file types for command pr allowed:
           jrxml    - compiles implicit
           jrprint  - print, view or export previously filled reports.
         New output type: jrprint. This makes --keep obsolete.
