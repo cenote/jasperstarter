@@ -256,7 +256,7 @@ $ jasperstarter pr -f view -i myreport @example.config
   To process a report you must provide the process command <<pr>> which has the
   following options:
 
-    * <<<-i>>> an inputfile (compiled report).
+    * <<<-i>>> input file (report definition, compiled report or filled report).
 
     * <<<-f>>> a space separated list of output formats.
 
