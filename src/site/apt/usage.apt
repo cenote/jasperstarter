@@ -134,28 +134,56 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
   JasperStarter can carry out all of them in one commanding call.
 
 
-* JasperStarter options
+* JasperStarter commands and options
 
-  JasperStarter has the following options:
+  JasperStarter has some global options and commands. Every command can have
+  it's own options.
+
+  You can get an overview if you invoke jasperstarter with <-h> which shows you
+  the global options and the available commands.
 
 +---
 $ jasperstarter -h
-usage: jasperstarter -f <fmt> [<fmt> ...] -i <file> [-o <file>] [-h]
-                     [--debug] [--version] [-w] [-P <p> [<p> ...]] [-k]
-                     [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
-                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
-                     [--db-port <port>] [--db-driver <name>]
-                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
-                     [-N <printername>] [-d] [-l] [-s <reportname>]
+usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --locale <lang>        set locale with two-letter ISO-639 code
+  -v, --verbose          display additional messages
+  -V, --version          display version information and exit
+
+commands:
+  <cmd>                  type <cmd> -h to get help on command
+    pr                   process - view, print or export an existing report
+    lp                   list printers - lists available printers on this
+                         system
++---
+
+  Every command has it's own help which can be invoked with <\<command\> -h>.
+
+** The command <pr>
+
+  The command <<pr>> is for processing a report. Thant means viewing, printing
+  or exporting.
+
++---
+$ jasperstarter pr -h
+usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
+                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
+                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
+                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [-N <printername>] [-d]
+                     [-s <reportname>]
+
+optional arguments:
+  -h, --help             show this help message and exit
 
 options:
   -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
                          pptx, csv, html, xhtml, xml, jrprint
   -i <file>              input file (.jrxml|.jasper|.jrprint)
   -o <file>              directory or basename of outputfile(s)
-  -h, --help             show this help message and exit
-  --debug                display additional messages
-  --version              display version information and exit
 
 compile options:
   -w, --write-jasper     write .jasper file to imput dir if jrxml is
@@ -184,17 +212,26 @@ db options:
 print options:
   -N <printername>       name of printer
   -d                     show print dialog when printing
-  -l, --list-printers    list availible printers
   -s <reportname>        set internal report/document name when printing
 +---
 
 
-** Configuration file
+** The command <lp>
 
-  You can specify a configuration file which contains one option/argument per
-  line. It can be provided to JasperStarter with the @ sign:
+  The command <lp> has no options. It lists the available printers on your
+  system which can be used with optin <-N> of the command <pr>.
 
-  Example file (example.config):
+
+* Configuration files
+
+  Every command, option or argument JasperStarter accepts can be stored in a file
+  that can be additionally provided with the <@> sign.
+
+  The file should contain one option/argument per line.
+
+  
+
+  Example file (db.conf):
 
 +---
 -t
@@ -210,13 +247,14 @@ volker
   Example command with configuration file:
 
 +---
-$ jasperstarter -f view -i myreport @example.config
+$ jasperstarter pr -f view -i myreport @example.config
 +---
 
 
 * Processing reports
 
-  To process a report you must provide the following options:
+  To process a report you must provide the process command <<pr>> which has the
+  following options:
 
     * <<<-i>>> an inputfile (compiled report).
 
@@ -242,7 +280,7 @@ $ jasperstarter -f view -i myreport @example.config
   The minimum options needed, to process a report with an empty datasource:
 
 +---
-$ jasperstarter -i myreport.jasper -f view -t none
+$ jasperstarter pr -i myreport.jasper -f view -t none
 +---
 
 
@@ -252,7 +290,7 @@ $ jasperstarter -i myreport.jasper -f view -t none
   connection:
 
 +---
-$ jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
+$ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
 +---
 
 
@@ -264,13 +302,13 @@ $ jasperstarter -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appus
   Just fill one report:
 
 +---
-$ jasperstarter -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
+$ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
 +---
 
   View a previously filled report:
 
 +---
-$ jasperstarter -i myreport.jrprint -f view
+$ jasperstarter pr -i myreport.jrprint -f view
 +---
 
 
@@ -292,7 +330,7 @@ $ jasperstarter -i myreport.jrprint -f view
   The date is in ISO format and has the form: <<YYYY-MM-DD>>
 
 +---
-$ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
 +---
 
@@ -320,7 +358,7 @@ $ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
   Now you can process your report with JasperStarter:
 
 +---
-$ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
 +---
 
@@ -331,14 +369,14 @@ $ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
   There are two ways you can do that. Just quote the value:
 
 +---
-c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
 +---
 
   or quote the whole parameter:
 
 +---
-c:\jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
 +---
 

@@ -23,6 +23,7 @@ package de.cenote.jasperstarter.types;
  */
 public interface Dest {
 
+    public static String COMMAND = "command";
     public static String OUTPUT_FORMATS = "output-formats";
     public static String INPUT = "input";
     public static String OUTPUT = "output";

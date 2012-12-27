@@ -6,6 +6,7 @@ Changes
 --------
 
  1.0-SNAPSHOT
+        JasperStarter now has commands: cp - process, lp - list printers.
         New input file types allowed:
           jrxml    - compiles implicit
           jrprint  - print, view or export previously filled reports.

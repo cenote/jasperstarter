@@ -15,6 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
+import de.cenote.jasperstarter.types.Command;
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.OutputFormat;
@@ -40,6 +41,9 @@ import net.sourceforge.argparse4j.inf.ArgumentGroup;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
+import net.sourceforge.argparse4j.inf.Subparser;
+import net.sourceforge.argparse4j.inf.Subparsers;
+import net.sourceforge.argparse4j.internal.ArgumentImpl;
 
 /**
  *
@@ -112,6 +116,24 @@ public class App {
             System.exit(1);
         }
 
+        switch (Command.getCommand(app.namespace.getString(Dest.COMMAND))) {
+            case COMPILE:
+            case CP:
+                // compile
+                break;
+            case PROCESS:
+            case PR:
+                app.processReport();
+                break;
+            case LIST_PRINTERS:
+            case LP:
+                app.listPrinters();
+                break;
+        }
+    }
+
+    private void processReport() {
+        App app = App.getInstance();
         Report report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
         report.fill();  // produces visible output file if OutputFormat.jrprint is set
         List<OutputFormat> formats = app.namespace.getList(Dest.OUTPUT_FORMATS);
@@ -169,7 +191,7 @@ public class App {
         System.out.println((defaultService == null) ? "--- not set ---" : defaultService.getName());
         System.out.println("");
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
-        System.out.println("Availible printers:");
+        System.out.println("Available printers:");
         System.out.println("--------------------");
         for (PrintService service : services) {
             System.out.println(service.getName());
@@ -181,7 +203,6 @@ public class App {
     }
 
     private ArgumentParser createArgumentParser() {
-        ArgumentAction ListPrintersAction = new ListPrintersAction();
         this.allArguments = new HashMap<String, Argument>();
         String jasperversion = Package.getPackage("net.sf.jasperreports.engine").
                 getImplementationVersion();
@@ -189,24 +210,45 @@ public class App {
                 .append(applicationProperties.getProperty("application.version"))
                 .append(" Rev ").append(applicationProperties.getProperty("application.revision"))
                 .append(" ").append(applicationProperties.getProperty("application.revision.date"))
-                .append("\n").append(" - JasperReports: " + jasperversion);
+                .append("\n").append(" - JasperReports: ").append(jasperversion);
 
         // @todo on windows prfixChars should be "-/" but on Linux this
         //       is the path separator
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-", "@")
                 .version(sb.toString());
 
+        //ArgumentGroup groupOptions = parser.addArgumentGroup("options");
+
+        parser.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
+        parser.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>").help("set locale with two-letter ISO-639 code");
+        parser.addArgument("-v", "--verbose").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
+        parser.addArgument("-V", "--version").action(Arguments.version()).help("display version information and exit");
+
+        Subparsers subparsers = parser.addSubparsers().title("commands").
+                help("type <cmd> -h to get help on command").metavar("<cmd>").
+                dest(Dest.COMMAND);
+        
+        Subparser parserProcess = subparsers.addParser("pr", true).help("process - view, print or export an existing report");
+        createProcessArguments(parserProcess);
+        // @todo: creating aliases does not work for now because of the ambigoius allArguments elements !!
+        // This does NOT work:
+        //Subparser parserProc    = subparsers.addParser("proc", true).help("alias for command process");
+        //createProcessArguments(parserProc);
+
+        Subparser parserListPrinters = subparsers.addParser("lp", true).
+                help("list printers - lists available printers on this system");
+
+        return parser;
+    }
+
+    private void createProcessArguments(Subparser parser) {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
         groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
                 help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint");
         groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
         groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
-
-        groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
-        groupOptions.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>").help("set locale with two-letter ISO-639 code");
-        groupOptions.addArgument("--debug").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
-        groupOptions.addArgument("--version").action(Arguments.version()).help("display version information and exit");
+        //groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
 
         ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");
         groupCompileOptions.addArgument("-w", "--write-jasper").
@@ -234,7 +276,6 @@ public class App {
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
         groupPrintOptions.addArgument("-d").dest(Dest.WITH_PRINT_DIALOG).action(Arguments.storeTrue()).help("show print dialog when printing");
-        groupPrintOptions.addArgument("-l", "--list-printers").dest(Dest.LIST_PRINTERS).action(ListPrintersAction).help("list availible printers");
         groupPrintOptions.addArgument("-s").metavar("<reportname>").dest(Dest.REPORT_NAME).help("set internal report/document name when printing");
 
         allArguments.put(argDbHost.getDest(), argDbHost);
@@ -245,7 +286,6 @@ public class App {
         allArguments.put(argDbPort.getDest(), argDbPort);
         allArguments.put(argDbDriver.getDest(), argDbDriver);
         allArguments.put(argDbUrl.getDest(), argDbUrl);
-        return parser;
     }
 
     private Namespace parseArgumentParser(String[] args, ArgumentParser parser) {
@@ -300,27 +340,5 @@ public class App {
      */
     public Namespace getNamespace() {
         return namespace;
-    }
-
-    private class ListPrintersAction implements ArgumentAction {
-
-        @Override
-        public void run(ArgumentParser parser, Argument arg,
-                Map<String, Object> attrs, String flag, Object value)
-                throws ArgumentParserException {
-//         System.out.printf("%s '%s' %s\n", attrs, value, flag);
-//         attrs.put(arg.getDest(), value);
-            listPrinters();
-            System.exit(0);
-        }
-
-        @Override
-        public void onAttach(Argument arg) {
-        }
-
-        @Override
-        public boolean consumeArgument() {
-            return false;
-        }
     }
 }

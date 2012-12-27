@@ -44,14 +44,18 @@ Invoke JasperStarter with _\-h_ to get an overview:
 
     $ jasperstarter -h
 
+Invoke JasperStarter with _pr \-h_ to get help on the process command:
+
+    $ jasperstarter pr -h
+
 Example with reportparameters:
 
-    $ jasperstarter -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
     -o report -p secret -P CustomerNo=string:10 StartFrom=date:2012-10-01
 
 Example with hsql using database type generic:
 
-    $ jasperstarter -t generic -f pdf -i report.jasper -o report -u sa \
+    $ jasperstarter pr -t generic -f pdf -i report.jasper -o report -u sa \
     --db-driver org.hsqldb.jdbcDriver \
     --db-url jdbc:hsqldb:hsql://localhost
 
@@ -63,6 +67,9 @@ archive or read the [Usage][] page online.
 
 JasperStarter is going straight towards the final 1.0 release.
 
+  * JasperStarter now has commands. Every command can have different arguments
+    and options. Users of previous versions just must add **pr** to their
+    existing command line.
   * New input file types allowed:
     * jrxml    - compiles implicit
     * jrprint  - print, view or export previously filled reports.
