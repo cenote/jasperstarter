@@ -45,7 +45,7 @@ limitations under the License.
     </scm>
     <issueManagement>
         <system>JIRA</system>
-        <url>https://jasperstarter-issues.atlassian.net</url>
+        <url>https://cenote-issues.atlassian.net/browse/JAS</url>
     </issueManagement>
 
     <developers>

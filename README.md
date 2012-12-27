@@ -155,6 +155,6 @@ limitations under the License.
 [bitbucket.org/cenote/jasperstarter]:http://bitbucket.org/cenote/jasperstarter
 [review]:http://sourceforge.net/projects/jasperstarter/reviews
 [discussion]:http://sourceforge.net/p/jasperstarter/discussion/
-[Issuetracker]:http://jasperstarter-issues.atlassian.net
+[Issuetracker]:https://cenote-issues.atlassian.net/browse/JAS
 [Usage]:http://jasperstarter.sourceforge.net/usage.html
-[Issues]:http://jasperstarter-issues.atlassian.net/browse/JAS
+[Issues]:https://cenote-issues.atlassian.net/browse/JAS
