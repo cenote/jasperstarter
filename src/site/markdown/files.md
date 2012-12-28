@@ -1,10 +1,6 @@
 JasperStarter Files
 --------------------
 
-As the major version number of zero indicates, this software is in **beta**
-state!
-Feedback is very welcome. See README.md inside the distribution archive.
-
 JasperStarter distribution files have the following naming convention:
 
     JasperStarter-<version>-<type>.<archiveTye>
@@ -45,3 +41,5 @@ Content of a distribution archive:
 
 Please don't touch the structure of the directories or JasperStarter will not
 work.
+
+For further information see README.md inside the distribution archive.
