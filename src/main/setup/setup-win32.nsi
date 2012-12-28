@@ -12,7 +12,7 @@
 
   ;Name and file
   Name "${project.name}-${project.version}"
-  OutFile "..\${project.name}-${project.version}-Setup.exe"
+  OutFile "..\${project.build.finalName}-Setup.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\${project.artifactId}"
