@@ -313,7 +313,7 @@ public class App {
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
-                required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none). // @todo: default does not work
+                required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none).
                 help("database type: none, mysql, postgres, oracle, generic");
         Argument argDbHost = groupDbOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDbOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");

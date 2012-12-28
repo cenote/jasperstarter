@@ -441,18 +441,20 @@ public class Report {
                         }
                         parameters.put(paramName, image);
                     } else {
-                        // @todo create on exception
-                        throw new Exception("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
+                        throw new IllegalArgumentException("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
                     }
                 } catch (NumberFormatException e) {
                     System.err.println("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"");
+                    // @todo: delegate exception handling to App()
                     System.exit(1);
                 } catch (java.text.ParseException e) {
                     System.err.println(e.getMessage() + "\" in \"" + p + "\"");
+                    // @todo: delegate exception handling to App()
                     System.exit(1);
                 } catch (Exception e) {
                     //System.err.println(e.getMessage());
                     e.printStackTrace();
+                    // @todo: delegate exception handling to App()
                     System.exit(1);
                 }
             }
