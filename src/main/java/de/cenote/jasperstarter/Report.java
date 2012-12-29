@@ -27,6 +27,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,11 +113,9 @@ public class Report {
             }
         }
         if (!inputFile.exists()) {
-            System.err.println("Error: file not found: " + inputFile.getAbsolutePath());
-            System.exit(1);
+            throw new IllegalArgumentException("Error: file not found: " + inputFile.getAbsolutePath());
         } else if (inputFile.isDirectory()) {
-            System.err.println("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
-            System.exit(1);
+            throw new IllegalArgumentException("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
         }
         if (namespace.getBoolean(Dest.DEBUG)) {
             System.out.println("Using input file: " + inputFile.getAbsolutePath());
@@ -154,8 +153,6 @@ public class Report {
                 compile();
             } catch (JRException ex1) {
                 throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file", ex1);
-                //System.err.println("Error: input file: " + inputFile + " is not of a valid type");
-                //System.exit(1);
             }
         }
 
@@ -219,7 +216,6 @@ public class Report {
                 JRSaver.saveObject(jasperReport, this.output.getAbsolutePath() + ".jasper");
             } catch (JRException ex) {
                 throw new IllegalArgumentException("outputFile" + this.output.getAbsolutePath() + ".jasper" + "could not be written");
-                //Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file");
@@ -229,8 +225,8 @@ public class Report {
     public void fill() {
         if (initialInputType != InputType.JASPER_PRINT) {
             Namespace namespace = App.getInstance().getNamespace();
+            Map parameters = getReportParams();
             try {
-                Map parameters = getReportParams();
                 if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
                 } else {
@@ -239,17 +235,23 @@ public class Report {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
                     con.close();
                 }
-                List<OutputFormat> formats = namespace.getList(Dest.OUTPUT_FORMATS);
-
+            } catch (SQLException ex) {
+                throw new IllegalArgumentException("Unable to connect to database: " + ex.getMessage(), ex);
+            } catch (JRException e) {
+                throw new IllegalArgumentException("Error filling report" + e.getMessage(), e);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("Unable to load driver: " + e.getMessage(), e);
+            }
+            List<OutputFormat> formats = namespace.getList(Dest.OUTPUT_FORMATS);
+            try {
                 if (formats.contains(OutputFormat.jrprint)) {
                     JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
                 }
                 if (namespace.getBoolean(Dest.KEEP)) {
                     JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
                 }
-            } catch (Exception e) {
-                Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, e);
-                System.exit(1);
+            } catch (JRException e) {
+                throw new IllegalArgumentException("Unable to write to file: " + this.output.getAbsolutePath() + ".jrprint", e);
             }
         }
     }
@@ -413,8 +415,7 @@ public class Report {
                         System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
                     }
                 } catch (Exception e) {
-                    Logger.getLogger(Report.class.getName()).log(Level.SEVERE, "Wrong report param format! " + p, e);
-                    System.exit(1);
+                    throw new IllegalArgumentException("Wrong report param format! " + p, e);
                 }
                 try {
                     if ("string".equals(paramType.toLowerCase())) {
@@ -425,8 +426,8 @@ public class Report {
                         parameters.put(paramName, new Double(paramValue));
                     } else if ("date".equals(paramType.toLowerCase())) {
                         // Date must be in ISO8601 format. Example 2012-12-31
-                        DateFormat formatter = new SimpleDateFormat("yy-MM-dd");
-                        parameters.put(paramName, (Date) formatter.parse(paramValue));
+                        DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+                        parameters.put(paramName, (Date) dateFormat.parse(paramValue));
                     } else if ("image".equals(paramType.toLowerCase())) {
                         Image image =
                                 Toolkit.getDefaultToolkit().createImage(
@@ -436,26 +437,18 @@ public class Report {
                         try {
                             traker.waitForID(0);
                         } catch (Exception e) {
-                            e.printStackTrace();
-                            System.exit(1);
+                            throw new IllegalArgumentException("Image tracker error: " + e.getMessage(), e);
                         }
                         parameters.put(paramName, image);
                     } else {
                         throw new IllegalArgumentException("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
                     }
                 } catch (NumberFormatException e) {
-                    System.err.println("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"");
-                    // @todo: delegate exception handling to App()
-                    System.exit(1);
+                    throw new IllegalArgumentException("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"", e);
                 } catch (java.text.ParseException e) {
-                    System.err.println(e.getMessage() + "\" in \"" + p + "\"");
-                    // @todo: delegate exception handling to App()
-                    System.exit(1);
-                } catch (Exception e) {
-                    //System.err.println(e.getMessage());
-                    e.printStackTrace();
-                    // @todo: delegate exception handling to App()
-                    System.exit(1);
+                    throw new IllegalArgumentException(e.getMessage() + "\" in \"" + p + "\"", e);
+                } catch (JRException e) {
+                    throw new IllegalArgumentException("Unable to load image from: " + paramValue, e);
                 }
             }
         }

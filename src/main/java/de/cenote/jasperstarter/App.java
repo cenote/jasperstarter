@@ -68,7 +68,6 @@ public class App {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(1);
         }
-
     }
 
     public static App getInstance() {
@@ -256,8 +255,6 @@ public class App {
                 .append(" ").append(applicationProperties.getProperty("application.revision.date"))
                 .append("\n").append(" - JasperReports: ").append(jasperversion);
 
-        // @todo on windows prfixChars should be "-/" but on Linux this
-        //       is the path separator
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-", "@")
                 .version(sb.toString());
 
