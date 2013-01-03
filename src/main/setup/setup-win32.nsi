@@ -8,6 +8,9 @@
   !include "EnvVarUpdate.nsh"
 
 ;--------------------------------
+  SetCompressor lzma
+
+;--------------------------------
 ;General
 
   ;Name and file
@@ -24,16 +27,37 @@
   ;RequestExecutionLevel user
 
 ;--------------------------------
+;Variables
+
+  Var StartMenuFolder
+  
+;--------------------------------
 ;Interface Settings
 
   !define MUI_ABORTWARNING
+  
+;--------------------------------
+;Language Selection Dialog Settings
+
+  ;Remember the installer language
+  !define MUI_LANGDLL_REGISTRY_ROOT "HKLM" 
+  !define MUI_LANGDLL_REGISTRY_KEY "Software\${project.name}" 
+  !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"  
 
 ;--------------------------------
 ;Pages
 
   !insertmacro MUI_PAGE_LICENSE "setup-win32\LICENSE"
   !insertmacro MUI_PAGE_COMPONENTS
-  !insertmacro MUI_PAGE_DIRECTORY
+  
+  ;Start Menu Folder Page Configuration
+  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${project.name}" 
+  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
+  !define MUI_STARTMENUPAGE_DEFAULTFOLDER "${project.name}"
+  !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+
+  !insertmacro MUI_PAGE_DIRECTORY  
   !insertmacro MUI_PAGE_INSTFILES
   
   !insertmacro MUI_UNPAGE_CONFIRM
@@ -41,8 +65,37 @@
   
 ;--------------------------------
 ;Languages
- 
+
+  ; first language is the default language
   !insertmacro MUI_LANGUAGE "English"
+  LangString DESC_SecMain ${LANG_ENGLISH} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_ENGLISH} "$R0 is already installed! Please uninstall first."
+
+  !insertmacro MUI_LANGUAGE "German"
+  LangString DESC_SecMain ${LANG_GERMAN} "${project.name}s Haupt Komponenten"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_GERMAN} "$R0 ist bereits installiert! Bitte zuerst deinstallieren."
+
+  ;---
+  !insertmacro MUI_LANGUAGE "French"
+  LangString DESC_SecMain ${LANG_FRENCH} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_FRENCH} "$R0 is already installed! Please uninstall first."  
+
+  !insertmacro MUI_LANGUAGE "Polish"
+  LangString DESC_SecMain ${LANG_POLISH} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_POLISH} "$R0 is already installed! Please uninstall first."  
+
+  !insertmacro MUI_LANGUAGE "Romanian"
+  LangString DESC_SecMain ${LANG_ROMANIAN} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_ROMANIAN} "$R0 is already installed! Please uninstall first."
+
+  !insertmacro MUI_LANGUAGE "Ukrainian"
+  LangString DESC_SecMain ${LANG_UKRAINIAN} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_UKRAINIAN} "$R0 is already installed! Please uninstall first." 
+
+;--------------------------------
+  
+  ReserveFile "setup-win32\LICENSE"
+  !insertmacro MUI_RESERVEFILE_LANGDLL
 
 ;--------------------------------
 ;Installer Sections
@@ -75,23 +128,18 @@ Section "${project.name}" SecMain
   ${EnvVarUpdate} $0 "PATH" "P" "HKLM" "$INSTDIR\bin"
 
   ; create menu items
-  SetShellVarContext all
-  CreateDirectory "$SMPROGRAMS\${project.name}"
-  
+  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   SetOutPath "$INSTDIR\docs"
-  CreateShortCut "$SMPROGRAMS\${project.name}\${project.name} Help.lnk" "$INSTDIR\docs\index.html"
-  
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${project.name} Help.lnk" "$INSTDIR\docs\index.html"	
   SetOutPath "$INSTDIR"
-  CreateShortCut "$SMPROGRAMS\${project.name}\Uninstall ${project.name}.lnk" "$INSTDIR\uninstall.exe"
-
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${project.name}.lnk" "$INSTDIR\uninstall.exe"  
+  !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
 
 ;--------------------------------
 ;Descriptions
-
-  ;Language strings
-  LangString DESC_SecMain ${LANG_ENGLISH} "${project.name}s main components"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -112,7 +160,10 @@ Section "Uninstall"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
   
   ; Remove shortcuts
-  RMDir /r "$SMPROGRAMS\${project.name}"
+  !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
+  Delete "$SMPROGRAMS\$StartMenuFolder\${project.name} Help.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall ${project.name}.lnk"
+  RMDir "$SMPROGRAMS\$StartMenuFolder"  
 
   ; Remove registry keys
   DeleteRegKey /ifempty HKCU "Software\${project.name}"
@@ -122,6 +173,7 @@ Section "Uninstall"
 SectionEnd
 
 Function .onInit
+  !insertmacro MUI_LANGDLL_DISPLAY
   SetShellVarContext all
   
   ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "DisplayName"
@@ -130,10 +182,16 @@ Function .onInit
   Goto done
   
   isInstalled:
-  MessageBox MB_OK "$R0 is already installed! Please uninstall first."
+  MessageBox MB_OK $(MBOX_ALREADY_INSTALLED)
   Abort
   
   done:
+  
+FunctionEnd
+
+Function un.onInit
+
+  !insertmacro MUI_UNGETLANGUAGE
   
 FunctionEnd
 
