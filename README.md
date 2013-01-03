@@ -83,6 +83,9 @@ JasperStarter is going straight towards the final 1.0 release.
   * Parameter -t defaults to "none" and can therefore be omited if no
     database is needed.
   * Input file is read once. No temporary files needed anymore.
+  * Setup checks for previous versions and creates menuitems for uninstall
+    and help.
+  * Setup is available in English, German, French, Polish, Romanian, Ukrainian.
 
 See CHANGES file for a history of changes.
 
