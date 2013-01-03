@@ -15,10 +15,10 @@
   OutFile "..\${project.build.finalName}-Setup.exe"
 
   ;Default installation folder
-  InstallDir "$PROGRAMFILES\${project.artifactId}"
+  InstallDir "$PROGRAMFILES\${project.name}"
   
   ;Get installation folder from registry if available
-  InstallDirRegKey HKLM "Software\${project.artifactId}" ""
+  InstallDirRegKey HKLM "Software\${project.name}" ""
 
   ;Request application privileges for Windows Vista
   ;RequestExecutionLevel user
@@ -48,9 +48,12 @@
 ;Installer Sections
 Section
   SetShellVarContext all
+
+  ;Store installation folder
+  WriteRegStr HKLM "Software\${project.name}" "" $INSTDIR
   
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "DisplayName" "${project.name}-${project.version}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "DisplayName" "${project.name} ${project.version}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "NoRepair" 1
@@ -71,11 +74,16 @@ Section "${project.name}" SecMain
   ; append to path
   ${EnvVarUpdate} $0 "PATH" "P" "HKLM" "$INSTDIR\bin"
 
-  ;Store installation folder
-  WriteRegStr HKCU "Software\${project.artifactId}" "" $INSTDIR
+  ; create menu items
+  SetShellVarContext all
+  CreateDirectory "$SMPROGRAMS\${project.name}"
   
-  ;Create uninstaller
-  ;WriteUninstaller "$INSTDIR\Uninstall.exe"
+  SetOutPath "$INSTDIR\docs"
+  CreateShortCut "$SMPROGRAMS\${project.name}\${project.name} Help.lnk" "$INSTDIR\docs\index.html"
+  
+  SetOutPath "$INSTDIR"
+  CreateShortCut "$SMPROGRAMS\${project.name}\Uninstall ${project.name}.lnk" "$INSTDIR\uninstall.exe"
+
 
 SectionEnd
 
@@ -102,9 +110,30 @@ Section "Uninstall"
 
   ; remove from path
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR\bin"
+  
+  ; Remove shortcuts
+  RMDir /r "$SMPROGRAMS\${project.name}"
 
   ; Remove registry keys
-  DeleteRegKey /ifempty HKLM "Software\${project.artifactId}"
+  DeleteRegKey /ifempty HKCU "Software\${project.name}"
+  DeleteRegKey /ifempty HKLM "Software\${project.name}"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}"
 
 SectionEnd
+
+Function .onInit
+  SetShellVarContext all
+  
+  ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${project.name}" "DisplayName"
+  StrCmp $R0 "" 0 isInstalled
+  
+  Goto done
+  
+  isInstalled:
+  MessageBox MB_OK "$R0 is already installed! Please uninstall first."
+  Abort
+  
+  done:
+  
+FunctionEnd
+
