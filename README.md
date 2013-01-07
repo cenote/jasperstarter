@@ -114,6 +114,13 @@ JasperStarter is build with [Maven][]. To get a distribution package run:
 
     $ mvn package -P release
 
+or if you build from the current default branch you better use:
+
+    $ mvn package -P release,snapshot
+
+**Attention! You cannot execute** `target/jasperstarter.jar`
+**without having it\'s dependencies in** `../lib` ! See **dev** profile below!
+
 If you want to build the Windows setup.exe, you need to have _nsis_ in your
 search path (works on linux too, you can find a compiled release in the 
 sourceforge download folder _build-tools_ for your convenience)
@@ -121,11 +128,23 @@ an add the **windows-setup** profile to your build:
 
     $ mvn package -P release,windows-setup
 
-While developing you may want to habe a quicker build. The **dev** profile
+or
+
+    $ mvn package -P release,windows-setup,snapshot
+
+While developing you may want to have a quicker build. The **dev** profile
 excludes some long running reports and the compressed archives. Instead it puts
 the build result into _target/jasperstarter-dev-bin_.
 
     $ mvn package -P dev
+
+Now you can execute JasperStarter without IDE:
+
+    $ target/jasperstarter-dev-bin/bin/jasperstarter
+
+or
+
+    $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
 
 To run JasperStarter from within your IDE add _\--jdbc-dir jdbc_ to the argument
 list of your run configuration. Otherwise you will get an error:
