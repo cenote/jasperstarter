@@ -237,7 +237,7 @@ public class Report {
                 try {
                     paramName = p.split("=")[0];
                     paramType = p.split("=")[1].split(":", 2)[0];
-                    paramValue = p.split("=")[1].split(":", 2)[1];
+                    paramValue = p.split("=",2)[1].split(":", 2)[1];
                     if (namespace.getBoolean(Dest.DEBUG)) {
                         System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
                     }
