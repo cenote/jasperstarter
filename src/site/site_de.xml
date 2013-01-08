@@ -47,6 +47,7 @@ limitations under the License.
         <menu name="Overview">
             <item name="Einführung" href="index.html" />
             <item name="Verwendung" href="usage.html" />
+            <item name="Screenshots" href="screenshots.html" />
             <item name="Dateien" href="files.html" />
             <item name="Sourceforge" href="http://sourceforge.net/projects/jasperstarter/" />
             <item name="Downloads" href="http://sourceforge.net/projects/jasperstarter/files/" />
