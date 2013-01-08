@@ -24,6 +24,7 @@ Changes
         Hungarian, German, Polish, Romanian, Thai, Ukrainian.
         Fixed bug JAS-2 runtime parameter value cannot contain equal sign.
         Contains JasperReports 5.0.1.
+        German translation for Site/docs
 
  0.10.0 New report parameter types: double, image (see usage).
         New supported export formats: xls, xlsx, csv, ods, pptx, xhtml, xml.
