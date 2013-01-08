@@ -237,6 +237,9 @@ limitations under the License.
                         <goals>
                             <goal>site</goal>
                         </goals>
+                        <configuration>
+                            <locales>en,de</locales>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
