@@ -46,17 +46,17 @@ public class Db {
         String connectString = null;
         if (DbType.mysql.equals(dbtype)) {
             driver = DbType.mysql.getDriver();
-            port = namespace.getString(Dest.DB_PORT);
+            port = namespace.getInt(Dest.DB_PORT).toString();
             dbname = namespace.getString(Dest.DB_NAME);
             connectString = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
         } else if (DbType.postgres.equals(dbtype)) {
             driver = DbType.postgres.getDriver();
-            port = namespace.getString(Dest.DB_PORT);
+            port = namespace.getInt(Dest.DB_PORT).toString();
             dbname = namespace.getString(Dest.DB_NAME);
             connectString = "jdbc:postgresql://" + host + ":" + port + "/" + dbname;
         } else if (DbType.oracle.equals(dbtype)) {
             driver = DbType.oracle.getDriver();
-            port = namespace.getString(Dest.DB_PORT);
+            port = namespace.getInt(Dest.DB_PORT).toString();
             sid = namespace.getString(Dest.DB_SID);
             connectString = "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid;
         } else if (DbType.generic.equals(dbtype)) {
