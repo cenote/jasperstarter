@@ -75,10 +75,22 @@
   LangString DESC_SecMain ${LANG_GERMAN} "${project.name}s Haupt Komponenten"
   LangString MBOX_ALREADY_INSTALLED ${LANG_GERMAN} "$R0 ist bereits installiert! Bitte zuerst deinstallieren."
 
-  ;---
+  ;--- Custom strings should be translated:
+  !insertmacro MUI_LANGUAGE "SimpChinese"
+  LangString DESC_SecMain ${LANG_SIMPCHINESE} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_SIMPCHINESE} "$R0 is already installed! Please uninstall first."  
+
+  !insertmacro MUI_LANGUAGE "Czech"
+  LangString DESC_SecMain ${LANG_CZECH} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_CZECH} "$R0 is already installed! Please uninstall first."  
+
   !insertmacro MUI_LANGUAGE "French"
   LangString DESC_SecMain ${LANG_FRENCH} "${project.name}s main components"
-  LangString MBOX_ALREADY_INSTALLED ${LANG_FRENCH} "$R0 is already installed! Please uninstall first."  
+  LangString MBOX_ALREADY_INSTALLED ${LANG_FRENCH} "$R0 is already installed! Please uninstall first."
+
+  !insertmacro MUI_LANGUAGE "Hungarian"
+  LangString DESC_SecMain ${LANG_HUNGARIAN} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_HUNGARIAN} "$R0 is already installed! Please uninstall first."
 
   !insertmacro MUI_LANGUAGE "Polish"
   LangString DESC_SecMain ${LANG_POLISH} "${project.name}s main components"
@@ -87,6 +99,10 @@
   !insertmacro MUI_LANGUAGE "Romanian"
   LangString DESC_SecMain ${LANG_ROMANIAN} "${project.name}s main components"
   LangString MBOX_ALREADY_INSTALLED ${LANG_ROMANIAN} "$R0 is already installed! Please uninstall first."
+
+  !insertmacro MUI_LANGUAGE "Thai"
+  LangString DESC_SecMain ${LANG_THAI} "${project.name}s main components"
+  LangString MBOX_ALREADY_INSTALLED ${LANG_THAI} "$R0 is already installed! Please uninstall first."
 
   !insertmacro MUI_LANGUAGE "Ukrainian"
   LangString DESC_SecMain ${LANG_UKRAINIAN} "${project.name}s main components"

@@ -20,8 +20,10 @@ Changes
         Input file is read once. No temporary files needed anymore.
         Setup checks for previous versions and creates menuitems for uninstall
         and help.
-        Setup is available in English, German, French, Polish, Romanian,
-        Ukrainian.
+        Setup is available in English, Chinese (Simplified), Czech, French,
+        Hungarian, German, Polish, Romanian, Thai, Ukrainian.
+        Fixed bug JAS-2 runtime parameter value cannot contain equal sign.
+
 
 
  0.10.0 New report parameter types: double, image (see usage).
