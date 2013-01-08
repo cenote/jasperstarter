@@ -241,12 +241,12 @@ print options:
   system which can be used with optin <-N> of the command <pr>.
 
 
-* Configuration files
+* Command files
 
   Every command, option or argument JasperStarter accepts can be stored in a file
   that can be additionally provided with the <@> sign.
 
-  The file should contain one option/argument per line.
+  The file should contain one command/option/argument per line.
 
   
 
@@ -263,10 +263,10 @@ mydb
 volker
 +---
 
-  Example command with configuration file:
+  Example invocation with command file:
 
 +---
-$ jasperstarter pr -f view -i myreport @example.config
+$ jasperstarter pr -f view -i myreport @db.conf
 +---
 
 
@@ -279,7 +279,7 @@ $ jasperstarter pr -f view -i myreport @example.config
 
     * <<<-f>>> a space separated list of output formats.
 
-        * <<view>> and <<print>> are mutaly exclusive thus print is ignored
+        * <<view>> and <<print>> are mutually exclusive thus print is ignored
           if view is given.
 
     * <<<-t>>> a database type if your report needs a database connection.
@@ -291,7 +291,7 @@ $ jasperstarter pr -f view -i myreport @example.config
 
   All other options are optional.
 
-  For output <<<-o>>> see section "File handling".
+  For output <<<-o>>> see section "File Handling".
 
 
 ** The minimum non database report
@@ -338,7 +338,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
    * string, int, date, double, image
 
-  Multiple parameters con be separated by spaces. A parameter has the following
+  Multiple parameters can be separated by spaces. A parameter has the following
   form:
 
    * \<<<name>>\><<=>>\<<<type>>\><<:>>\<<<value>>\>
@@ -360,7 +360,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
   as parameter. In the following example we use <background> as parameter name
   for the image:
 
-   * Create a parameter in your report and change it's values:
+   * Create a parameter in your report and change it's properties:
 
       * <<Name>> = <background>
 
@@ -400,7 +400,7 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 +---
 
 
-* Filehandling
+* File Handling
 
   If the input file (option <<<-i>>> ) is not found, <.jasper> is added to the
   filename first, if the file is still not found <.jrxml> is added to the

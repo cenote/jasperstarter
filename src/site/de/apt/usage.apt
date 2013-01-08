@@ -1,0 +1,485 @@
+~~ Copyright 2012 Cenote GmbH.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+  ---
+  Verwendung
+  ---
+
+Verwendung
+
+%{toc|fromDepth=2}
+
+
+* Installation
+
+
+** Windows Benutzer
+
+  Entpacken Sie das Distributions Archiv in ein Verzeichnis Ihrer Wahl, 
+  beispielsweise:
+
++---
+C:\App\jasperstarter
++---
+
+  Fügen Sie das Verzeichnis
+
++---
+C:\App\jasperstarter\bin
++---
+
+  zu Ihrem Benutzer oder System Suchpfad hinzu.
+
+  <<oder verwenden Sie einfach setup.exe>>
+
+
+** Linux Benutzer
+
+  Entpacken Sie das Distributions Archiv in ein Verzeichnis Ihrer Wahl,
+  beispielsweise:
+
++---
+/opt/jasperstarter
++---
+
+  Fügen Sie das Verzeichnis
+
++---
+/opt/jasperstarter/bin
++---
+
+  zu Ihrem Benutzer oder System Suchpfad hinzu.
+
+
+* JasperStarter aurufen
+
+  Falls Sie das bin Verzeichnis zum Suchpfad hinzugefügt haben, geben Sie
+  einfach folgendes ein
+
++---
+jasperstarter
++---
+
+  um das Programm aufzurufen.
+
+  Falls nicht, können Sie einen absoluten Pfad angeben. Unter Linux:
+
++---
+/opt/jasperstarter/bin/jasperstarter
++---
+
+  und unter Windows:
+
++---
+C:\App\jasperstarter\bin\jasperstarter.exe
++---
+
+  falls Sie dem Beispiel im Abschnitt Installation gefolgt sind.
+
+  Falls Sie Probleme mit der binären Datei oder dem Shell Script haben oder
+  spezielle Optionen an die Java VM übergeben wollen, können Sie das Programm
+  auch direkt starten:
+
++---
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
++---
+
+  oder
+
++---
+$ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
++---
+
+
+* Konzepte
+
+
+** JasperReport Dateien
+
+  JasperReports kennt drei Arten von Dateien:
+
+  * Die Report Definitions Datei <<myreport.jrxml>>
+
+    Dies ist eine xml Datei, welche den Report definiert. Sie können Sie von 
+    Hand schreiben aber üblicher Weise werden Sie eines von den schönen GUI
+    Tools verwenden um sie zu erzeugen.
+
+  * Die kompilierte Report Datei <<myreport.jasper>>
+
+    Diese Datei ist das Ergebnis wenn Sie eine <.jrxml> Datei kompilieren.
+
+  * Die gefüllte Report Datei <<myreport.jrprint>>
+
+    Diese Datei resultiert aus einem aufgerufenen Report. Die Daten welche über
+    die spezifizierte Datenquelle abgerufen werden, werden in den kompilierten
+    Report eingefügt und das Ergebnis kann als <.jrprint> Datei gespeichert
+    werden.
+
+
+** Stufen der Verarbeitung
+
+  Es gibt drei Stufen einen Report zu verarbeiten:
+
+    * <<kompilieren>> erzeugt eine <.jasper> Datei
+
+    * <<füllen>> kann optional in einer <.jrprint> Datei gespeichert werden
+
+    * <<anzeigen, drucken oder exportieren>> in ein oder mehrere der
+      unterstützten export Formate.
+
+  JasperStarter kann all diese Schritte in einem Aufruf durchführen.
+
+
+* JasperStarter Kommandos und Optionen
+
+  JasperStarter hat einige globale Optionen und Kommandos. Jedes Kommando kann
+  eigene Optionen haben.
+
+  Sie erhalten einen Überblick wenn Sie jasperstarter mit <-h> aufrufen, was
+  Ihnen die globalen Optionen und die verfügbaren Kommandos anzeigt.
+
++---
+$ jasperstarter -h
+usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --locale <lang>        set locale with two-letter ISO-639 code
+  -v, --verbose          display additional messages
+  -V, --version          display version information and exit
+
+commands:
+  <cmd>                  type <cmd> -h to get help on command
+    cp                   compile - compile reports
+    pr                   process - view, print or export an existing report
+    lp                   list printers - lists available printers on this
+                         system
++---
+
+  Jedes Kommando hat seine eigene Hilfe welche Sie durch den Aufruf von 
+  <\<command\> -h> erhalten.
+
+
+** Das Kommando <cp>
+
+  Mit dem Kommando <cp> (compile) können Sie einen einzelnen Report oder alle
+  Reports in einem Verzeichnis kompilieren.
+
++---
+$ jasperstarter cp -h
+usage: jasperstarter cp [-h] -i <file> [-o <file>]
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or directory
+  -o <file>              directory or basename of outputfile(s)
++---
+
+
+** Das Kommando <pr>
+
+  Das Kommando <<pr>> (process) wird benötigt um einen einzelnen Report zu
+  verarbeiten. Damit kann kompilieren, anzeigen, drucken oder exportieren
+  gemeint sein.
+
++---
+$ jasperstarter pr -h
+usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
+                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
+                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
+                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [-N <printername>] [-d]
+                     [-s <reportname>]
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+                         pptx, csv, html, xhtml, xml, jrprint
+  -i <file>              input file (.jrxml|.jasper|.jrprint)
+  -o <file>              directory or basename of outputfile(s)
+
+compile options:
+  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+                         prcessed
+
+fill options:
+  -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
+                         string, int, double, date, image
+  -k, --keep             don't delete the temporary .jrprint file.
+                         OBSOLETE use output format jrprint
+
+db options:
+  -t <dbtype>            database type: none, mysql, postgres, oracle,
+                         generic
+  -H <dbhost>            database host
+  -u <dbuser>            database user
+  -p <dbpasswd>          database password
+  -n <dbname>            database name
+  --db-sid <sid>         oracle sid
+  --db-port <port>       database port
+  --db-driver <name>     jdbc driver class name for use with type: generic
+  --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
+  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+                         Defaults to ./jdbc
+
+print options:
+  -N <printername>       name of printer
+  -d                     show print dialog when printing
+  -s <reportname>        set internal report/document name when printing
++---
+
+
+** Das Kommando <lp>
+
+  Das Kommando <lp> (list printers) hat keine Optionen. Es listet alle
+  verfügbaren Drucker auf Ihrem System, welche Sie mit der Option <-N> des
+  Kommandos <pr> verwenden können.
+
+
+* Befehls Dateien
+
+  Jedes Kommando, jede Option und jedes Argument, welches JasperStarter
+  akzeptiert, kann auch in einer Datei gespeichert werden die zusätzlich mit
+  dem <@> Zeichen zum Aufruf hinzugefügt werden kann.
+
+
+  Die Datei muss ein Kommando/Option/Argument je Zeile enthalten.
+
+
+  Beispiel Datei (db.conf):
+
++---
+-t
+mysql
+-H
+localhost
+-n
+mydb
+-u
+volker
++---
+
+  Beispiel Aufruf mit Befehls Datei:
+
++---
+$ jasperstarter pr -f view -i myreport @db.conf
++---
+
+
+* Reports Verarbeiten
+
+  Um einen Report zu verarbeiten muss das Kommando <<pr>> angegeben werden,
+  welches die folgenden Optionen benötigt:
+
+    * <<<-i>>> Eingabe Datei (report Definition, kompilierter Report oder
+      gefüllter Report).
+
+    * <<<-f>>> eine Leerzeichen separierte Liste von Ausgabe Formaten.
+
+        * <<view>> und <<print>> schließen sich gegenseitig aus folglich wird
+          wird print ignoriert wenn view angegeben wurde.
+
+    * <<<-t>>> einen Datenbank Typ falls Ihr Report eine Datenbank Verbindung
+      benötigt. Default Wert ist <<none>>.
+
+        * falls der Datenbank Typ nich <<none>> ist, müssen die benötigten
+          Verbindungs Parameter angegeben werden.
+
+  Alle anderen Angaben sind optional.
+
+  Für die Option <<<-o>>> (output) siehe Abschnitt "Datei Behandlung".
+
+
+** Der Minimum Report ohne Datenbank
+
+  Die minimalen Optionen, welche benötigt werden um einen Report ohne Datenbank
+  aufzurufen sind:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -t none
++---
+
+
+** Der Minimum Datenbank Report
+
+  Die minimalen Optionen, welche benötigt werden um einen Report aufzurufen, der
+  eine Datenbank Verbindung benötigt sind:
+
++---
+$ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
++---
+
+
+** Anzeigen, drucken oder exportieren eines zuvor gefüllten Reports
+
+  Sie können eine Report zu einem Zeitpunkt füllen und zu einem späteren
+  Zeitpunkt anzeigen, drucken oder exportieren.
+
+  Einen Report nur füllen:
+
++---
+$ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
++---
+
+  Einen zuvor gefüllten Report anzeigen:
+
++---
+$ jasperstarter pr -i myreport.jrprint -f view
++---
+
+
+** Reports mit Laufzeit Parametern
+
+  Report Parameter können aus verschiedenen Typen bestehen. Die meisten Typen
+  sind selbsterklärend. JasperStarter unterstützt die folgenden Typen:
+
+   * string, int, date, double, image
+
+  Mehrere Parameter können durch Leerzeichen getrennt werden. Ein Parameter hat
+  die folgende Form:
+
+   * \<<<name>>\><<=>>\<<<typ>>\><<:>>\<<<wert>>\>
+
+  Ersetzen Sie <<name>> mit dem Parameter Namen ihres Reports. Parameter Namen
+  unterscheiden sich durch <<roß-Klein-Schreibung>> !
+
+  Das Datum ist im ISO Format und hat die Form: <<YYYY-MM-DD>>
+
++---
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
++---
+
+
+*** Der Bild (image) Parameter
+
+  Ein einfacher Weg einen Report anzupassen ist ein Logo oder ein Hintergrund
+  Bild als Parameter zu übergeben. Im folgenden Beispiel wird <background> als
+  Parameter Name für das Bild verwendet:
+
+   * Erzeugen Sie einen Parameter in Ihrem Report und ändern Sie seine
+     Eigenschaften:
+
+      * <<Name>> = <background>
+
+      * <<Parameter Class>> = <java.awt.image>
+
+   * Fügen Sie ein Bild in den Report ein und ändern Sie dessen Eigenschaften:
+
+      * <<Image Expression>> = <$P\{background\}>
+
+      * <<Expression Class>> = <java.awt.image>
+
+   * kompilieren Sie ihren Report
+
+  Nun können Sie Ihren Report mit JasperStarter verarbeiten:
+
++---
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
++---
+
+
+** Parameter die Leerzeichen enthalten angeben
+
+  Besonders Windows Benutzer müssen möglicher Weise Dateinamen angeben, die
+  Leerzeichen enthalten. Es gibt zwei Wege wie man dies tun kann.
+  Setzten Sie nur den Wert in Anführungszeichen:
+
++---
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+  oder den ganzen Parameter:
+
++---
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+
+* Datei Behandlung
+
+  Falls die Eingabe Datei (Option <<<-i>>> ) nicht gefunden wird, wird zuerst
+  <.jasper> angefügt. Falls die Datei immer noch nicht gefunden wird, wird
+  <.jrxml> zum Dateinamen hinzugefügt. Dadurch ist es möglich die Dateiendung
+  weg zu lassen.
+
+  Falls eine <.jrxml> verwendet wird, wird sie kompiliert und im Speicher weiter
+  verwendet außer Sie geben die Option <<<-w>>> an, wodurch der kompilierte
+  Report als Datei in das <<Eingabe>> Verzeichnis geschrieben wird.
+
+  Eine <.jrprint> Datei kann als Eingabe verwendet werden aber sie muss mit
+  vollem Dateinamen angegeben werden.
+
+  Falls die Ausgabe Datei oder das Verzeichnis ( option <<<-o>>> ) weggelassen
+  wurde, wird das übergeordnete Verzeichnis der Eingabedatei und der Basis
+  Dateiname der Eingabedatei als Ausgabe Dateiname verwendet:
+
++---
+(...) -f pdf odt -i myreports/report1
++---
+
+  oder
+
++---
+(...) -f pdf odt -i myreports/report1.jasper
++---
+
+  oder
+
++---
+(...) -f pdf odt -i myreports/report1.jrxml
++---
+
+  resultieren in:
+
++---
+myreports/report1.odt
+myreports/report1.pdf
++---
+
+  Falls <output> ein existierendes Verzeichnis ist, wird der Basisname von
+  <input> als Dateiname in diesem Verzeichnis verwendet:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/
++---
+
+  resultiert in:
+
++---
+month01/report1.odt
+month01/report1.pdf
++---
+
+  Falls <output> KEIN existierendes Verzeichnis ist, wird der Basisname als
+  Dateiname verwendet:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/journal.xyz
++---
+
+  resultiert in:
+
++---
+month01/journal.xyz.odt
+month01/journal.xyz.pdf
++---
