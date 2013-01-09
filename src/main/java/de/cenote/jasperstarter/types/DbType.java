@@ -24,19 +24,19 @@ package de.cenote.jasperstarter.types;
 public enum DbType {
 
     none,
-    mysql("com.mysql.jdbc.Driver", "3306"),
-    postgres("org.postgresql.Driver", "5432"),
-    oracle("oracle.jdbc.OracleDriver", "1521"),
+    mysql("com.mysql.jdbc.Driver", 3306),
+    postgres("org.postgresql.Driver", 5432),
+    oracle("oracle.jdbc.OracleDriver", 1521),
     generic;
     private final String driver;
-    private final String port;
+    private final Integer port;
 
     DbType() {
         this.driver = null;
         this.port = null;
     }
 
-    DbType(String driver, String port) {
+    DbType(String driver, Integer port) {
         this.driver = driver;
         this.port = port;
     }
@@ -45,7 +45,7 @@ public enum DbType {
         return this.driver;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return this.port;
     }
 }
