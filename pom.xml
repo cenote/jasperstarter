@@ -106,7 +106,7 @@ limitations under the License.
                 <executions>
                     <execution>
                         <id>create-indexfile</id> 
-                        <phase>prepare-package</phase> 
+                        <phase>pre-site</phase> 
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -114,6 +114,17 @@ limitations under the License.
                             <target>
                                 <!-- use the project README file as site index -->
                                 <copy file="README.md" tofile="src/site/markdown/index.md"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-files-readme</id> 
+                        <phase>prepare-package</phase> 
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
                                 <!--  use the files.md as README of the distribution (download) folder -->
                                 <copy file="src/site/markdown/files.md" tofile="target/README.md"/>
                             </target>
