@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -187,7 +188,15 @@ public class ApplicationClasspath {
      */
     public static File getAppBaseDirFromThis() throws URISyntaxException {
         URL baseUrl = ApplicationClasspath.class.getProtectionDomain().getCodeSource().getLocation();
-        File baseDir = new File(baseUrl.toURI());
+        File baseDir;
+        if (baseUrl.getAuthority() != null) {
+            // workaroud Windows UNC path problems
+            URI uri;
+            uri = new URI(baseUrl.toURI().toString().replace("file://", "file:/"));
+            baseDir = new File(File.separator + (new File(uri)).toString());
+        } else {
+            baseDir = new File(baseUrl.toURI());
+        }
         if (!baseDir.isDirectory()) {
             baseDir = baseDir.getParentFile();
         }
@@ -203,7 +212,15 @@ public class ApplicationClasspath {
      */
     public static File getAppBaseDirFromClasspath() throws URISyntaxException {
         URL baseUrl = ((URLClassLoader) ApplicationClasspath.class.getClassLoader()).getURLs()[0];
-        File baseDir = new File(baseUrl.toURI());
+        File baseDir;
+        if (baseUrl.getAuthority() != null) {
+            // workaroud Windows UNC path problems
+            URI uri;
+            uri = new URI(baseUrl.toURI().toString().replace("file://", "file:/"));
+            baseDir = new File(File.separator + (new File(uri)).toString());
+        } else {
+            baseDir = new File(baseUrl.toURI());
+        }
         if (!baseDir.isDirectory()) {
             baseDir = baseDir.getParentFile();
         }
