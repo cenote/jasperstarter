@@ -1,0 +1,471 @@
+~~ Copyright 2012 Cenote GmbH.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+  ---
+  Použití
+  ---
+
+Použití
+
+%{toc|fromDepth=2}
+
+
+* Instalace
+
+
+** Uživatelé Windows
+
+  Rozbalte distribuční archiv do složky, kterou jste si vybrali, např.:
+
++---
+C:\App\jasperstarter
++---
+
+  Přidejte složku
+
++---
+C:\App\jasperstarter\bin
++---
+
+  do uživatelské či systémové proměnné PATH.
+
+  <<nebo prostě použijte setup.exe>>
+
+
+** Linuxoví uživatelé
+
+  Extrahujte distribuční archiv do složky, kterou jste si vybrali, např.:
+
++---
+/opt/jasperstarter
++---
+
+  Přidejte složku
+
++---
+/opt/jasperstarter/bin
++---
+
+  do uživatelské či systémové proměnné PATH.
+
+
+* Vyvolání JasperStarteru
+
+  Pokud jste přidali složku bin do proměnné PATH, stačí pro vyvolání programu
+   zadat
+
++---
+jasperstarter
++---
+
+    Pokud ne, můžete zadat absolutní cestu. V Linuxu:
+
++---
+/opt/jasperstarter/bin/jasperstarter
++---
+
+  a ve Windows:
+
++---
+C:\App\jasperstarter\bin\jasperstarter.exe
++---
+
+  pokud jste se řídili příkladem v kapitole instalace.
+
+  Pokud máte problém s binárním souborem nebo s shell skriptem nebo pokud
+  potřebujete pro java VM specifikovat jiné volby, vyvolejte program přímo:
+
++---
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
++---
+
+  nebo
+
++---
+$ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
++---
+
+
+* Koncepty
+
+
+** JasperReport soubory
+
+  JasperReports zná tři typy souborů:
+
+  * Soubor definující report <<myreport.jrxml>>
+
+    Jedná se o xml soubor, který definuje report. Můžete si je napsat ručně,
+    ale spíš použijete jeden z těch hezkých dostupných GUI nástrojů.
+
+  * Soubor zkompilovaného reportu <<myreport.jasper>>
+
+    Tento soubor je výsledkem kompilování souboru <.jrxml>.
+
+  * Soubor reportu s daty <<myreport.jrprint>>
+
+    Tento soubor získáte po vyvolání reportu. Data získaná z požadovaného 
+    datového zdroje vyplní kompilovaný report a výsledek je možné uložit jako
+     <.jrprint> soubor.
+
+
+** Stádia zpracování
+
+  Zpracování reportu probíhá ve třech fázích:
+
+    * <<kompilování>> vytvoří soubor <.jasper>
+
+    * <<vyplnění>> může být volitelně uloženo jako soubor <.jrprint>
+
+    * <<náhled, tisk nebo export>> do jednoho nebo více podporovaných formátů
+
+  JasperStarter umí provést všechny najednou v jednom příkazu.
+
+
+* JasperStarter příkazy a volby
+
+  JasperStarter obsahuje několik globálních příkazů a voleb. Každý příkaz může 
+  mít vlastní volby.
+
+  Přehled získáte vyvoláním jasperstarter s <-h>, které vám ukáže všechny
+   globální volby a příkazy, které máte k dispozici.
+
++---
+$ jasperstarter -h
+usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --locale <lang>        set locale with two-letter ISO-639 code
+  -v, --verbose          display additional messages
+  -V, --version          display version information and exit
+
+commands:
+  <cmd>                  type <cmd> -h to get help on command
+    cp                   compile - compile reports
+    pr                   process - view, print or export an existing report
+    lp                   list printers - lists available printers on this
+                         system
++---
+
+  Každý příkaz má také vlastní nápovědu, kterou lze vyvolat pomocí
+   <\<command\> -h>.
+
+
+** Příkaz <cp>
+
+  Příkaz <cp> (compile) slouží ke kompilování jednoho nebo všech reportů v 
+  adresáři.
+
++---
+$ jasperstarter cp -h
+usage: jasperstarter cp [-h] -i <file> [-o <file>]
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or directory
+  -o <file>              directory or basename of outputfile(s)
++---
+
+
+** Příkaz <pr>
+
+  Příkaz <<pr>> (process) slouží ke zpracování jednoho reportu. Může to být
+  náhled, tisk nebo export.
+
++---
+$ jasperstarter pr -h
+usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
+                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
+                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
+                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [-N <printername>] [-d]
+                     [-s <reportname>]
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+                         pptx, csv, html, xhtml, xml, jrprint
+  -i <file>              input file (.jrxml|.jasper|.jrprint)
+  -o <file>              directory or basename of outputfile(s)
+
+compile options:
+  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+                         prcessed
+
+fill options:
+  -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
+                         string, int, double, date, image
+  -k, --keep             don't delete the temporary .jrprint file.
+                         OBSOLETE use output format jrprint
+
+db options:
+  -t <dbtype>            database type: none, mysql, postgres, oracle,
+                         generic
+  -H <dbhost>            database host
+  -u <dbuser>            database user
+  -p <dbpasswd>          database password
+  -n <dbname>            database name
+  --db-sid <sid>         oracle sid
+  --db-port <port>       database port
+  --db-driver <name>     jdbc driver class name for use with type: generic
+  --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
+  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+                         Defaults to ./jdbc
+
+print options:
+  -N <printername>       name of printer
+  -d                     show print dialog when printing
+  -s <reportname>        set internal report/document name when printing
++---
+
+
+** Příkaz <lp>
+
+  Příkaz <lp> (list printers) nemá žádné volby. Vypíše všechny tiskárny dostupné
+  ve vašem systému, které můžete použít s volbou <-N> u příkazu <pr>.
+
+
+* Příkazové soubory
+
+  Každý příkaz, volbu nebo argument, které JasperStarter akceptuje, můžete 
+  uložit do souboru, který pak po přidání <@> můžete přidat k vyvolání.
+
+  Takový soubor by měl obsahovat na jednom řádku pouze jeden
+   příkaz/volbu/argument.
+
+  
+
+  Příklad (db.conf):
+
++---
+-t
+mysql
+-H
+localhost
+-n
+mydb
+-u
+volker
++---
+
+  Příklad vyvolání s příkazovým souborem:
+
++---
+$ jasperstarter pr -f view -i myreport @db.conf
++---
+
+
+* Zpracování reportů
+
+  Aby došlo ke zpracování reportu, zadejte příkaz <<pr>>, který potřebuje
+  následující volby:
+
+    * <<<-i>>> vstupní soubor (definice reportu, kompilovaný report nebo 
+      vyplněný report).
+
+    * <<<-f>>> seznam výstupních formátů oddělených mezerou.
+
+        * <<view>> a <<print>> se navzájem vylučují, print bude ignorováno,
+          pokud jste zadali i view.
+
+    * <<<-t>>> typ databáze, pokud váš report vyžaduje spojení s databází.
+      Default nastavení je <<none>>.
+
+        * pokud typ databáze není <<none>> musíte specifikovat údaje potřebné
+          pro spojení.
+
+  Všechny ostatní volby jsou nepovinné.
+
+  Pro výstup  <<<-o>>> viz kapitola "Zacházení se soubory".
+
+
+** Minimální report bez databáze
+
+  Pro zpracování reportu s prázdnou databází potřebujete minimálně následující
+  volby:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -t none
++---
+
+
+** Minimální report s databází
+
+  Pro zpracování reportu, který potřebuje připojení k databázi, musíte zadat 
+  minimálně následující volby:
+
++---
+$ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
++---
+
+
+** Náhled, tisk nebo export již vyplněných reportů
+
+  Report je možné pouze vyplnit. Náhled, tisk a export je možný i později.
+
+  Pouhé vyplnění reportu:
+
++---
+$ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
++---
+
+  Náhled již vyplněného reportu:
+
++---
+$ jasperstarter pr -i myreport.jrprint -f view
++---
+
+
+** Reporty s parametrem runtime
+
+  Parametry reportu se mohou skládat z více typů. Většina typů se objasňuje sama.
+  JasperStarter podporuje následující typy:
+
+   * string, int, date, double, image
+
+  Parametry s více hodnotami se oddělují mezerami. Parameter má následující
+  formu:
+
+   * \<<<name>>\><<=>>\<<<type>>\><<:>>\<<<value>>\>
+
+  Míso <<name>> dosaďte název parametru ve vašem reportu. U názvů parametrů
+  dbejte na <<velká a malá písmena>>!
+
+  Datum je v ISO formátu a má tvar: <<YYYY-MM-DD>>
+
++---
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
++---
+
+
+*** Parametry pro image
+
+  Report lze snadno upravit přidáním loga či obrázku v pozadí jako parametr.
+  V následujícím příkladu použijeme <background> jako název parametru pro 
+  obrázek:
+
+   * Vytvořte ve svém reportu nový parametr a změňte jeho vlastnosti:
+
+      * <<Name>> = <background>
+
+      * <<Parameter Class>> = <java.awt.image>
+
+   * Přidejte do reportu obrázek a změňte jeho vlastnosti:
+
+      * <<Image Expression>> = <$P\{background\}>
+
+      * <<Expression Class>> = <java.awt.image>
+
+   * zkompilujte report
+
+  Nyní můžete report zpracovat pomocí JasperStarteru:
+
++---
+$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
++---
+
+
+** Zadávání parametrů, které obsahují mezery
+
+  Především uživatelé windows budou určitě muset pracovat s názvy souborů, které
+  obsahují mezery. Existují dva způsoby. Zadejte do uvozovek buď hodnotu:
+
++---
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+  nebo celý parametr:
+
++---
+c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+-o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+
+* Zacházení se soubory
+
+  Pokud vstupní soubor (volba <<<-i>>> ) nebyl nalezen, je k názvu souboru 
+  přidáno nejdřív <.jasper>, pokud soubor opět nebyl nalezen, je k názvu souboru
+  přidáno <.jrxml>. Koncovku souboru tedy můžete vynechat.
+
+  Pokud je použitý soubor <.jrxml>, zkompiluje se a uloží pro další zpracování.
+  Pokud zadáte volbu <<<-w>>>, zkompilovaný soubor se zapíše do adresáře
+   <<input>>.
+
+  Jako vstupní soubor můžete použít i soubor <.jrprint>, musíte však zadat celý
+  název souboru.
+
+  Pokud není uveden výstupní soubor nebo adresář ( volba <<<-o>>> ), bude pro
+  uložení výstupního souboru použit nadřazený adresář a základní název vstupního
+  souboru:
+
++---
+(...) -f pdf odt -i myreports/report1
++---
+
+  nebo
+
++---
+(...) -f pdf odt -i myreports/report1.jasper
++---
+
+  nebo
+
++---
+(...) -f pdf odt -i myreports/report1.jrxml
++---
+
+  výsledek:
+
++---
+myreports/report1.odt
+myreports/report1.pdf
++---
+
+  Pokud existuje adresář <output>, základní název <input> poslouží pro 
+  pojmenování souboru v adresáři:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/
++---
+
+  výsledek:
+
++---
+month01/report1.odt
+month01/report1.pdf
++---
+
+  Pokud adresář <output> neexistuje, jeho název poslouží pro pojmenování 
+  souborů:
+
++---
+(...) -f pdf odt -i myreports/report1.jasper -o month01/journal.xyz
++---
+
+  výsledek:
+
++---
+month01/journal.xyz.odt
+month01/journal.xyz.pdf
++---

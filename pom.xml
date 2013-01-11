@@ -242,7 +242,7 @@ limitations under the License.
                     </dependency>
                 </dependencies>                
                 <configuration>
-                    <locales>en,de</locales>
+                    <locales>en,de,cs</locales>
                 </configuration>                               
                 <executions>
                     <execution>

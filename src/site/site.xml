@@ -42,6 +42,7 @@ limitations under the License.
 
     <body>
         <links>
+            <item name="[cs]" href="cs/index.html"/>
             <item name="[de]" href="de/index.html"/>
         </links>
         <menu name="Overview">

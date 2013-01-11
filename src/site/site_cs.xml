@@ -27,7 +27,7 @@ limitations under the License.
     </skin>
 
     <bannerLeft>
-        <name>JasperStarter - Ausführen von JasperReports über die Befehlszeile</name>
+        <name>JasperStarter - Spouštění JasperReports z příkazového řádku</name>
     </bannerLeft>
 
     <version position="left"/>
@@ -42,14 +42,14 @@ limitations under the License.
 
     <body>
         <links>
-            <item name="[cs]" href="../cs/index.html"/>
+            <item name="[de]" href="../de/index.html"/>
             <item name="[en]" href="../index.html"/>
         </links>
-        <menu name="Overview">
-            <item name="Einführung" href="index.html" />
-            <item name="Verwendung" href="usage.html" />
+        <menu name="Přehled">
+            <item name="Úvod" href="index.html" />
+            <item name="Použití" href="usage.html" />
             <item name="Screenshots" href="screenshots.html" />
-            <item name="Dateien" href="files.html" />
+            <item name="Soubory" href="files.html" />
             <item name="Sourceforge" href="http://sourceforge.net/projects/jasperstarter/" />
             <item name="Downloads" href="http://sourceforge.net/projects/jasperstarter/files/" />
         </menu>
