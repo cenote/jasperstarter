@@ -269,6 +269,9 @@ volker
 $ jasperstarter pr -f view -i myreport @db.conf
 +---
 
+  <<This actually does not work! It is not possible to provide a command file>>
+  <<at subcommand level see issue>>
+  << {{{http://cenote-issues.atlassian.net/browse/JAS-10}JAS-10}} >>
 
 * Processing reports
 

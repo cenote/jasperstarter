@@ -1,0 +1,188 @@
+~~ Copyright 2012 Cenote GmbH.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+  ---
+  Exporting unicode reports to pdf with JasperReports
+  ---
+
+Exporting unicode reports to pdf with JasperReports
+
+%{toc|fromDepth=2}
+
+
+* Preface
+
+  Many people may not care about unicode when using JasperReports. They just
+  choose the font they like for their fields and static text, run the report and
+  that´s it.
+  But if your report contains characters, which are not contained in your
+  default non unicode operating system characterset, you'll be surprised. You`ll
+  get correct print preview and printout but no correct pdf export. Some
+  characters will miss.
+
+  I had this problem and what I found on the internet was quite confusing.
+  I found everythig from "this is a bug in the underlaying itext library" to
+  complicated looking solutions using deprecated JasperReports functions.
+
+  But the real solution is fortunately quite simple...
+
+* One step closer
+
+  Just switch the font name of the desired field to "DejaVu Sans". Depending on
+  the used characters you may notice that they are now visible in pdf too.
+
+  (The DejaVu font family is a bit limited but for example you will be able to
+  export cyrillic characters with it. See {{http://dejavu-fonts.org}} for
+  further information.)
+
+* It still does not work
+
+  You switched the font name property of the desired field to "DejaVu Sans" and
+  you checked on the website that the characters are included in the font but
+  you still got nothing in your PDF?
+
+  Did you previously play with the deprecated options like "PDF Font name" or
+  "PDF Encoding"? Even if you switch back this options to their default values
+  this may be the reason that you don't get it displayed in PDF.
+  You have to switch to the xml view of your report definition and check that
+  these options are NOT present at all!
+
+  For example this does not work:
+
++---
+<staticText>
+    <reportElement x="14" y="63" width="521" height="24"/>
+    <textElement>
+       <font fontName="DejaVu Sans" size="15" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H"/>
+    </textElement>
+    <text><![CDATA[Cyrillic: б в г д ж з и ь к л м н п ф ц ч ш шт э я ю я ы]]></text>
+</staticText>
++---
+
+  This will work as the <pdfFontName> and <pdfEncoding> attributes are not
+  present:
+
++---
+<staticText>
+    <reportElement x="14" y="63" width="521" height="24"/>
+    <textElement>
+       <font fontName="DejaVu Sans" size="15"/>
+    </textElement>
+    <text><![CDATA[Cyrillic: б в г д ж з и ь к л м н п ф ц ч ш шт э я ю я ы]]></text>
+</staticText>
++---
+
+
+* Using any unicode font
+
+  Maybe your characters are not displayed with the DejaVu fonts or you just
+  don't like this font. What about using Arial or any other unicode font?
+
+  To achieve this you must provide your font in a special way to JasperReports.
+  This means your fonts must be put in a .jar file which must contain additional
+  information in a property file and a special xml file describing the contained
+  fonts. This jar file must be on the java classpath while you execute your
+  report. Sounds complicated? Don't panic... ;-)
+
+  You can create such a font jar file in two steps using the graphical report
+  editor {{{http://community.jaspersoft.com/project/ireport-designer}iReport}}
+  which you may already be using.
+
+  If you open the selection list of the font name property in iReports, you may
+  notice that there are a few entries at the top of the list and then, devided
+  by a dash, a longer list of fonts.
+  The longer list beneath the dash are the fonts installed in your operating
+  system whilest the entries above are fonts that are installed into iReports.
+  Only these installed fonts can be used to export unicode characters to pdf
+  whithin iReports. So the first step is to install your favorite font to
+  iReport.
+
+
+** Installing a font to iReport
+
+   * Open the options dialog of iReport.
+
+   * Select the iReport section (if not already selected).
+
+   * Click on the fonts tab.
+
+  You now see a list of all already installed fonts. The three DejaVue fonts are
+  installed by default and the other three are generic font aliases.
+
+   * Click on the "Install Font" button.
+
+   * Use the "Browse" button to select the font file (use the standard version
+     here, not the bold or italic).
+
+   * In the next window you can add the other font types.
+
+      * Choose "Identity-H (Unicode with horizontal writing)"
+
+      * If you install a special font, which is usually not available on other
+        users systems, you should also check the "Embed this font in the PDF
+        document" option.
+
+      * Click "Next"
+
+   * The locales list can be left empty. Just click "Next"
+
+   * The font mappings are used if you export your report to html, xhtml or rtf.
+     If you don't need this, leave it empty.
+
+   * Now click "Finish"
+
+  Now you shoud be able to export your report to pdf from within iReport using
+  your installed font and foreign characters.
+
+
+  <<A note to Windows 7 users:>>
+
+  You may get an error if you try to install a font into iReport because you
+  have no right to write into the directory.
+  Change the security property of the
+
++---
+C:\Program Files\Jaspersoft\iReport-4.1.1\ireport\fonts
++---
+
+  or
+
++---
+C:\Program Files (x86)\Jaspersoft\iReport-4.1.1\ireport\fonts
++---
+
+  directory to allow users to write there.
+
+
+** Using a font outside of iReport
+
+   * Just open the options dialog of iReports again.
+
+   * Select the iReport section (if not already selected).
+
+   * Click on the fonts tab.
+
+   * Select the previously installed font and click on the button
+     "Export as extension".
+
+   * Chose a folder and filename ending with <.jar>
+
+  Now you have a ready to use font jar which can be used with JasperReports.
+  Just add it to the classpath of your application.
+
+** Using a font with JasperStarter
+
+  If you want to use the previously created font jar with JasperStarter just put
+  it into the <jdbc> directory you are using with JasperStarter. All jar files
+  there are added to the classpath.
