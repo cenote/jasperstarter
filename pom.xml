@@ -127,6 +127,9 @@ limitations under the License.
                             <target>
                                 <!--  use the files.md as README of the distribution (download) folder -->
                                 <copy file="src/site/markdown/files.md" tofile="target/README.md"/>
+                                <!-- phase pre-site is not executed if package is called so copy is needed here again-->
+                                <!-- use the project README file as site index -->
+                                <copy file="README.md" tofile="src/site/markdown/index.md"/>
                             </target>
                         </configuration>
                     </execution>
