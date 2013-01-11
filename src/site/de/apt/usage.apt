@@ -281,6 +281,9 @@ volker
 $ jasperstarter pr -f view -i myreport @db.conf
 +---
 
+  <<Achtung! Die Kommando-Datei darf keine Leerzeilen und nur einen>>
+  <<Zeilenumbruch ohne Leerzeichen am Ende der Datei haben!>>
+
 
 * Reports Verarbeiten
 
