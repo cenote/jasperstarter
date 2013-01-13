@@ -350,7 +350,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Replace <<name>> with the parameter name in your report. Parameter names are
   <<case sensitive>> !
 
-  The paramter type <date> accepts a date in ISO format in the form: <<YYYY-MM-DD>>
+  The parameter type <date> accepts a date in ISO format in the form: <<YYYY-MM-DD>>
 
   The parameter type <locale> may consist just of the two-letter ISO-639
   language code or a combination of the two-letter ISO-639 language code and the
