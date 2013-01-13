@@ -148,7 +148,8 @@ usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
 
 optional arguments:
   -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code
+  --locale <lang>        set locale with two-letter ISO-639 code or a
+                         combination of ISO-639 and ISO-3166 like de_DE
   -v, --verbose          display additional messages
   -V, --version          display version information and exit
 
@@ -210,7 +211,7 @@ compile options:
 
 fill options:
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
-                         string, int, double, date, image
+                         string, int, double, date, image, locale
   -k, --keep             don't delete the temporary .jrprint file.
                          OBSOLETE use output format jrprint
 

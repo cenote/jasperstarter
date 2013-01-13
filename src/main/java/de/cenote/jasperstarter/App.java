@@ -95,7 +95,8 @@ public class App {
 
         // setting locale if given
         if (app.namespace.get(Dest.LOCALE) != null) {
-            Locale.setDefault(new Locale((String) app.namespace.get(Dest.LOCALE)));
+            Locale.setDefault(LocaleUtils.toLocale(
+                    (String) app.namespace.get(Dest.LOCALE)));
         }
 
         switch (Command.getCommand(app.namespace.getString(Dest.COMMAND))) {
@@ -262,7 +263,9 @@ public class App {
         //ArgumentGroup groupOptions = parser.addArgumentGroup("options");
 
         parser.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
-        parser.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>").help("set locale with two-letter ISO-639 code");
+        parser.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>")
+                .help("set locale with two-letter ISO-639 code" +
+                " or a combination of ISO-639 and ISO-3166 like de_DE");
         parser.addArgument("-v", "--verbose").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
         parser.addArgument("-V", "--version").action(Arguments.version()).help("display version information and exit");
 
