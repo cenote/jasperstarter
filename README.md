@@ -67,26 +67,6 @@ archive or read the [Usage][] page online.
 
 ### Release Notes
 
-JasperStarter is going straight towards the final 1.0 release.
-
-  * JasperStarter now has commands. Every command can have different arguments
-    and options. Users of previous versions just must add **pr** to their
-    existing command line.
-  * New command: cp - compile, can compile one file or all .jrxml in a
-    directory.
-  * New input file types for command pr allowed:
-    * jrxml    - compiles implicit
-    * jrprint  - print, view or export previously filled reports.
-  * New output type: jrprint. This makes \--keep obsolete.
-  * New parameter -w writes compiled file to imput dir if jrxml is
-    processed.
-  * Parameter -t defaults to "none" and can therefore be omited if no
-    database is needed.
-  * Input file is read once. No temporary files needed anymore.
-  * Setup checks for previous versions and creates menuitems for uninstall
-    and help.
-  * Setup is available in English, German, French, Polish, Romanian, Ukrainian.
-
 See CHANGES file for a history of changes.
 
 
