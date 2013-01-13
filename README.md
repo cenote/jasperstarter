@@ -11,7 +11,7 @@ It has the following features:
   * Use with any database for which a jdbc driver is available
   * Execute reports that need runtime parameters. The following parameter types
     are supported:
-    * string, int, double, date, image (see usage)
+    * string, int, double, date, image (see usage), locale
   * Print directly to system default or given printer
   * Optionally show printer dialog to choose printer
   * Optionally Show printpreview

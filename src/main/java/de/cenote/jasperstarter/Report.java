@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +70,7 @@ import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import net.sourceforge.argparse4j.inf.Namespace;
+import org.apache.commons.lang.LocaleUtils;
 
 /**
  *
@@ -440,6 +442,8 @@ public class Report {
                             throw new IllegalArgumentException("Image tracker error: " + e.getMessage(), e);
                         }
                         parameters.put(paramName, image);
+                    } else if ("locale".equals(paramType.toLowerCase())) {
+                        parameters.put(paramName, LocaleUtils.toLocale(paramValue));
                     } else {
                         throw new IllegalArgumentException("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
                     }

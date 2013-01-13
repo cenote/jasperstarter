@@ -339,7 +339,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Report parameters can consist of several types. Most types are self-explanatory.
   JasperStarter supports the following types:
 
-   * string, int, date, double, image
+   * string, int, double, date, image, locale
 
   Multiple parameters can be separated by spaces. A parameter has the following
   form:
@@ -349,7 +349,12 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Replace <<name>> with the parameter name in your report. Parameter names are
   <<case sensitive>> !
 
-  The date is in ISO format and has the form: <<YYYY-MM-DD>>
+  The paramter type <date> accepts a date in ISO format in the form: <<YYYY-MM-DD>>
+
+  The parameter type <locale> may consist just of the two-letter ISO-639
+  language code or a combination of the two-letter ISO-639 language code and the
+  two-letter ISO-3166 country code connected by an underscore.
+  For example <de> or <de_DE>.
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
