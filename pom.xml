@@ -305,7 +305,7 @@ limitations under the License.
         <dependency>
             <groupId>net.sourceforge.argparse4j</groupId>
             <artifactId>argparse4j</artifactId>
-            <version>0.2.2</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
