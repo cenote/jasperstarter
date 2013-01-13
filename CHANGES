@@ -5,7 +5,7 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
- 1.0-RC2
+ 1.0.0
         JasperStarter now has commands: pr - process, lp - list printers.
         New command: cp - compile, can compile one file or all .jrxml in a
         directory.
@@ -22,9 +22,13 @@ Changes
         and help.
         Setup is available in English, Chinese (Simplified), Czech, French,
         Hungarian, German, Polish, Romanian, Thai, Ukrainian.
-        Fixed bug JAS-2 runtime parameter value cannot contain equal sign.
-        Contains JasperReports 5.0.1.
+        [JAS-2] - runtime parameter value cannot contain equal sign
+        Contains JasperReports 5.0.1
         German translation for Site/docs
+        [JAS-4] - java.lang.Integer cannot be cast to java.lang.String
+        [JAS-8] - java.lang.String cannot be cast to java.lang.Integer
+        [JAS-9] - Exception in thread "main" java.lang.IllegalArgumentException:
+                  URI has an authority component
 
  0.10.0 New report parameter types: double, image (see usage).
         New supported export formats: xls, xlsx, csv, ods, pptx, xhtml, xml.

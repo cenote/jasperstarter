@@ -67,8 +67,6 @@ archive or read the [Usage][] page online.
 
 ### Release Notes
 
-JasperStarter is going straight towards the final 1.0 release.
-
   * JasperStarter now has commands. Every command can have different arguments
     and options. Users of previous versions just must add **pr** to their
     existing command line.
