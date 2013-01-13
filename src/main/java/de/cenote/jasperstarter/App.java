@@ -45,6 +45,7 @@ import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang.LocaleUtils;
 
 /**
  *
@@ -304,7 +305,9 @@ public class App {
                 dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is prcessed");
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
-        groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS).nargs("+").help("report parameter: name=type:value [...] | types: string, int, double, date, image");
+        groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS)
+                .nargs("+").help(
+                "report parameter: name=type:value [...] | types: string, int, double, date, image, locale");
         groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).
                 help("don't delete the temporary .jrprint file. OBSOLETE use output format jrprint");
 
