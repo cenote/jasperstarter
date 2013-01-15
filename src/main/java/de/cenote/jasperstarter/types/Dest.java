@@ -29,6 +29,7 @@ public interface Dest {
     public static String OUTPUT = "output";
     public static String LOCALE = "locale";
     public static String DEBUG = "debug";
+    public static String ASK = "ask";
     public static String PARAMS = "params";
     public static String KEEP = "keep";
     public static String DB_TYPE = "db-type";

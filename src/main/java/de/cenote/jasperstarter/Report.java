@@ -15,6 +15,9 @@
  */
 package de.cenote.jasperstarter;
 
+import de.cenote.jasperstarter.gui.ParameterPanel;
+import de.cenote.jasperstarter.gui.ParameterPrompt;
+import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.InputType;
@@ -42,11 +45,14 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -224,10 +230,16 @@ public class Report {
         }
     }
 
-    public void fill() {
+    public void fill() throws InterruptedException {
         if (initialInputType != InputType.JASPER_PRINT) {
             Namespace namespace = App.getInstance().getNamespace();
-            Map parameters = getReportParams();
+            // get commandLineReportParams
+            Map parameters = getCmdLineReportParams();
+            // if prompt...
+            if (namespace.get(Dest.ASK) != null) {
+                JRParameter[] reportParams = jasperReport.getParameters();
+                parameters = promptForParams(reportParams, parameters, jasperReport.getName());
+            }
             try {
                 if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
@@ -398,7 +410,7 @@ public class Report {
         exporter.exportReport();
     }
 
-    private Map getReportParams() {
+    private Map getCmdLineReportParams() {
         Namespace namespace = App.getInstance().getNamespace();
         Map parameters = new HashMap();
         List<String> params;
@@ -412,7 +424,7 @@ public class Report {
                 try {
                     paramName = p.split("=")[0];
                     paramType = p.split("=")[1].split(":", 2)[0];
-                    paramValue = p.split("=",2)[1].split(":", 2)[1];
+                    paramValue = p.split("=", 2)[1].split(":", 2)[1];
                     if (namespace.getBoolean(Dest.DEBUG)) {
                         System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
                     }
@@ -459,19 +471,60 @@ public class Report {
         return parameters;
     }
 
-    private static void setLookAndFeel() {
+    public static void setLookAndFeel() {
         try {
             // Set System L&F
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException e) {
-            // handle exception
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            // handle exception
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            // handle exception
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // handle exception
+            e.printStackTrace();
         }
+    }
+
+    private Map promptForParams(JRParameter[] reportParams, Map params, String reportName) throws InterruptedException {
+        Namespace namespace = App.getInstance().getNamespace();
+        boolean isForPromptingOnly = false;
+        boolean isUserDefinedOnly = false;
+        boolean emptyOnly = false;
+        switch ((AskFilter) namespace.get(Dest.ASK)) {
+            case ae:
+                emptyOnly = true;
+            case a:
+                isForPromptingOnly = false;
+                isUserDefinedOnly = false;
+                break;
+            case ue:
+                emptyOnly = true;
+            case u:
+                isUserDefinedOnly = true;
+                break;
+            case pe:
+                emptyOnly = true;
+            case p:
+                isUserDefinedOnly = true;
+                isForPromptingOnly = true;
+                break;
+        }
+        Report.setLookAndFeel();
+        ParameterPrompt prompt = new ParameterPrompt(null, reportParams, params,
+                reportName, isForPromptingOnly, isUserDefinedOnly, emptyOnly);
+        if (JOptionPane.OK_OPTION != prompt.show()) {
+            throw new InterruptedException("User aborted at parameter promt!");
+        }
+        if (namespace.getBoolean(Dest.DEBUG)) {
+            System.out.println("----------------------------");
+            System.out.println("Parameter prompt:");
+            for (Object key : params.keySet()) {
+                System.out.println(key + " = " + params.get(key));
+            }
+            System.out.println("----------------------------");
+        }
+        return params;
     }
 }

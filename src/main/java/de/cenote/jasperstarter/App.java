@@ -15,6 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
+import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.Command;
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.Dest;
@@ -180,7 +181,12 @@ public class App {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
-        report.fill();  // produces visible output file if OutputFormat.jrprint is set
+        try {
+            report.fill();  // produces visible output file if OutputFormat.jrprint is set
+        } catch (InterruptedException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        }
         List<OutputFormat> formats = app.namespace.getList(Dest.OUTPUT_FORMATS);
         Boolean viewIt = false;
         Boolean printIt = false;
@@ -308,6 +314,11 @@ public class App {
                 dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is prcessed");
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
+        groupFillOptions.addArgument("-a").metavar("<filter>").dest(Dest.ASK)
+                .type(Arguments.enumType(AskFilter.class)).nargs("?")
+                .setConst(AskFilter.p)
+                .help("ask for report parameters. Filter: a, ae, u, ue, p, pe"
+                + " (see usage)");
         groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS)
                 .nargs("+").help(
                 "report parameter: name=type:value [...] | types: string, int, double, date, image, locale");
