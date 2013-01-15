@@ -61,6 +61,16 @@ limitations under the License.
             <organizationUrl>http://www.cenote.de</organizationUrl>
         </developer>    
     </developers>
+    <contributors>
+        <contributor>
+            <email>boraber@users.sourceforge.net</email>
+            <name>Barbora Berlinger</name>
+            <organization>Cenote GmbH</organization>
+            <roles>
+                <role>translator</role>
+            </roles>
+        </contributor>
+    </contributors>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
