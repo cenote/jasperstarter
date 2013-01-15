@@ -147,7 +147,8 @@ usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
 
 optional arguments:
   -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code
+  --locale <lang>        set locale with two-letter ISO-639 code or a
+                         combination of ISO-639 and ISO-3166 like de_DE
   -v, --verbose          display additional messages
   -V, --version          display version information and exit
 
@@ -211,7 +212,7 @@ compile options:
 
 fill options:
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
-                         string, int, double, date, image
+                         string, int, double, date, image, locale
   -k, --keep             don't delete the temporary .jrprint file.
                          OBSOLETE use output format jrprint
 
@@ -271,8 +272,8 @@ volker
 $ jasperstarter pr -f view -i myreport @db.conf
 +---
 
-  <<Attention! The command file should not contain any empty lines and just>>
-  <<one linebreak with no spaces at the end of the file!>>
+  <<Pozor! Příkazový soubor nesmí obsahovat žádné prázdné řádky a musí být>>
+  <<zakončen jedním zalomením řádku!>>
 
 * Zpracování reportů
 
@@ -340,7 +341,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Parametry reportu se mohou skládat z více typů. Většina typů se objasňuje sama.
   JasperStarter podporuje následující typy:
 
-   * string, int, date, double, image
+   * string, int, double, date, image, locale
 
   Parametry s více hodnotami se oddělují mezerami. Parameter má následující
   formu:
@@ -351,6 +352,12 @@ $ jasperstarter pr -i myreport.jrprint -f view
   dbejte na <<velká a malá písmena>>!
 
   Datum je v ISO formátu a má tvar: <<YYYY-MM-DD>>
+  Parametr typu <date> akceptuje datum v ISO formátu a ve tvaru <<YYYY-MM-DD>>
+
+  Parametr typu <locale> může mít dvě písmena - jazykový kód ISO-639 - nebo
+  se skládat z kódu pro jazyk (ISO-639) a z kódu pro zemi (ISO-3166) spojených
+  podtržítkem.
+  Například <de> nebo <de_DE>.
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \

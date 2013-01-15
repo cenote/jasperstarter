@@ -13,52 +13,49 @@
 ~~ limitations under the License.
 
   ---
-  Exporting unicode reports to pdf with JasperReports
+  JasperReports - Export reportů v unikódu do pdf
   ---
 
-Exporting unicode reports to pdf with JasperReports
+JasperReports - Export reportů v unikódu do pdf
 
 %{toc|fromDepth=2}
 
 
-* Preface
+* Předmluva
 
-  Many people may not care about unicode when using JasperReports. They just
-  choose the font they like for their fields and static text, run the report and
-  that´s it.
-  But if your report contains characters, which are not contained in your
-  default non unicode operating system characterset, you'll be surprised. You`ll
-  get correct print preview and printout but no correct pdf export. Some
-  characters will miss.
+  Mnoho lidí, kteří používají JasperReports, unikód vůbec neřeší. Prostě zvolí
+  vybraný font pro pole formuláře a statický text, vygenerují report a hotovo.
+    Ale pokud váš report obsahuje znaky, které znaková sada vašeho defaultního 
+  neunikódového operačního systému neobsahuje, budete překvapení. Tiskový náhled
+  a tisk budou v pořádku, ale pdf export nebude. Některé znaky budou chybět.
 
-  I had this problem and what I found on the internet was quite confusing.
-  I found everythig from "this is a bug in the underlaying itext library" to
-  complicated looking solutions using deprecated JasperReports functions.
+  Tento problém jsem měl a to, co jsem našel na internetu, bylo matoucí. Od "je
+  to bud itextové knihovny" až po komplikovaná řešení za pomoci zastaralých
+  funkcí JasperReports.  
 
-  But the real solution is fortunately quite simple...
+  Ale správné řešení je naštěstí docela jednoduché...
 
-* One step closer
+* O krok blíž
 
-  Just switch the font name of the desired field to "DejaVu Sans". Depending on
-  the used characters you may notice that they are now visible in pdf too.
+  Pro požadované pole zvolte font "DejaVu Sans". Podle toho, jaké znaky váš
+  report obsahuje, nejspíš zjistíte, že se nyní zobrazují i v pdf.
 
-  (The DejaVu font family is a bit limited but for example you will be able to
-  export cyrillic characters with it. See {{http://dejavu-fonts.org}} for
-  further information.)
+  (Skupina fontů DejaVu je sice trošku omezená, ale třeba azbuku se vám 
+  exportovat podaří. Více informací najdete na {{http://dejavu-fonts.org}}.)
 
-* It still does not work
+* Ještě pořád to nefunguje
 
-  You switched the font name property of the desired field to "DejaVu Sans" and
-  you checked on the website that the characters are included in the font but
-  you still got nothing in your PDF?
-
-  Did you previously play with the deprecated options like "PDF Font name" or
-  "PDF Encoding"? Even if you switch back this options to their default values
-  this may be the reason that you don't get it displayed in PDF.
-  You have to switch to the xml view of your report definition and check that
-  these options are NOT present at all!
-
-  For example this does not work:
+  Název písma pro dané pole je správně nastavený na "DejaVu Sans" a na výše
+  uvedené webové stránce jste se ujistili, že font dané znaky opravdu obsahuje.
+  Vaše pdf ale znaky nezobrazuje?
+  
+  Vrtali jste se předtím v zastaralých volbách jako "PDF Font name" nebo
+  "PDF Encoding"? Přesně to by mohlo způsobovat problém. I když tyto volby
+  přepnete zpátky na jejich default hodnoty, může to být příčinou špatného
+  zobrazování pdf. Musíte šablonu reportu přepnout do xml náhledu a zkontrolovat
+  , že tyto volby vůbec nejsou obsaženy!
+  
+  Takže například toto nefunguje:
 
 +---
 <staticText>
@@ -70,8 +67,8 @@ Exporting unicode reports to pdf with JasperReports
 </staticText>
 +---
 
-  This will work as the <pdfFontName> and <pdfEncoding> attributes are not
-  present:
+  Toto fungovat bude, protože se tu vlastnosti <pdfFontName> a <pdfEncoding> 
+  vůbec nevyskytují:
 
 +---
 <staticText>
@@ -84,105 +81,103 @@ Exporting unicode reports to pdf with JasperReports
 +---
 
 
-* Using any unicode font
+* Používání unikódového fontu
 
-  Maybe your characters are not displayed with the DejaVu fonts or you just
-  don't like this font. What about using Arial or any other unicode font?
+  Může se stát, že znaky, které potřebujete, font DejaVu nezobrazí nebo se vám
+  prostě nelíbí. Což takhle použít Arial nebo jiný unikódový font?
 
-  To achieve this you must provide your font in a special way to JasperReports.
-  This means your fonts must be put in a .jar file which must contain additional
-  information in a property file and a special xml file describing the contained
-  fonts. This jar file must be on the java classpath while you execute your
-  report. Sounds complicated? Don't panic... ;-)
+  Takový font musíte do JasperReports integrovat speciálním způsobem. Musíte je
+  všechny uložit do souboru .jar, který musí obsahovat dodatečné informace v
+  souboru s vlastnostmi a speciální xml soubor, který obsažené fonty popisuje.
+  Tento jar soubor musí být v java classpath během generování reportu. Zní to
+  moc komplikovaně? Žádnou paniku... ;-)
 
-  You can create such a font jar file in two steps using the graphical report
-  editor {{{http://community.jaspersoft.com/project/ireport-designer}iReport}}
-  which you may already be using.
+  Takový fontový jar soubor můžete ve dvou krocích vytvořit pomocí grafického
+  editoru reportů {{{http://community.jaspersoft.com/project/ireport-designer}iReport}}
+  který už možná dokonce používáte.
 
-  If you open the selection list of the font name property in iReports, you may
-  notice that there are a few entries at the top of the list and then, devided
-  by a dash, a longer list of fonts.
-  The longer list beneath the dash are the fonts installed in your operating
-  system whilest the entries above are fonts that are installed into iReports.
-  Only these installed fonts can be used to export unicode characters to pdf
-  whithin iReports. So the first step is to install your favorite font to
-  iReport.
+  Když rozbalíte v iReports výběrové menu pro název fontu, všimněte si, že
+  na začátku seznamu je jen několik položek, a pak následuje delší seznam fontů
+  oddělených pomlčkou.
+  Tento delší seznam pod pomlčkou jsou fonty, které jsou instalované ve vašem
+  operačním systému, fonty nad pomlčku jsou instalované v iReports. A jenom 
+  ty lze v iReports použít pro export unikódových znaků do pdf. Takže prvním
+  krokem bude nainstalování vašeho oblíbeného fontu do iReports.
+ 
+
+** Instalování fontu do iReports
+
+   * Otevřete v iReports dialog volby.
+
+   * Vyberte sekci iReport (pokud ještě není vybraná).
+
+   * Klikněte na záložku fonty.
+
+  Nyní vidíte seznam všech již instalovaných fontů. Tři DejaVue fonty jsou
+  instalovýny defaultně, ostatní jsou generické alias fontu.
+
+   * Klikněte na tlačítko "Instalovat font".
+
+   * Použijte tlačítko "Prohledat" a vyberte soubor fontu (použijte standardní
+     verzi, ne bold nebo italic).
+
+   * V dalším okně můžete přidat další typy fontů.
+
+      * Vyberte "Identity-H (Unicode with horizontal writing)"
+
+      * Pokud instalujete speciální font, který ostatní uživatelé obvykle nemají
+        v systému k dispozici, měli byste zakliknout volbu "Embed this font in
+        the PDF document".
+
+      * Stiskněte "Next"
+
+   * Seznam locales můžete ponechat prázdný. Stiskněte "Next"
+
+   * Pro export reportu do formátů html, xhtm, rtf se používá font mapping
+     (náhradní písmo). Pokud to nepotřebujete, ponechte prázdné.
+
+   * Stiskněte "Finish"
+
+  Teď by měl export vašeho reportu do pdf v iReports fungovat - i s použitím
+  nově instalovaného fontu a cizích znaků
 
 
-** Installing a font to iReport
+  <<Poznámka pro uživatele Windows 7:>>
 
-   * Open the options dialog of iReport.
-
-   * Select the iReport section (if not already selected).
-
-   * Click on the fonts tab.
-
-  You now see a list of all already installed fonts. The three DejaVue fonts are
-  installed by default and the other three are generic font aliases.
-
-   * Click on the "Install Font" button.
-
-   * Use the "Browse" button to select the font file (use the standard version
-     here, not the bold or italic).
-
-   * In the next window you can add the other font types.
-
-      * Choose "Identity-H (Unicode with horizontal writing)"
-
-      * If you install a special font, which is usually not available on other
-        users systems, you should also check the "Embed this font in the PDF
-        document" option.
-
-      * Click "Next"
-
-   * The locales list can be left empty. Just click "Next"
-
-   * The font mappings are used if you export your report to html, xhtml or rtf.
-     If you don't need this, leave it empty.
-
-   * Now click "Finish"
-
-  Now you shoud be able to export your report to pdf from within iReport using
-  your installed font and foreign characters.
-
-
-  <<A note to Windows 7 users:>>
-
-  You may get an error if you try to install a font into iReport because you
-  have no right to write into the directory.
-  Change the security property of the
+  Při pokusu instalovat nový font do iReport s největší pravděpodobností
+  dostanete chybovou hlášku, protože nemáte práva pro zápis do souboru.
+  Změňte nastavení adresáře
 
 +---
 C:\Program Files\Jaspersoft\iReport-4.1.1\ireport\fonts
 +---
 
-  or
+  nebo
 
 +---
 C:\Program Files (x86)\Jaspersoft\iReport-4.1.1\ireport\fonts
 +---
 
-  directory to allow users to write there.
+  tak, aby měl uživatel právo zápisu.
 
 
-** Using a font outside of iReport
+** Použití fontů mimo iReport
 
-   * Just open the options dialog of iReports again.
+   * Opět otevřete v iReports dialog volby.
 
-   * Select the iReport section (if not already selected).
+   * Vyberte sekci iReport (pokud ještě není vybraná).
 
-   * Click on the fonts tab.
+   * Klikněte na záložku fonty.
 
-   * Select the previously installed font and click on the button
-     "Export as extension".
+   * Vyberte již instalovaný font a stiskněte tlačítko "Export as extension".
 
-   * Chose a folder and filename ending with <.jar>
+   * Zvolte adresář a jméno souboru s koncovkou <.jar>
 
-  Now you have a ready to use font jar which can be used with JasperReports.
-  Just add it to the classpath of your application.
+  Právě jste získali fontový jar, který můžete použít v JasperReports.
+  Stačí ho přidat do classpath vaší aplikace.
 
-** Using a font with JasperStarter
+** Použití fontu v JasperStarteru
 
-  If you want to use the previously created font jar with JasperStarter just put
-  it into the <jdbc> directory you are using with JasperStarter. All jar files
-  there are added to the classpath.
+  Pokud chcete použít takto vytvořený fontový jar i v JasperStarteru, uložte ho
+  do adresáře <jdbc> , který pro JasperStarter používáte. Všechny jar soubory,
+  které se tam nacházejí, jsou přidány do classpath.
