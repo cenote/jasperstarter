@@ -91,6 +91,7 @@ public class Report {
     private JasperReport jasperReport;
     private JasperPrint jasperPrint;
     private File output;
+    private Locale defaultLocale;
 
     /**
      *
@@ -98,6 +99,8 @@ public class Report {
      * @throws IllegalArgumentException
      */
     Report(File inputFile) throws IllegalArgumentException {
+        // store the given default to reset to it in fill()
+        defaultLocale = Locale.getDefault();
         Namespace namespace = App.getInstance().getNamespace();
 
         if (namespace.getBoolean(Dest.DEBUG)) {
@@ -241,6 +244,9 @@ public class Report {
                 parameters = promptForParams(reportParams, parameters, jasperReport.getName());
             }
             try {
+                if (parameters.containsKey("REPORT_LOCALE")) {
+                    Locale.setDefault((Locale) parameters.get("REPORT_LOCALE"));
+                }
                 if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
                 } else {
@@ -249,12 +255,17 @@ public class Report {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
                     con.close();
                 }
+                // reset to default
+                Locale.setDefault(defaultLocale);
             } catch (SQLException ex) {
                 throw new IllegalArgumentException("Unable to connect to database: " + ex.getMessage(), ex);
             } catch (JRException e) {
                 throw new IllegalArgumentException("Error filling report" + e.getMessage(), e);
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException("Unable to load driver: " + e.getMessage(), e);
+            } finally {
+                // reset to default
+                Locale.setDefault(defaultLocale);
             }
             List<OutputFormat> formats = namespace.getList(Dest.OUTPUT_FORMATS);
             try {
