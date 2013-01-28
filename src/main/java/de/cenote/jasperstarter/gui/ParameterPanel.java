@@ -17,11 +17,14 @@ package de.cenote.jasperstarter.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.DateFormat;
@@ -33,7 +36,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -46,6 +51,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
  * @version $Revision$
  */
 public class ParameterPanel extends JPanel {
+
+    Component root = this.getRootPane();
+    private final JTextField paramValue = new JTextField();
 
     public ParameterPanel(final JRParameter jrParameter, final Map params) {
         this.setLayout(new BorderLayout(10, 5));
@@ -71,26 +79,52 @@ public class ParameterPanel extends JPanel {
         paramType.setMinimumSize(new Dimension(20, 25));
         paramType.setMaximumSize(new Dimension(20, 25));
 
-        final JTextField paramValue = new JTextField();
         paramValue.setPreferredSize(new Dimension(100, 25));
         paramValue.setMaximumSize(new Dimension(100, 25));
-        if (Date.class.equals(jrParameter.getValueClass())) {
+
+        JButton valueButton = new JButton("...");
+        valueButton.setPreferredSize(new Dimension(25, 25));
+        valueButton.setMaximumSize(new Dimension(25, 25));
+
+        JPanel valuePanel = new JPanel();
+        valuePanel.setLayout(new BorderLayout(0, 0));
+        valuePanel.setPreferredSize(new Dimension(100, 25));
+        valuePanel.setMaximumSize(new Dimension(100, 25));
+        valuePanel.add(BorderLayout.CENTER, paramValue);
+
+        paramValue.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // validate on KEY Enter (like TAB)
+                        ((JComponent) e.getSource()).transferFocus();
+                    }
+                });
+
+        if (Date.class
+                .equals(jrParameter.getValueClass())) {
             paramValue.setInputVerifier(
                     new DateInputVerifier(jrParameter, params));
             if (params.get(jrParameter.getName()) != null) {
                 Date d = (Date) params.get(jrParameter.getName());
                 paramValue.setText(DateFormat.getDateInstance().format(d));
             }
-            paramValue.setToolTipText("Format: "
+            paramValue.setToolTipText(
+                    "Format: "
                     + ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.MEDIUM)).toPattern());
-        } else if (Image.class.equals(jrParameter.getValueClass())) {
+        } else if (Image.class
+                .equals(jrParameter.getValueClass())) {
             paramValue.setInputVerifier(
                     new ImageInputVerifier(jrParameter, params));
             if (params.get(jrParameter.getName()) != null) {
                 Image image = (Image) params.get(jrParameter.getName());
                 paramValue.setText(image.toString());
             }
-             paramValue.setToolTipText("Relative or full path to image.");
+            paramValue.setToolTipText(
+                    "Relative or full path to image.");
+            valueButton.addActionListener(
+                    new FileActionListener());
+            valuePanel.add(BorderLayout.EAST, valueButton);
         } else if (hasStringConstructor) {
             paramValue.setInputVerifier(
                     new GenericInputVerifier(jrParameter, params));
@@ -107,10 +141,9 @@ public class ParameterPanel extends JPanel {
             description.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         }
         this.add(BorderLayout.WEST, paramName);
-        this.add(BorderLayout.CENTER, paramValue);
+        this.add(BorderLayout.CENTER, valuePanel);
         this.add(BorderLayout.EAST, paramType);
         this.add(BorderLayout.SOUTH, description);
-
     }
 
     private class DateInputVerifier extends ParameterInputVerifier {
@@ -136,6 +169,7 @@ public class ParameterPanel extends JPanel {
             } catch (ParseException e) {
                 //System.err.println("DateInputVerifier: exception");
                 input.setBackground(Color.RED);
+                Toolkit.getDefaultToolkit().beep();
                 return false;
             }
         }
@@ -190,6 +224,7 @@ public class ParameterPanel extends JPanel {
             } catch (Exception e) {
                 //System.err.println("ImageInputVerifier: exception");
                 input.setBackground(Color.RED);
+                Toolkit.getDefaultToolkit().beep();
                 return false;
             }
         }
@@ -218,6 +253,7 @@ public class ParameterPanel extends JPanel {
             } catch (Exception e) {
                 //System.err.println("GenericInputVerifier: exception");
                 input.setBackground(Color.RED);
+                Toolkit.getDefaultToolkit().beep();
                 return false;
             }
         }
@@ -235,5 +271,30 @@ public class ParameterPanel extends JPanel {
 
         @Override
         public abstract boolean verify(JComponent input);
+    }
+
+    private class FileActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final JFileChooser fc = new JFileChooser();
+            File file;
+            file = new File(paramValue.getText());
+            if (file.isFile()) {
+                fc.setSelectedFile(file);
+            }
+            int returnVal = fc.showOpenDialog(root);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = fc.getSelectedFile();
+                System.out.println("Opening: " + file.getName());
+                paramValue.setText(file.getAbsolutePath());
+                // trigger a InputVerifier.verify() and move to next component
+                // (like KEY Enter or TAB)
+                paramValue.requestFocusInWindow();
+                ((JComponent) e.getSource()).requestFocusInWindow();
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        }
     }
 }
