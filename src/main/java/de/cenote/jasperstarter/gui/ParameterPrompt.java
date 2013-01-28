@@ -16,20 +16,19 @@
 package de.cenote.jasperstarter.gui;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import net.sf.jasperreports.engine.JRParameter;
-import de.cenote.jasperstarter.Report;
-import java.awt.BorderLayout;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.border.Border;
 
 /**
  *
@@ -53,7 +52,7 @@ public class ParameterPrompt {
         this.params = params;
         this.reportName = reportName;
 
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -70,6 +69,23 @@ public class ParameterPrompt {
             }
         }
         panel.add(new javax.swing.JSeparator());
+
+        // let the focus scroll the scrollPane
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+                addPropertyChangeListener(
+                "focusOwner", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (!(evt.getNewValue() instanceof JComponent)) {
+                    return;
+                }
+                JComponent focused = (JComponent) evt.getNewValue();
+                if (panel.isAncestorOf(focused)) {
+                    JComponent myComponent = (JComponent) focused.getParent().getParent();
+                    myComponent.scrollRectToVisible(new Rectangle(0, 0, 0, 80));
+                }
+            }
+        });
     }
 
     public int show() {
