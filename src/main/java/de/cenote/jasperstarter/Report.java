@@ -245,7 +245,9 @@ public class Report {
             }
             try {
                 if (parameters.containsKey("REPORT_LOCALE")) {
-                    Locale.setDefault((Locale) parameters.get("REPORT_LOCALE"));
+                    if (parameters.get("REPORT_LOCALE") != null) {
+                        Locale.setDefault((Locale) parameters.get("REPORT_LOCALE"));
+                    }
                 }
                 if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
