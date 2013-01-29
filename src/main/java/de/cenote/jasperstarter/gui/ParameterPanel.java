@@ -287,7 +287,6 @@ public class ParameterPanel extends JPanel {
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
-                System.out.println("Opening: " + file.getName());
                 paramValue.setText(file.getAbsolutePath());
                 // trigger a InputVerifier.verify() and move to next component
                 // (like KEY Enter or TAB)
