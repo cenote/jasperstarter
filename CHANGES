@@ -5,6 +5,8 @@ JasperStarter - Running JasperReports from command line
 Changes
 --------
 
+ 1.0.1  [JAS-18] - Unable to save output into Excel format
+
  1.0.0
         JasperStarter now has commands: pr - process, lp - list printers.
         New command: cp - compile, can compile one file or all .jrxml in a
