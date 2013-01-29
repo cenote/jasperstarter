@@ -15,6 +15,7 @@
  */
 package de.cenote.jasperstarter.gui;
 
+import com.toedter.calendar.JCalendar;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -40,6 +41,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.sf.jasperreports.engine.JRParameter;
@@ -112,6 +114,8 @@ public class ParameterPanel extends JPanel {
             paramValue.setToolTipText(
                     "Format: "
                     + ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.MEDIUM)).toPattern());
+            valueButton.addActionListener(new DateActionListener());
+            valuePanel.add(BorderLayout.EAST, valueButton);
         } else if (Image.class
                 .equals(jrParameter.getValueClass())) {
             paramValue.setInputVerifier(
@@ -122,8 +126,7 @@ public class ParameterPanel extends JPanel {
             }
             paramValue.setToolTipText(
                     "Relative or full path to image.");
-            valueButton.addActionListener(
-                    new FileActionListener());
+            valueButton.addActionListener(new FileActionListener());
             valuePanel.add(BorderLayout.EAST, valueButton);
         } else if (hasStringConstructor) {
             paramValue.setInputVerifier(
@@ -293,6 +296,88 @@ public class ParameterPanel extends JPanel {
                 paramValue.requestFocusInWindow();
                 ((JComponent) e.getSource()).requestFocusInWindow();
                 ((JComponent) e.getSource()).transferFocus();
+            }
+        }
+    }
+
+    private class DateActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            final JCalendar cal;
+            if (!paramValue.getText().equals("")) {
+                Date date;
+                try {
+                    date = DateFormat.getDateInstance().parse(paramValue.getText());
+
+                } catch (ParseException ex) {
+                    date = new Date();
+                }
+                cal = new JCalendar(date);
+            } else {
+                cal = new JCalendar();
+            }
+
+            cal.setDecorationBackgroundColor(Color.LIGHT_GRAY);
+            cal.setBorder(BorderFactory.createEtchedBorder());
+
+            JPanel calpanel = new JPanel(new BorderLayout(0, 5));
+
+            JPanel buttonpanel = new JPanel(new BorderLayout(0, 0));
+            buttonpanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+            JButton prev = new JButton("<");
+            JButton next = new JButton(">");
+            JButton today = new JButton(
+                    DateFormat.getDateInstance(
+                    DateFormat.MEDIUM).format(new Date()));
+
+            prev.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //cal.getMonthChooser().getMonth();
+                    if (cal.getMonthChooser().getMonth() == 0) {
+                        cal.getYearChooser().setYear(cal.getYearChooser().getYear() - 1);
+                        cal.getMonthChooser().setMonth(11);
+                    } else {
+                        cal.getMonthChooser().setMonth(cal.getMonthChooser().getMonth() - 1);
+                    }
+                }
+            });
+
+            next.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (cal.getMonthChooser().getMonth() == 11) {
+                        cal.getYearChooser().setYear(cal.getYearChooser().getYear() + 1);
+                        cal.getMonthChooser().setMonth(0);
+                    } else {
+                        cal.getMonthChooser().setMonth(cal.getMonthChooser().getMonth() + 1);
+                    }
+                }
+            });
+
+            today.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    cal.setDate(new Date());
+                }
+            });
+
+            buttonpanel.add(BorderLayout.WEST, prev);
+            buttonpanel.add(BorderLayout.CENTER, today);
+            buttonpanel.add(BorderLayout.EAST, next);
+            
+            calpanel.add(BorderLayout.CENTER, cal);
+            calpanel.add(BorderLayout.SOUTH, buttonpanel);
+
+            int retval =
+                    JOptionPane.showConfirmDialog((Component) e.getSource(), calpanel,
+                    "JasperStarter - Date Picker ",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (retval == JOptionPane.OK_OPTION) {
+                paramValue.setText(DateFormat.getDateInstance().format(cal.getDate()));
             }
         }
     }
