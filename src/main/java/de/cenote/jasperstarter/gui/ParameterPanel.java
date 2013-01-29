@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -56,8 +57,12 @@ public class ParameterPanel extends JPanel {
 
     Component root = this.getRootPane();
     private final JTextField paramValue = new JTextField();
+    private AtomicBoolean valid;
 
-    public ParameterPanel(final JRParameter jrParameter, final Map params) {
+    public ParameterPanel(final JRParameter jrParameter, final Map params,
+            AtomicBoolean valid) {
+
+        this.valid = valid;
         this.setLayout(new BorderLayout(10, 5));
         this.setMaximumSize(new Dimension(800, 60));
         this.add(BorderLayout.NORTH, new javax.swing.JSeparator());
@@ -168,11 +173,13 @@ public class ParameterPanel extends JPanel {
                 //System.out.println("DateInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
                 input.setBackground(Color.WHITE);
+                valid.set(true);
                 return true;
             } catch (ParseException e) {
                 //System.err.println("DateInputVerifier: exception");
                 input.setBackground(Color.RED);
                 Toolkit.getDefaultToolkit().beep();
+                valid.set(false);
                 return false;
             }
         }
@@ -223,11 +230,13 @@ public class ParameterPanel extends JPanel {
                     params.put(jrParameter.getName(), o);
                 }
                 input.setBackground(Color.WHITE);
+                valid.set(true);
                 return true;
             } catch (Exception e) {
                 //System.err.println("ImageInputVerifier: exception");
                 input.setBackground(Color.RED);
                 Toolkit.getDefaultToolkit().beep();
+                valid.set(false);
                 return false;
             }
         }
@@ -252,11 +261,13 @@ public class ParameterPanel extends JPanel {
                 //System.out.println("GenericInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
                 input.setBackground(Color.WHITE);
+                valid.set(true);
                 return true;
             } catch (Exception e) {
                 //System.err.println("GenericInputVerifier: exception");
                 input.setBackground(Color.RED);
                 Toolkit.getDefaultToolkit().beep();
+                valid.set(false);
                 return false;
             }
         }
@@ -368,7 +379,7 @@ public class ParameterPanel extends JPanel {
             buttonpanel.add(BorderLayout.WEST, prev);
             buttonpanel.add(BorderLayout.CENTER, today);
             buttonpanel.add(BorderLayout.EAST, next);
-            
+
             calpanel.add(BorderLayout.CENTER, cal);
             calpanel.add(BorderLayout.SOUTH, buttonpanel);
 
@@ -378,6 +389,11 @@ public class ParameterPanel extends JPanel {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (retval == JOptionPane.OK_OPTION) {
                 paramValue.setText(DateFormat.getDateInstance().format(cal.getDate()));
+                // trigger a InputVerifier.verify() and move to next component
+                // (like KEY Enter or TAB)
+                paramValue.requestFocusInWindow();
+                ((JComponent) e.getSource()).requestFocusInWindow();
+                ((JComponent) e.getSource()).transferFocus();
             }
         }
     }

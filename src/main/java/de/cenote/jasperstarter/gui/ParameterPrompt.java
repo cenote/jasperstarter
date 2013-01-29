@@ -16,15 +16,20 @@
 package de.cenote.jasperstarter.gui;
 
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,11 +47,13 @@ public class ParameterPrompt {
     Map params;
     JScrollPane scrollPane;
     String reportName;
+    AtomicBoolean valid = new AtomicBoolean();
 
     public ParameterPrompt(Component parent, JRParameter[] jrParameters,
             Map params, String reportName, boolean isForPromptingOnly,
             boolean isUserDefinedOnly, boolean emptyOnly) {
 
+        this.valid.set(true);
         this.parent = parent;
         this.jrParameters = jrParameters;
         this.params = params;
@@ -63,7 +70,7 @@ public class ParameterPrompt {
             if (!param.isSystemDefined() || !isUserDefinedOnly) {
                 if (param.isForPrompting() || !isForPromptingOnly) {
                     if (params.get(param.getName()) == null || !emptyOnly) {
-                        panel.add(new ParameterPanel(param, params));
+                        panel.add(new ParameterPanel(param, params, this.valid));
                     }
                 }
             }
@@ -90,8 +97,60 @@ public class ParameterPrompt {
 
     public int show() {
 
-        return JOptionPane.showConfirmDialog(parent, scrollPane,
-                "JasperStarter - Parameter Prompt: " + reportName,
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        final JOptionPane optionPane = new JOptionPane(scrollPane,
+                JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        final JDialog dialog = new JDialog();
+        dialog.setContentPane(optionPane);
+        dialog.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+        dialog.setDefaultCloseOperation(
+                JDialog.DO_NOTHING_ON_CLOSE);
+        // set the size to have the dialog properly centered
+        dialog.setSize(636, 344);
+        dialog.setLocationRelativeTo(null);
+
+        dialog.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.out.println("WINDOW CLOSE");
+                // trigger a PropertyChangeEvent
+                optionPane.setValue(new Integer(
+                        JOptionPane.CANCEL_OPTION));
+            }
+        });
+
+        optionPane.addPropertyChangeListener(
+                new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent e) {
+                        String prop = e.getPropertyName();
+                        if (dialog.isVisible()
+                                && (e.getSource() == optionPane)
+                                && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
+                            //If you were going to check something
+                            //before closing the window, you'd do
+                            //it here.
+                            if (valid.get()
+                                    | ((Integer) optionPane.getValue())
+                                    .intValue() == JOptionPane.CANCEL_OPTION) {
+                                // cancel is possible on invalid options too
+                                dialog.setVisible(false);
+                            } else {
+                                // reset to an unused option so next click on the
+                                // same button triggers PropertyChangeEvent again
+                                optionPane.setValue(new Integer(JOptionPane.NO_OPTION));
+                            }
+                        }
+                    }
+                });
+
+        dialog.pack();
+        dialog.setVisible(true);
+        int retval = ((Integer) optionPane.getValue()).intValue();
+        dialog.dispose();
+        return retval;
+
+//        return JOptionPane.showConfirmDialog(parent, scrollPane,
+//                "JasperStarter - Parameter Prompt: " + reportName,
+//                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
     }
 }
