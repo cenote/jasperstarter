@@ -110,7 +110,6 @@ public class ParameterPrompt {
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                System.out.println("WINDOW CLOSE");
                 // trigger a PropertyChangeEvent
                 optionPane.setValue(new Integer(
                         JOptionPane.CANCEL_OPTION));
@@ -147,10 +146,5 @@ public class ParameterPrompt {
         int retval = ((Integer) optionPane.getValue()).intValue();
         dialog.dispose();
         return retval;
-
-//        return JOptionPane.showConfirmDialog(parent, scrollPane,
-//                "JasperStarter - Parameter Prompt: " + reportName,
-//                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
     }
 }
