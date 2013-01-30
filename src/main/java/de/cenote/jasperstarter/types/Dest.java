@@ -30,6 +30,7 @@ public interface Dest {
     public static String DEBUG = "debug";                   // -v
     public static String ASK = "ask";                       // -a
     public static String PARAMS = "params";                 // -P
+    public static String RESOURCE = "resource";             // -r
     public static String KEEP = "keep";                     // -k, --keep (obsolete)
     public static String DB_TYPE = "db-type";               // -t
     public static String DB_HOST = "db-host";               // -H

@@ -185,6 +185,37 @@ public class App {
             System.exit(1);
         }
 
+        // add optional resources to classpath
+        if (app.namespace.get(Dest.RESOURCE) != null) {
+            try {
+                if ("".equals(app.namespace.getString(Dest.RESOURCE))) { // the default
+                    // add the parent of input to classpath
+                    File res = new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile().getParentFile();
+                    if (res.isDirectory()) {
+                        ApplicationClasspath.add(res);
+                        if (app.namespace.getBoolean(Dest.DEBUG)) {
+                            System.out.println(
+                                    "Added resource \"" + res + "\" to classpath");
+                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Resource path \"" + res + "\" is not a directory");
+                    }
+                } else {
+                    // add file or dir to classpath
+                    File res = new File(app.namespace.getString(Dest.RESOURCE));
+                    ApplicationClasspath.add(res);
+                    if (app.namespace.getBoolean(Dest.DEBUG)) {
+                        System.out.println(
+                                "Added resource \"" + res + "\" to classpath");
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
+            }
+        }
+
         Report report = null;
         try {
             report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
@@ -342,6 +373,9 @@ public class App {
         groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS)
                 .nargs("+").help(
                 "report parameter: name=type:value [...] | types: string, int, double, date, image, locale");
+        groupFillOptions.addArgument("-r").metavar("<file>").dest(Dest.RESOURCE)
+                .nargs("?").setConst("").help(
+                "path to report resource dir or jar file. If <file> is not given the input directory is used.");
         groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).
                 help("don't delete the temporary .jrprint file. OBSOLETE use output format jrprint");
 

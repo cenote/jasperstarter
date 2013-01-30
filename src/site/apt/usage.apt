@@ -190,8 +190,8 @@ options:
 +---
 $ jasperstarter pr -h
 usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-k]
-                     [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
+                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-r [<file>]]
+                     [-k] [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
                      [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
                      [--db-port <port>] [--db-driver <name>]
                      [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
@@ -215,6 +215,8 @@ fill options:
                          p, pe (see usage)
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
                          string, int, double, date, image, locale
+  -r [<file>]            path to report resource dir or jar file. If
+                         <file> is not given the input directory is used.
   -k, --keep             don't delete the temporary .jrprint file.
                          OBSOLETE use output format jrprint
 
@@ -429,7 +431,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 +---
 
 
-** Quoting parameters that contain spaces
+*** Quoting parameters that contain spaces
 
   Particularly windows users may need to work with spaces in file names.
   There are two ways you can do that. Just quote the value:
@@ -447,7 +449,7 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 +---
 
 
-** Prompt for parameters
+*** Prompt for parameters
 
   JasperStarter can ask for parameter input with option <<-a>>.
 
@@ -498,6 +500,31 @@ $ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
 
 +---
 $ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
++---
+
+
+** Reports with resources
+
+  Reports can use several resources like i18n resource bundles, icons or images.
+
+  If a resource exists in the same directory as the report file just specify
+  <<-r>> without any arguments:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r
++---
+
+  If the resource is located in another directory or in a jar file the path can
+  be given as an argument:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources/
++---
+
+  or
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
 +---
 
 
