@@ -189,12 +189,12 @@ options:
 +---
 $ jasperstarter pr -h
 usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
-                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
-                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
-                     [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [-N <printername>] [-d]
-                     [-s <reportname>]
+                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-k]
+                     [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
+                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
+                     [--db-port <port>] [--db-driver <name>]
+                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
+                     [-N <printername>] [-d] [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -210,6 +210,8 @@ compile options:
                          prcessed
 
 fill options:
+  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+                         p, pe (see usage)
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
                          string, int, double, date, image, locale
   -k, --keep             don't delete the temporary .jrprint file.
@@ -406,6 +408,60 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+
+** Prompt for parameters
+
+  JasperStarter can ask for parameter input with option <<-a>>.
+
+  Every parameter defined in the report can be displayed but only those
+  are supported for input, that have a type (class) with a constructor that
+  takes one string as an argument. Additionally special handlers for
+  <<java.util.Date>> and <<java.awt.Image>> are provided.
+
+  It is possible to filter the displayed parameters with the following optional
+  arguments:
+
+   * <<a>> - all parameters (including system parameters)
+
+   * <<ae>> - all empty parameters (parameters for which no value is provided
+              on command line)
+
+   * <<p>> - all user defined parameters marked for prompting (this is the
+             default if <<-a>> has no argument)
+
+   * <<pe>> - all empty user defined parameters marked for prompting
+
+   * <<u>> - all user defined parameters
+
+   * <<ue>> - all empty user defined parameters
+
+  In the following examples we assume a non database report which has two
+  parameters:
+
+   * MyDate (java.util.Date)
+
+   * MyText (java.lang.String)
+
+  The user will be prompted for the two parameters:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -a
++---
+
+  The user will be prompted for the two parameters. The <MyDate> parameter
+  is already filled but the user can change it:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
++---
+
+  The user will be prompted only for the empty <MyText> parameter. The <MyDate>
+  parameter is already filled and not displayed:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
 +---
 
 
