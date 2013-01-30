@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cenote.tools.classpath;
 
 import java.io.File;
@@ -33,9 +32,9 @@ import java.net.URLClassLoader;
 public class ApplicationClasspath {
 
     /**
-     * For calling .getDeclaredMethod("addURL", parameterTypes)
-     * An array of Class objects that identify the method's formal parameter
-     * types, in declared order.
+     * For calling .getDeclaredMethod("addURL", parameterTypes) An array of
+     * Class objects that identify the method's formal parameter types, in
+     * declared order.
      */
     private static final Class<?>[] parameterTypes = new Class[]{URL.class};
     public static final int FIND_FROM_CLASSPATH = 2;
@@ -44,6 +43,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds a filename (absolute path) to the classpath.
+     *
      * @param filename name of absolute path to (jar)file or dir
      * @throws IOException
      */
@@ -54,6 +54,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds a file (absolute path) to the classpath.
+     *
      * @param file absolute path to (jar)file or dir
      * @throws IOException
      */
@@ -63,6 +64,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds an URL (absolute path) to the classpath.
+     *
      * @param url absolute path to (jar)file or dir as URL
      * @throws IOException
      */
@@ -80,7 +82,9 @@ public class ApplicationClasspath {
 
     /**
      * Adds a relative filename to the classpath.
-     * @param relativeFilename name of (jar)file or dir relative to getAppBaseDir()
+     *
+     * @param relativeFilename name of (jar)file or dir relative to
+     * getAppBaseDir()
      * @throws IOException
      */
     public static void addRelative(String relativeFilename) throws IOException, URISyntaxException {
@@ -90,6 +94,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds a relative file to the classpath.
+     *
      * @param relativeFile (jar)file or dir relative to getAppBaseDir()
      * @throws IOException
      */
@@ -100,6 +105,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds all jar files in a directory (absolute path) to the classpath.
+     *
      * @param dirName absolute path to directory
      * @throws IOException
      */
@@ -109,6 +115,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds all jar files in a directory (absolute path) to the classpath.
+     *
      * @param dir absolute path to directory
      * @throws IOException, FileNotFoundException
      */
@@ -127,6 +134,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds all jar files in a directory to the classpath.
+     *
      * @param dirName path as string to directory relative to getAppBaseDir()
      * @throws IOException, URISyntaxException
      */
@@ -136,6 +144,7 @@ public class ApplicationClasspath {
 
     /**
      * Adds all jar files in a directory to the classpath.
+     *
      * @param dir path to directory relative to getAppBaseDir()
      * @throws IOException, URISyntaxException
      */
@@ -145,6 +154,7 @@ public class ApplicationClasspath {
 
     /**
      * Returns the basedir of the application using the default method
+     *
      * @see #getAppBaseDirFromThis()
      * @see #getAppBaseDirFromClasspath()
      * @throws URISyntaxException
@@ -155,6 +165,7 @@ public class ApplicationClasspath {
 
     /**
      * Returns the basedir of the application using the supplied method constant
+     *
      * @see #getAppBaseDirFromThis()
      * @see #getAppBaseDirFromClasspath()
      * @throws URISyntaxException
@@ -174,6 +185,7 @@ public class ApplicationClasspath {
 
     /**
      * Sets the default method witch is used by getAppBaseDir()
+     *
      * @param newDefaultBasedirMethod constant f.e. this.FIND_FROM_THIS
      */
     public static void setDefaultBasedirMethod(int newDefaultBasedirMethod) {
@@ -181,9 +193,10 @@ public class ApplicationClasspath {
     }
 
     /**
-     * Returns the basedir where this class is located.
-     * It is the base of the part of classpath for this class or containing 
-     * directory of the jar file this class is packed in.
+     * Returns the basedir where this class is located. It is the base of the
+     * part of classpath for this class or containing directory of the jar file
+     * this class is packed in.
+     *
      * @throws URISyntaxException
      */
     public static File getAppBaseDirFromThis() throws URISyntaxException {
@@ -204,9 +217,8 @@ public class ApplicationClasspath {
     }
 
     /**
-     * Returns the parent of the first part of the applications classpath
-     * which is usually the directory containing the main jar file of the 
-     * application.
+     * Returns the parent of the first part of the applications classpath which
+     * is usually the directory containing the main jar file of the application.
      * If your application is not packed in a jar or you start your application
      * from an IDE, this may fail or returns a wrong dir!
      */

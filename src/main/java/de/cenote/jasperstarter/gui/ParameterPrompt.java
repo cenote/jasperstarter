@@ -117,7 +117,7 @@ public class ParameterPrompt {
             dialog = new JDialog((Frame) parent);
         } else if (parent instanceof Dialog) {
             dialog = new JDialog((Dialog) parent);
-        } else{
+        } else {
             dialog = new JDialog();
         }
         dialog.setTitle("JasperStarter - Parameter Prompt: " + reportName);
@@ -130,6 +130,7 @@ public class ParameterPrompt {
         dialog.setLocationRelativeTo(parent);
 
         dialog.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
                 // trigger a PropertyChangeEvent
                 optionPane.setValue(new Integer(

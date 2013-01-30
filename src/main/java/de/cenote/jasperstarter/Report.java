@@ -15,7 +15,6 @@
  */
 package de.cenote.jasperstarter;
 
-import de.cenote.jasperstarter.gui.ParameterPanel;
 import de.cenote.jasperstarter.gui.ParameterPrompt;
 import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DbType;
@@ -45,7 +44,6 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -541,7 +539,7 @@ public class Report {
         return params;
     }
 
-    public JRParameter[] getReportParameters() throws IllegalArgumentException{
+    public JRParameter[] getReportParameters() throws IllegalArgumentException {
         JRParameter[] returnval = null;
         if (jasperReport != null) {
             returnval = jasperReport.getParameters();

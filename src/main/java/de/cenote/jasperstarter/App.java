@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -282,8 +281,8 @@ public class App {
 
         parser.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
         parser.addArgument("--locale").dest(Dest.LOCALE).metavar("<lang>")
-                .help("set locale with two-letter ISO-639 code" +
-                " or a combination of ISO-639 and ISO-3166 like de_DE");
+                .help("set locale with two-letter ISO-639 code"
+                + " or a combination of ISO-639 and ISO-3166 like de_DE");
         parser.addArgument("-v", "--verbose").dest(Dest.DEBUG).action(Arguments.storeTrue()).help("display additional messages");
         parser.addArgument("-V", "--version").action(Arguments.version()).help("display version information and exit");
 
