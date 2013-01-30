@@ -18,8 +18,10 @@ package de.cenote.jasperstarter.gui;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -30,6 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -99,14 +102,32 @@ public class ParameterPrompt {
 
         final JOptionPane optionPane = new JOptionPane(scrollPane,
                 JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-        final JDialog dialog = new JDialog();
+        final JDialog dialog;
+        JFrame frame = new JFrame();
+        if (parent == null) {
+            // use a dummy frame to have it on taskbar
+            frame.setTitle("JasperStarter - Parameter Prompt: " + reportName);
+            frame.setUndecorated(true);  // (invisible)
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+            dialog = new JDialog(frame);
+        } else if (parent instanceof Window) {
+            dialog = new JDialog((Window) parent);
+        } else if (parent instanceof Frame) {
+            dialog = new JDialog((Frame) parent);
+        } else if (parent instanceof Dialog) {
+            dialog = new JDialog((Dialog) parent);
+        } else{
+            dialog = new JDialog();
+        }
+        dialog.setTitle("JasperStarter - Parameter Prompt: " + reportName);
         dialog.setContentPane(optionPane);
         dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setDefaultCloseOperation(
                 JDialog.DO_NOTHING_ON_CLOSE);
         // set the size to have the dialog properly centered
         dialog.setSize(636, 344);
-        dialog.setLocationRelativeTo(null);
+        dialog.setLocationRelativeTo(parent);
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
@@ -145,6 +166,7 @@ public class ParameterPrompt {
         dialog.setVisible(true);
         int retval = ((Integer) optionPane.getValue()).intValue();
         dialog.dispose();
+        frame.dispose();
         return retval;
     }
 }
