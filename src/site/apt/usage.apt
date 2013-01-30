@@ -159,6 +159,7 @@ commands:
     pr                   process - view, print or export an existing report
     lp                   list printers - lists available printers on this
                          system
+    params               list params - list parameters from given report
 +---
 
   Every command has it's own help which can be invoked with <\<command\> -h>.
@@ -242,6 +243,41 @@ print options:
 
   The command <lp> has no options. It lists the available printers on your
   system which can be used with optin <-N> of the command <pr>.
+
+
+** The command <params>
+
+  The command <params> lists all user defined parameters of a given report.
+
++---
+$ jasperstarter params -h
+usage: jasperstarter params [-h] -i <file>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or (.jasper)
++---
+
+  The columns have the following meaning:
+
+   * P/N - Prompt or no promt flag
+
+   * Parameter name
+
+   * Parameter type (class name)
+
+   * Optional description
+
+  Example output:
+
++---
+$ jasperstarter params -i myreport.jasper
+P background java.awt.Image   Background image
+P MyName     java.lang.String Title of some component
+P MyDate     java.util.Date
++---
 
 
 * Command files

@@ -540,4 +540,16 @@ public class Report {
         }
         return params;
     }
+
+    public JRParameter[] getReportParameters() throws IllegalArgumentException{
+        JRParameter[] returnval = null;
+        if (jasperReport != null) {
+            returnval = jasperReport.getParameters();
+        } else {
+            throw new IllegalArgumentException(
+                    "Parameters could not be read from "
+                    + inputFile.getAbsolutePath());
+        }
+        return returnval;
+    }
 }

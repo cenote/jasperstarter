@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.Argument;
@@ -112,6 +114,16 @@ public class App {
             case LIST_PRINTERS:
             case LP:
                 app.listPrinters();
+                break;
+            case LIST_PARAMS:
+            case PARAMS:
+                try {
+                    App.listReportParams(new File(app.namespace.
+                            getString(Dest.INPUT)).getAbsoluteFile());
+                } catch (IllegalArgumentException ex) {
+                    System.err.println(ex.getMessage());
+                    System.exit(1);
+                }
                 break;
         }
     }
@@ -291,6 +303,10 @@ public class App {
         Subparser parserListPrinters = subparsers.addParser("lp", true).
                 help("list printers - lists available printers on this system");
 
+        Subparser parserListParams = subparsers.addParser("params", true).
+                help("list params - list parameters from given report");
+        createListParamsArguments(parserListParams);
+
         return parser;
     }
 
@@ -298,6 +314,11 @@ public class App {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
         groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or directory");
         groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
+    }
+
+    private void createListParamsArguments(Subparser parser) {
+        ArgumentGroup groupOptions = parser.addArgumentGroup("options");
+        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or (.jasper)");
     }
 
     private void createProcessArguments(Subparser parser) {
@@ -406,5 +427,38 @@ public class App {
      */
     public Namespace getNamespace() {
         return namespace;
+    }
+
+    public static void listReportParams(File input) throws IllegalArgumentException {
+        boolean all;
+        Report report = new Report(input);
+        JRParameter[] params = report.getReportParameters();
+        int maxName = 0;
+        int maxClassName = 0;
+        int maxDesc = 0;
+        all = false; // this is a default for now
+        for (JRParameter param : params) {
+            if (!param.isSystemDefined() || all) {
+                if (param.getName() != null) {
+                    maxName = Math.max(maxName, param.getName().length());
+                }
+                if (param.getValueClassName() != null) {
+                    maxClassName = Math.max(maxClassName, param.getValueClassName().length());
+                }
+                if (param.getDescription() != null) {
+                    maxDesc = Math.max(maxDesc, param.getDescription().length());
+                }
+            }
+        }
+        for (JRParameter param : params) {
+            if (!param.isSystemDefined() || all) {
+                System.out.printf("%s %-" + maxName + "s %-" + maxClassName + "s %-" + maxDesc + "s %n",
+                        //(param.isSystemDefined() ? "S" : "U"),
+                        (param.isForPrompting() ? "P" : "N"),
+                        param.getName(),
+                        param.getValueClassName(),
+                        (param.getDescription() != null ? param.getDescription() : ""));
+            }
+        }
     }
 }
