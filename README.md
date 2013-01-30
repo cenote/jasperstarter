@@ -15,7 +15,7 @@ It has the following features:
   * Optionally prompt for report parameters
   * Print directly to system default or given printer
   * Optionally show printer dialog to choose printer
-  * Optionally Show printpreview
+  * Optionally show printpreview
   * Export to file in the following formats:
     * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint
   * Export multiple formats in one commanding call
