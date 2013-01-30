@@ -101,7 +101,7 @@ public class ParameterPrompt {
                 JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         final JDialog dialog = new JDialog();
         dialog.setContentPane(optionPane);
-        dialog.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setDefaultCloseOperation(
                 JDialog.DO_NOTHING_ON_CLOSE);
         // set the size to have the dialog properly centered
