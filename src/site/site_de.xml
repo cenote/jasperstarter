@@ -45,7 +45,7 @@ limitations under the License.
             <item name="[cs]" href="../cs/index.html"/>
             <item name="[en]" href="../index.html"/>
         </links>
-        <menu name="Overview">
+        <menu name="Überblick">
             <item name="Einführung" href="index.html" />
             <item name="Verwendung" href="usage.html" />
             <item name="Screenshots" href="screenshots.html" />

@@ -12,7 +12,8 @@ Es hat die folgenden Eigenschaften:
   * Verwendbar mit jeder Datenbank, für die ein JDBC Treiber vorhanden ist
   * Führt Reports aus, die Laufzeit Parameter benötigen. Die folgenden Parameter
     Typen werden unterstützt:
-    * string, int, double, date, image (siehe Verwendung)
+    * string, int, double, date, image (siehe Verwendung), locale
+  * Optionale Eingabeaufforderung für Report Parameter
   * Druckt direkt auf den Standard Drucker oder auf einen benannten Drucker
   * Zeigt optional einen Drucker Dialog zur Auswal des Druckers
   * Zeigt optional eine Druckvorschau an

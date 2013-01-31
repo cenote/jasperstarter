@@ -155,7 +155,8 @@ usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
 
 optional arguments:
   -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code
+  --locale <lang>        set locale with two-letter ISO-639 code or a
+                         combination of ISO-639 and ISO-3166 like de_DE
   -v, --verbose          display additional messages
   -V, --version          display version information and exit
 
@@ -165,6 +166,7 @@ commands:
     pr                   process - view, print or export an existing report
     lp                   list printers - lists available printers on this
                          system
+    params               list params - list parameters from given report
 +---
 
   Jedes Kommando hat seine eigene Hilfe welche Sie durch den Aufruf von 
@@ -198,12 +200,12 @@ options:
 +---
 $ jasperstarter pr -h
 usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
-                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
-                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
-                     [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [-N <printername>] [-d]
-                     [-s <reportname>]
+                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-r [<file>]]
+                     [-k] [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
+                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
+                     [--db-port <port>] [--db-driver <name>]
+                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
+                     [-N <printername>] [-d] [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -219,8 +221,12 @@ compile options:
                          prcessed
 
 fill options:
+  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+                         p, pe (see usage)
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
-                         string, int, double, date, image
+                         string, int, double, date, image, locale
+  -r [<file>]            path to report resource dir or jar file. If
+                         <file> is not given the input directory is used.
   -k, --keep             don't delete the temporary .jrprint file.
                          OBSOLETE use output format jrprint
 
@@ -250,6 +256,42 @@ print options:
   Das Kommando <lp> (list printers) hat keine Optionen. Es listet alle
   verfügbaren Drucker auf Ihrem System, welche Sie mit der Option <-N> des
   Kommandos <pr> verwenden können.
+
+
+** Das Kommando <params>
+
+  Das Kommando <params> listet alle benutzerdefinierten Parameter eines
+  angegebenen Reports auf.
+
++---
+$ jasperstarter params -h
+usage: jasperstarter params [-h] -i <file>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or (.jasper)
++---
+
+  Die Spalten haben die folgende Bedeutung:
+
+   * P/N - Prompt or no promt flag
+
+   * Parameter Name
+
+   * Parameter Type (Klassen Name)
+
+   * Optionale Beschreibung
+
+  Beispiel Ausgabe:
+
++---
+$ jasperstarter params -i myreport.jasper
+P background java.awt.Image   Background image
+P MyName     java.lang.String Title of some component
+P MyDate     java.util.Date
++---
 
 
 * Befehls Dateien
@@ -352,7 +394,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Report Parameter können aus verschiedenen Typen bestehen. Die meisten Typen
   sind selbsterklärend. JasperStarter unterstützt die folgenden Typen:
 
-   * string, int, date, double, image
+   * string, int, double, date, image, locale
 
   Mehrere Parameter können durch Leerzeichen getrennt werden. Ein Parameter hat
   die folgende Form:
@@ -362,7 +404,13 @@ $ jasperstarter pr -i myreport.jrprint -f view
   Ersetzen Sie <<name>> mit dem Parameter Namen ihres Reports. Parameter Namen
   unterscheiden sich durch <<roß-Klein-Schreibung>> !
 
-  Das Datum ist im ISO Format und hat die Form: <<YYYY-MM-DD>>
+  Der Parameter Typ <date> akzeptiert ein Datum im folgenden ISO Format:
+  <<YYYY-MM-DD>>
+
+  Der Parameter Type <locale> kann entweder als ISO-639 Sprachcode mit zwei
+  Buchstaben oder einer Kombination aus dem ISO-639 Sprachcode und dem ISO-3166
+  zwei Buchstaben Ländercode verbunden mit einem Unterstrich.
+  Beispielsweise  <de> oder <de_DE>.
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
@@ -399,7 +447,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 +---
 
 
-** Parameter die Leerzeichen enthalten angeben
+*** Parameter die Leerzeichen enthalten angeben
 
   Besonders Windows Benutzer müssen möglicher Weise Dateinamen angeben, die
   Leerzeichen enthalten. Es gibt zwei Wege wie man dies tun kann.
@@ -415,6 +463,88 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+
+*** Eingabeaufforderung für Parameter
+
+  JasperStarter kann mit der Option <<-a>> nach Report Parametern fragen.
+
+  Jeder Parameter, der in einem Report definiert, wurde kann angezeigt werden.
+  Zur Eingabe werden aber nur diejenigen Parameter unterstüzt, dessen Typ
+  (Klasse) einen Konstruktor für eine Zeichenkette (String) hat. Darüber hinaus
+  werden <<java.util.Date>> and <<java.awt.Image>> unterstützt.
+
+  Mit den folgenden optionalen Argumenten können die angezeigten Parameter
+  gefiltert werden:
+
+   * <<a>> - alle Parameter (einschließlich System Parameter)
+
+   * <<ae>> - alle leeren Parameters (Parameter für die kein Wert auf der
+              Befehlszeile angegeben wurde)
+
+   * <<p>> - alle benutzerdefinierten Parameter die für die Abfrage markiert
+             wurden (dies ist die Voreinstellung falls <<-a>> kein Argument
+             mitgegeben wurde)
+
+   * <<pe>> - alle leeren benutzerdefinierten Parameter die für die Abfrage
+              markiert wurden
+
+   * <<u>> - alle benutzerdefinierten Parameter
+
+   * <<ue>> - alle leeren benutzerdefinierten Parameter
+
+  Im den folgenden Beispielen gehen wir von einem Nicht-Datenbank-Report aus,
+  in dem die folgenden zwei Parameter definiert sind:
+
+   * MyDate (java.util.Date)
+
+   * MyText (java.lang.String)
+
+  Der Benutzer wird nach beiden Parametern gefragt:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -a
++---
+
+  Der Benutzer wird nach beiden Parametern gefragt. Der Parameter <MyDate> ist
+  bereits gefüllt, kann aber vom Benutzer geändert werden:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
++---
+
+  Der Benutzer wird nur nach dem leeren Parameter <MyText> gefragt. Der
+  Parameter <MyDate> ist bereits gefüllt und wird nicht angezeigt:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
++---
+
+
+** Reports mit Ressourcen
+
+  Reports können verschiedene Ressourcen wie i18n Ressourcenbündel, Icons oder
+  Bilder verwenden.
+
+  Wenn eine Ressource im gleichen Verzeichnis wie der Report liegt, reicht es
+  einfach die Option <<-r>> ohne Argumente anzugeben:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r
++---
+
+  Wenn eine Ressource in einem anderen Verzeichnis oder in einer jar Datei
+  enthalten ist, kann der Pfad als Argument mitgegeben werden:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources/
++---
+
+  oder
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
 +---
 
 
