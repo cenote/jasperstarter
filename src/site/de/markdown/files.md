@@ -1,20 +1,20 @@
 JasperStarter Dateien
 ----------------------
 
-JasperStarter Distributions-Dateien haben die folgenden Namens Konventionen:
+JasperStarter Distributions-Dateien haben die folgenden Namenskonventionen:
 
     JasperStarter-<version>-<type>.<archiveTye>
 
-Versions Nummer für Produktions Releases:
+Versionsnummer für Produktionsreleases:
 
     <major>.<minor>.<bugfix>
 
-Versions Nummer für Release Kandidaten - sollten für die Produktion reif sein,
+Versionsnummer für Release-Kandidaten - sollten für die Produktion reif sein,
 benötigen aber noch einige Test durch Sie ;-) :
 
     <major>.<minor>-RC<N>
 
-Versions Nummer für Test Releases - nicht für den produktiven Einsatz:
+Versionsnummer für Testreleases - nicht für den produktiven Einsatz:
 
     <major>.<minor>-SNAPSHOT-<Mercurial-Revision>
 

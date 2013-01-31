@@ -26,7 +26,7 @@ Verwendung
 
 ** Windows Benutzer
 
-  Entpacken Sie das Distributions Archiv in ein Verzeichnis Ihrer Wahl, 
+  Entpacken Sie das Distributionsarchiv in ein Verzeichnis Ihrer Wahl, 
   beispielsweise:
 
 +---
@@ -39,14 +39,14 @@ C:\App\jasperstarter
 C:\App\jasperstarter\bin
 +---
 
-  zu Ihrem Benutzer oder System Suchpfad hinzu.
+  zu Ihrem Benutzer- oder Systemsuchpfad hinzu.
 
   <<oder verwenden Sie einfach setup.exe>>
 
 
 ** Linux Benutzer
 
-  Entpacken Sie das Distributions Archiv in ein Verzeichnis Ihrer Wahl,
+  Entpacken Sie das Distributionsarchiv in ein Verzeichnis Ihrer Wahl,
   beispielsweise:
 
 +---
@@ -59,7 +59,7 @@ C:\App\jasperstarter\bin
 /opt/jasperstarter/bin
 +---
 
-  zu Ihrem Benutzer oder System Suchpfad hinzu.
+  zu Ihrem Benutzer- oder Systemsuchpfad hinzu.
 
 
 * JasperStarter aurufen
@@ -109,19 +109,19 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
 
   JasperReports kennt drei Arten von Dateien:
 
-  * Die Report Definitions Datei <<myreport.jrxml>>
+  * Die Report-Definitionsdatei <<myreport.jrxml>>
 
     Dies ist eine xml Datei, welche den Report definiert. Sie können Sie von 
-    Hand schreiben aber üblicher Weise werden Sie eines von den schönen GUI
-    Tools verwenden um sie zu erzeugen.
+    Hand schreiben, aber üblicherweise werden Sie eines von den schönen GUI
+    Tools verwenden, um sie zu erzeugen.
 
   * Die kompilierte Report Datei <<myreport.jasper>>
 
-    Diese Datei ist das Ergebnis wenn Sie eine <.jrxml> Datei kompilieren.
+    Diese Datei ist das Ergebnis, wenn Sie eine <.jrxml> Datei kompilieren.
 
   * Die gefüllte Report Datei <<myreport.jrprint>>
 
-    Diese Datei resultiert aus einem aufgerufenen Report. Die Daten welche über
+    Diese Datei resultiert aus einem aufgerufenen Report. Die Daten, welche über
     die spezifizierte Datenquelle abgerufen werden, werden in den kompilierten
     Report eingefügt und das Ergebnis kann als <.jrprint> Datei gespeichert
     werden.
@@ -146,7 +146,7 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
   JasperStarter hat einige globale Optionen und Kommandos. Jedes Kommando kann
   eigene Optionen haben.
 
-  Sie erhalten einen Überblick wenn Sie jasperstarter mit <-h> aufrufen, was
+  Sie erhalten einen Überblick, wenn Sie jasperstarter mit <-h> aufrufen, was
   Ihnen die globalen Optionen und die verfügbaren Kommandos anzeigt.
 
 +---
@@ -169,7 +169,7 @@ commands:
     params               list params - list parameters from given report
 +---
 
-  Jedes Kommando hat seine eigene Hilfe welche Sie durch den Aufruf von 
+  Jedes Kommando hat seine eigene Hilfe, welche Sie durch den Aufruf von 
   <\<command\> -h> erhalten.
 
 
@@ -193,7 +193,7 @@ options:
 
 ** Das Kommando <pr>
 
-  Das Kommando <<pr>> (process) wird benötigt um einen einzelnen Report zu
+  Das Kommando <<pr>> (process) wird benötigt, um einen einzelnen Report zu
   verarbeiten. Damit kann kompilieren, anzeigen, drucken oder exportieren
   gemeint sein.
 
@@ -294,10 +294,10 @@ P MyDate     java.util.Date
 +---
 
 
-* Befehls Dateien
+* Befehlsdateien
 
   Jedes Kommando, jede Option und jedes Argument, welches JasperStarter
-  akzeptiert, kann auch in einer Datei gespeichert werden die zusätzlich mit
+  akzeptiert, kann auch in einer Datei gespeichert werden, die zusätzlich mit
   dem <@> Zeichen zum Aufruf hinzugefügt werden kann.
 
 
@@ -317,7 +317,7 @@ mydb
 volker
 +---
 
-  Beispiel Aufruf mit Befehls Datei:
+  Beispiel Aufruf mit Befehlsdatei:
 
 +---
 $ jasperstarter pr -f view -i myreport @db.conf
@@ -329,22 +329,22 @@ $ jasperstarter pr -f view -i myreport @db.conf
 
 * Reports Verarbeiten
 
-  Um einen Report zu verarbeiten muss das Kommando <<pr>> angegeben werden,
+  Um einen Report zu verarbeiten, muss das Kommando <<pr>> angegeben werden,
   welches die folgenden Optionen benötigt:
 
-    * <<<-i>>> Eingabe Datei (report Definition, kompilierter Report oder
+    * <<<-i>>> Eingabedatei (report Definition, kompilierter Report oder
       gefüllter Report).
 
-    * <<<-f>>> eine Leerzeichen separierte Liste von Ausgabe Formaten.
+    * <<<-f>>> eine Leerzeichen separierte Liste von Ausgabeformaten.
 
-        * <<view>> und <<print>> schließen sich gegenseitig aus folglich wird
-          wird print ignoriert wenn view angegeben wurde.
+        * <<view>> und <<print>> schließen sich gegenseitig aus, folglich wird
+          print ignoriert, wenn view angegeben wurde.
 
-    * <<<-t>>> einen Datenbank Typ falls Ihr Report eine Datenbank Verbindung
+    * <<<-t>>> einen Datenbanktyp, falls Ihr Report eine Datenbank-Verbindung
       benötigt. Default Wert ist <<none>>.
 
-        * falls der Datenbank Typ nich <<none>> ist, müssen die benötigten
-          Verbindungs Parameter angegeben werden.
+        * falls der Datenbanktyp nicht <<none>> ist, müssen die benötigten
+          Verbindungsparameter angegeben werden.
 
   Alle anderen Angaben sind optional.
 
@@ -353,8 +353,8 @@ $ jasperstarter pr -f view -i myreport @db.conf
 
 ** Der Minimum Report ohne Datenbank
 
-  Die minimalen Optionen, welche benötigt werden um einen Report ohne Datenbank
-  aufzurufen sind:
+  Die minimalen Optionen, welche benötigt werden, um einen Report ohne Datenbank
+  aufzurufen, sind:
 
 +---
 $ jasperstarter pr -i myreport.jasper -f view -t none
@@ -363,8 +363,8 @@ $ jasperstarter pr -i myreport.jasper -f view -t none
 
 ** Der Minimum Datenbank Report
 
-  Die minimalen Optionen, welche benötigt werden um einen Report aufzurufen, der
-  eine Datenbank Verbindung benötigt sind:
+  Die minimalen Optionen, welche benötigt werden, um einen Report aufzurufen,
+  der eine Datenbankverbindung benötigt, sind:
 
 +---
 $ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
@@ -373,7 +373,7 @@ $ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u ap
 
 ** Anzeigen, drucken oder exportieren eines zuvor gefüllten Reports
 
-  Sie können eine Report zu einem Zeitpunkt füllen und zu einem späteren
+  Sie können einen Report zu einem Zeitpunkt füllen und zu einem späteren
   Zeitpunkt anzeigen, drucken oder exportieren.
 
   Einen Report nur füllen:
@@ -389,9 +389,9 @@ $ jasperstarter pr -i myreport.jrprint -f view
 +---
 
 
-** Reports mit Laufzeit Parametern
+** Reports mit Laufzeitparametern
 
-  Report Parameter können aus verschiedenen Typen bestehen. Die meisten Typen
+  Report-Parameter können aus verschiedenen Typen bestehen. Die meisten Typen
   sind selbsterklärend. JasperStarter unterstützt die folgenden Typen:
 
    * string, int, double, date, image, locale
@@ -401,15 +401,15 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
    * \<<<name>>\><<=>>\<<<typ>>\><<:>>\<<<wert>>\>
 
-  Ersetzen Sie <<name>> mit dem Parameter Namen ihres Reports. Parameter Namen
-  unterscheiden sich durch <<roß-Klein-Schreibung>> !
+  Ersetzen Sie <<name>> mit dem Parameter-Namen ihres Reports. Parameter-Namen
+  unterscheiden sich durch <<Groß-Klein-Schreibung>> !
 
   Der Parameter Typ <date> akzeptiert ein Datum im folgenden ISO Format:
   <<YYYY-MM-DD>>
 
-  Der Parameter Type <locale> kann entweder als ISO-639 Sprachcode mit zwei
+  Der Parameter Typ <locale> kann entweder als ISO-639 Sprachcode mit zwei
   Buchstaben oder einer Kombination aus dem ISO-639 Sprachcode und dem ISO-3166
-  zwei Buchstaben Ländercode verbunden mit einem Unterstrich.
+  zwei Buchstaben Ländercode verbunden mit einem Unterstrich bestehen.
   Beispielsweise  <de> oder <de_DE>.
 
 +---
@@ -420,9 +420,9 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
 *** Der Bild (image) Parameter
 
-  Ein einfacher Weg einen Report anzupassen ist ein Logo oder ein Hintergrund
+  Ein einfacher Weg, einen Report anzupassen, ist ein Logo oder ein Hintergrund
   Bild als Parameter zu übergeben. Im folgenden Beispiel wird <background> als
-  Parameter Name für das Bild verwendet:
+  Parameter-Name für das Bild verwendet:
 
    * Erzeugen Sie einen Parameter in Ihrem Report und ändern Sie seine
      Eigenschaften:
@@ -447,10 +447,10 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 +---
 
 
-*** Parameter die Leerzeichen enthalten angeben
+*** Parameter, die Leerzeichen enthalten, angeben
 
-  Besonders Windows Benutzer müssen möglicher Weise Dateinamen angeben, die
-  Leerzeichen enthalten. Es gibt zwei Wege wie man dies tun kann.
+  Besonders Windows Benutzer müssen möglicherweise Dateinamen angeben, die
+  Leerzeichen enthalten. Es gibt zwei Wege, wie man dies tun kann.
   Setzten Sie nur den Wert in Anführungszeichen:
 
 +---
@@ -468,33 +468,33 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 
 *** Eingabeaufforderung für Parameter
 
-  JasperStarter kann mit der Option <<-a>> nach Report Parametern fragen.
+  JasperStarter kann mit der Option <<-a>> nach Report-Parametern fragen.
 
-  Jeder Parameter, der in einem Report definiert, wurde kann angezeigt werden.
+  Jeder Parameter, der in einem Report definiert wurde, kann angezeigt werden.
   Zur Eingabe werden aber nur diejenigen Parameter unterstüzt, dessen Typ
   (Klasse) einen Konstruktor für eine Zeichenkette (String) hat. Darüber hinaus
-  werden <<java.util.Date>> and <<java.awt.Image>> unterstützt.
+  werden <<java.util.Date>> und <<java.awt.Image>> unterstützt.
 
   Mit den folgenden optionalen Argumenten können die angezeigten Parameter
   gefiltert werden:
 
    * <<a>> - alle Parameter (einschließlich System Parameter)
 
-   * <<ae>> - alle leeren Parameters (Parameter für die kein Wert auf der
+   * <<ae>> - alle leeren Parameter (Parameter, für die kein Wert auf der
               Befehlszeile angegeben wurde)
 
-   * <<p>> - alle benutzerdefinierten Parameter die für die Abfrage markiert
+   * <<p>> - alle benutzerdefinierten Parameter, die für die Abfrage markiert
              wurden (dies ist die Voreinstellung falls <<-a>> kein Argument
              mitgegeben wurde)
 
-   * <<pe>> - alle leeren benutzerdefinierten Parameter die für die Abfrage
+   * <<pe>> - alle leeren benutzerdefinierten Parameter, die für die Abfrage
               markiert wurden
 
    * <<u>> - alle benutzerdefinierten Parameter
 
    * <<ue>> - alle leeren benutzerdefinierten Parameter
 
-  Im den folgenden Beispielen gehen wir von einem Nicht-Datenbank-Report aus,
+  In den folgenden Beispielen gehen wir von einem Nicht-Datenbank-Report aus,
   in dem die folgenden zwei Parameter definiert sind:
 
    * MyDate (java.util.Date)
@@ -550,16 +550,16 @@ $ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
 
 * Datei Behandlung
 
-  Falls die Eingabe Datei (Option <<<-i>>> ) nicht gefunden wird, wird zuerst
-  <.jasper> angefügt. Falls die Datei immer noch nicht gefunden wird, wird
-  <.jrxml> zum Dateinamen hinzugefügt. Dadurch ist es möglich die Dateiendung
+  Falls die Eingabedatei (Option <<<-i>>> ) nicht gefunden wurde, wird zuerst
+  <.jasper> angefügt. Falls die Datei immer noch nicht gefunden wurde, wird
+  <.jrxml> zum Dateinamen hinzugefügt. Dadurch ist es möglich, die Dateiendung
   weg zu lassen.
 
   Falls eine <.jrxml> verwendet wird, wird sie kompiliert und im Speicher weiter
-  verwendet außer Sie geben die Option <<<-w>>> an, wodurch der kompilierte
+  verwendet, außer Sie geben die Option <<<-w>>> an, wodurch der kompilierte
   Report als Datei in das <<Eingabe>> Verzeichnis geschrieben wird.
 
-  Eine <.jrprint> Datei kann als Eingabe verwendet werden aber sie muss mit
+  Eine <.jrprint> Datei kann als Eingabe verwendet werden, aber sie muss mit
   vollem Dateinamen angegeben werden.
 
   Falls die Ausgabe Datei oder das Verzeichnis ( option <<<-o>>> ) weggelassen

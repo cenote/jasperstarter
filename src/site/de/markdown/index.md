@@ -10,12 +10,12 @@ Es hat die folgenden Eigenschaften:
   * Startet jeden JasperReport, der eine JDBC Datenquelle oder eine leere
     Datenquelle benötigt
   * Verwendbar mit jeder Datenbank, für die ein JDBC Treiber vorhanden ist
-  * Führt Reports aus, die Laufzeit Parameter benötigen. Die folgenden Parameter
-    Typen werden unterstützt:
+  * Führt Reports aus, die Laufzeitparameter benötigen. Die folgenden Parameter-
+    typen werden unterstützt:
     * string, int, double, date, image (siehe Verwendung), locale
-  * Optionale Eingabeaufforderung für Report Parameter
-  * Druckt direkt auf den Standard Drucker oder auf einen benannten Drucker
-  * Zeigt optional einen Drucker Dialog zur Auswal des Druckers
+  * Optionale Eingabeaufforderung für Report-Parameter
+  * Druckt direkt auf den Standarddrucker oder auf einen benannten Drucker
+  * Zeigt optional einen Druckerdialog zur Auswal des Druckers
   * Zeigt optional eine Druckvorschau an
   * Export in Dateien in den folgenden Formaten:
     * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint
@@ -54,24 +54,24 @@ Rufen Sie JasperStarter mit _\-h_ auf um einen Überblick zu erhalten:
 
     $ jasperstarter -h
 
-Rufen Sie JasperStarter mit _pr \-h_ auf um Hilfe für das Kommando process zu
+Rufen Sie JasperStarter mit _pr \-h_ auf um Hilfe für das Kommando _process_ zu
 erhalten:
 
     $ jasperstarter pr -h
 
-Beispiel mit Report Parametern:
+Beispiel mit Report-Parametern:
 
     $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
     -o report -p secret -P CustomerNo=string:10 StartFrom=date:2012-10-01
 
-Beispiel mit hsql unter Verwendung des Datenbank Types generic:
+Beispiel mit hsql unter Verwendung des Datenbanktyps generic:
 
     $ jasperstarter pr -t generic -f pdf -i report.jasper -o report -u sa \
     --db-driver org.hsqldb.jdbcDriver \
     --db-url jdbc:hsqldb:hsql://localhost
 
 Für weitere Informationen werfen Sie einen Blick in das docs Verzeichnis des
-Distributions Archives oder lesen Sie die Seite Verwendung online. [Usage][]
+Distributionsarchives oder lesen Sie die Seite Verwendung online. [Usage][]
 
 
 ### Release Notes
@@ -88,17 +88,17 @@ Falls Sie einen Fehler gefunden haben oder eine Funktion vermissen, melden Sie
 sich in unserem [Issuetracker][] an und erzeugen Sie einen "Issue" vom Typ "Bug"
 oder "New Feature".
 
-Falls Ihnen die Software gefällt können Sie auch hier [review][] eine Bewertung
+Falls Ihnen die Software gefällt, können Sie auch hier [review][] eine Bewertung
 abgeben. :-)
 
 
 ### Entwicklung
 
 Der Quellcode ist bei [bitbucket.org/cenote/jasperstarter][] verfügbar, die
-Projekt Webseite ist bei [Sourceforge][] gehostet.
+Projekt-Webseite ist bei [Sourceforge][] gehostet.
 
-JasperStarter wird mit Hilfe von [Maven][] erzeugt. Um ein Distributions Archiv
-zu erhalten rufen Sie den folgenden Befehl auf:
+JasperStarter wird mit Hilfe von [Maven][] erzeugt. Um ein Distributionsarchiv
+zu erhalten, rufen Sie den folgenden Befehl auf:
 
     $ mvn package -P release
 
@@ -112,7 +112,7 @@ verwenden Sie besser:
 Profil weiter unten!
 
 Falls Sie das Windows Setup erzeugen wollen, benötigen Sie _nsis_ in Ihrem
-Suchpfad (funktioniert auch unter Linux, eine Kompilierte Version habe ich auf
+Suchpfad (funktioniert auch unter Linux, eine kompilierte Version habe ich auf
 Sourceforge im Ordner _build-tools_ bereit gestellt) und Sie müssen das Profil
 **windows-setup** zum Aufruf hinzufügen:
 
@@ -122,7 +122,7 @@ oder
 
     $ mvn package -P release,windows-setup,snapshot
 
-Wärend der Entwicklung möchten Sie vielleicht einen schnelleren Build. Das
+Während der Entwicklung möchten Sie vielleicht einen schnelleren Build. Das
 **dev** Profil spart einige lang laufende Reports und die Erzeugung der
 gepackten Archive aus. Stattdessen wird das Ergebnis in
 _target/jasperstarter-dev-bin_ abgelegt.
@@ -137,13 +137,13 @@ oder
 
     $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
 
-Um JasperStarter aus Ihrer IDE heraus auszuführen fügen Sie _\--jdbc-dir jdbc_
-zu den Argumenten Ihrer Start Konfiguration hinzu. Andernfalls erhalten Sie
+Um JasperStarter aus Ihrer IDE heraus auszuführen, fügen Sie _\--jdbc-dir jdbc_
+zu den Argumenten Ihrer Startkonfiguration hinzu. Andernfalls erhalten Sie
 folgenden Fehler:
 
     Error, (...)/JasperStarter/target/classes/jdbc is not a directory!
 
-Kopieren Sie Ihre JDBC Treiber in das _./jdbc_ Verzeichnis Ihres Projektes um
+Kopieren Sie Ihre JDBC Treiber in das _./jdbc_ Verzeichnis Ihres Projektes, um
 aus der IDE heraus einen Datenbank Report zu starten.
 
 
