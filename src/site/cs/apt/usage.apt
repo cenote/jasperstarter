@@ -158,6 +158,7 @@ commands:
     pr                   process - view, print or export an existing report
     lp                   list printers - lists available printers on this
                          system
+    params               list params - list parameters from given report
 +---
 
   Každý příkaz má také vlastní nápovědu, kterou lze vyvolat pomocí
@@ -190,12 +191,12 @@ options:
 +---
 $ jasperstarter pr -h
 usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-P <p> [<p> ...]] [-k] [-t <dbtype>]
-                     [-H <dbhost>] [-u <dbuser>] [-p <dbpasswd>]
-                     [-n <dbname>] [--db-sid <sid>] [--db-port <port>]
-                     [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [-N <printername>] [-d]
-                     [-s <reportname>]
+                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-r [<file>]]
+                     [-k] [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
+                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
+                     [--db-port <port>] [--db-driver <name>]
+                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
+                     [-N <printername>] [-d] [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -211,8 +212,12 @@ compile options:
                          prcessed
 
 fill options:
+  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+                         p, pe (see usage)
   -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
                          string, int, double, date, image, locale
+ -r [<file>]            path to report resource dir or jar file. If
+                         <file> is not given the input directory is used.
   -k, --keep             don't delete the temporary .jrprint file.
                          OBSOLETE use output format jrprint
 
@@ -241,6 +246,40 @@ print options:
 
   Příkaz <lp> (list printers) nemá žádné volby. Vypíše všechny tiskárny dostupné
   ve vašem systému, které můžete použít s volbou <-N> u příkazu <pr>.
+
+** Příkaz <params>
+
+  Příkaz <params> nabídne seznam všech parametrů reportu definovaných uživatelem
+
++---
+$ jasperstarter params -h
+usage: jasperstarter params [-h] -i <file>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -i <file>              input file (.jrxml) or (.jasper)
++---
+
+  Sloupce mají následující význam:
+
+   * P/N - Prompt flag ano či ne
+
+   * Název parametru
+
+   * Typ parametru (class name)
+
+   * Nepovinný popis
+
+  Příklad výstupu:
+
++---
+$ jasperstarter params -i myreport.jasper
+P background java.awt.Image   Background image
+P MyName     java.lang.String Title of some component
+P MyDate     java.util.Date
++---
 
 
 * Příkazové soubory
@@ -393,7 +432,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 +---
 
 
-** Zadávání parametrů, které obsahují mezery
+*** Zadávání parametrů, které obsahují mezery
 
   Především uživatelé windows budou určitě muset pracovat s názvy souborů, které
   obsahují mezery. Existují dva způsoby. Zadejte do uvozovek buď hodnotu:
@@ -408,6 +447,86 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
 -o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
++---
+
+*** Dialog pro zadávání parametrů
+
+  JasperStarter umí požádat o zadání parametrů volbou <<-a>>.
+
+  Lze zobrazit každý parametr, který je v reportu definovaný, ale zadat lze 
+  pouze takový, který má typ (class) s konstruktorem, který vyžaduje jeden
+   string coby argument. Navíc poskytuje extra okna pro <<java.util.Date>> 
+  a <<java.awt.Image>>.
+
+  Je možné zúžit výběr zobrazených parametrů pomocí následujících nepovinných
+  argumentů:
+
+   * <<a>> - všechny parametry (včetně systémových parametrů)
+
+   * <<ae>> - všechny prázdné parametry (parametry, pro které není na příkazovém
+              řádku zadána žádná hodnota)
+
+   * <<p>> - všechny parametry definované uživatelem, které byly vybrány pro 
+             zobrazení ve výběrovém dialogu (defaultní, pokud <<-a>> nemá
+             žádné argumenty)
+
+   * <<pe>> - všechny prázdné uživatelské parametry vybrané pro zobrazení
+
+   * <<u>> - všechny parametry definované uživatelem
+
+   * <<ue>> - všechny prázdné parametry definované uživatelem
+
+  V následujících příkladech se podíváme na report bez databáze, který má dva
+  parametry:
+
+   * MyDate (java.util.Date)
+
+   * MyText (java.lang.String)
+
+  Uživatel bude vyzván, aby zadal tyto dva parametry:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -a
++---
+
+  Uživatel bude vyzván, aby zadal dva parametry. Paramet <MyDate> již je
+  vyplněný, lze ho ale změnit:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
++---
+
+  Uživatel bude vyzván pouze k zadání prázdného parametru <MyText>. Parametr
+  <MyDate> již je vyplněný a nezobrazí se:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
++---
+
+
+** Reporty se zdroji
+
+  Reporty mohou používat několik různých zdrojů, jako třeba resource balíčky 
+  i18n, ikony či obrázky.
+
+  Pokud se zdroje nacházejí ve stejném adresáři jako report, specifikujte pouze
+  <<-r>> bez argumentů:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r
++---
+
+  Pokud se zdroje nacházejí v jiném adresáři, nebo v souboru jar, můžete jako 
+  argument zadat cestu:
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources/
++---
+
+  nebo
+
++---
+$ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
 +---
 
 
