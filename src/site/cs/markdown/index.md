@@ -13,6 +13,7 @@ Má následující vlastnosti:
   * Provádí reporty, které vyžadují runtime parametery. Podporuje následující
     druhy parametrů:
     * string, int, double, date, image (viz použití), locale
+  * Umožňuje vybrat si z nabídky parametrů reportu
   * Umožňuje tisk na vybrané nebo na defaultní tiskárně
   * Nabízí možnost zobrazit tiskový dialog pro výběr tiskárny
   * Nabízí možnost zobrazit tiskový náhled
