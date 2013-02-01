@@ -68,7 +68,7 @@ public class ParameterPanel extends JPanel {
         this.textFieldHeight = 25;
         if ("gnome".equals(System.getProperty("sun.desktop"))) {
             // the default font in Gnome needs more space
-            this.textFieldHeight = 20;
+            this.textFieldHeight = 30;
         }
         this.setLayout(new BorderLayout(10, 5));
         this.setMaximumSize(new Dimension(800, 60));
