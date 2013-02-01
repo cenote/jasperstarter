@@ -55,7 +55,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
  */
 public class ParameterPanel extends JPanel {
 
-    Component root = this.getRootPane();
     private final JTextField paramValue = new JTextField();
     private AtomicBoolean valid;
 
@@ -297,7 +296,7 @@ public class ParameterPanel extends JPanel {
             if (file.isFile()) {
                 fc.setSelectedFile(file);
             }
-            int returnVal = fc.showOpenDialog(root);
+            int returnVal = fc.showOpenDialog((Component) e.getSource());
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
