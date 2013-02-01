@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIDefaults;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
@@ -57,11 +58,18 @@ public class ParameterPanel extends JPanel {
 
     private final JTextField paramValue = new JTextField();
     private AtomicBoolean valid;
+    private int textFieldHeight;
+    UIDefaults uiDefaults = javax.swing.UIManager.getDefaults();
 
     public ParameterPanel(final JRParameter jrParameter, final Map params,
             AtomicBoolean valid) {
 
         this.valid = valid;
+        this.textFieldHeight = 25;
+        if ("gnome".equals(System.getProperty("sun.desktop"))) {
+            // the default font in Gnome needs more space
+            this.textFieldHeight = 20;
+        }
         this.setLayout(new BorderLayout(10, 5));
         this.setMaximumSize(new Dimension(800, 60));
         this.add(BorderLayout.NORTH, new javax.swing.JSeparator());
@@ -85,17 +93,16 @@ public class ParameterPanel extends JPanel {
         paramType.setMinimumSize(new Dimension(20, 25));
         paramType.setMaximumSize(new Dimension(20, 25));
 
-        paramValue.setPreferredSize(new Dimension(100, 25));
-        paramValue.setMaximumSize(new Dimension(100, 25));
+        paramValue.setPreferredSize(new Dimension(30, textFieldHeight));
+        //paramValue.setMaximumSize(new Dimension(100, 25));
 
         JButton valueButton = new JButton("...");
-        valueButton.setPreferredSize(new Dimension(25, 25));
-        valueButton.setMaximumSize(new Dimension(25, 25));
+        valueButton.setPreferredSize(
+                new Dimension(textFieldHeight, textFieldHeight));
 
         JPanel valuePanel = new JPanel();
         valuePanel.setLayout(new BorderLayout(0, 0));
-        valuePanel.setPreferredSize(new Dimension(100, 25));
-        valuePanel.setMaximumSize(new Dimension(100, 25));
+        valuePanel.setMaximumSize(new Dimension(30, textFieldHeight));
         valuePanel.add(BorderLayout.CENTER, paramValue);
 
         paramValue.addActionListener(
@@ -171,12 +178,13 @@ public class ParameterPanel extends JPanel {
                 }
                 //System.out.println("DateInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
-                input.setBackground(Color.WHITE);
+                input.setBackground(uiDefaults.getColor("TextField.background"));
                 valid.set(true);
                 return true;
             } catch (ParseException e) {
                 //System.err.println("DateInputVerifier: exception");
                 input.setBackground(Color.RED);
+                ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();
                 valid.set(false);
                 return false;
@@ -228,12 +236,13 @@ public class ParameterPanel extends JPanel {
                     // don't overwrite a given image
                     params.put(jrParameter.getName(), o);
                 }
-                input.setBackground(Color.WHITE);
+                input.setBackground(uiDefaults.getColor("TextField.background"));
                 valid.set(true);
                 return true;
             } catch (Exception e) {
                 //System.err.println("ImageInputVerifier: exception");
                 input.setBackground(Color.RED);
+                ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();
                 valid.set(false);
                 return false;
@@ -259,12 +268,13 @@ public class ParameterPanel extends JPanel {
                 }
                 //System.out.println("GenericInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
-                input.setBackground(Color.WHITE);
+                input.setBackground(uiDefaults.getColor("TextField.background"));
                 valid.set(true);
                 return true;
             } catch (Exception e) {
                 //System.err.println("GenericInputVerifier: exception");
                 input.setBackground(Color.RED);
+                ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();
                 valid.set(false);
                 return false;
