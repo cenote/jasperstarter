@@ -439,6 +439,33 @@ limitations under the License.
     
     <profiles>
         <profile>
+            <id>no-launch4j-on-mac</id>
+            <!--
+            disable launch4j on mac
+            -->
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>1.5.2</version>
+                        <executions>
+                            <execution>
+                                <id>l4j-cli</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
             <id>dev</id>
             <!--
             developement profile:
