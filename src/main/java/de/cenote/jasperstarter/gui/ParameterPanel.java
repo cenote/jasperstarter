@@ -20,12 +20,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.DateFormat;
@@ -45,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -321,7 +325,7 @@ public class ParameterPanel extends JPanel {
     }
 
     private class DateActionListener implements ActionListener {
-
+        JLabel selectedDate;
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -385,10 +389,24 @@ public class ParameterPanel extends JPanel {
                 }
             });
 
+            selectedDate = new JLabel();
+            selectedDate.setHorizontalAlignment(SwingConstants.CENTER);
+            selectedDate.setFont(new Font("sansserif", Font.BOLD, 16));
+
+            //cal.getDayChooser().addPropertyChangeListener();
+            cal.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    selectedDate.setText(DateFormat.getDateInstance(
+                            DateFormat.MEDIUM).format(cal.getDate()));
+                }
+            });
+
             buttonpanel.add(BorderLayout.WEST, prev);
             buttonpanel.add(BorderLayout.CENTER, today);
             buttonpanel.add(BorderLayout.EAST, next);
 
+            calpanel.add(BorderLayout.NORTH, selectedDate);
             calpanel.add(BorderLayout.CENTER, cal);
             calpanel.add(BorderLayout.SOUTH, buttonpanel);
 
