@@ -2,8 +2,37 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
-Changes
+
+Release Notes - JasperStarter - Version 1.1.0
+----------------------------------------------
+
+JasperStarter is now able to prompt for report parameters.
+
+** Bug
+    * [JAS-5] - Maven site does not create index.html if called directly
+    * [JAS-6] - Maven site does not generate translation if called directly
+    * [JAS-11] - Maven site does not create index.html if called via package
+    * [JAS-16] - Selection of the report locale yields unexpected results in
+                 some cases
+
+** Improvement
+    * [JAS-13] - new parameter type locale to specify report locale independent
+                 from gui locale
+
+** New Feature
+    * [JAS-12] - new option to specify report resources like resource bundles or
+                 icons
+    * [JAS-14] - New option: prompt for report parameters
+    * [JAS-17] - New Command: List report parameters
+
+** Task
+    * [JAS-7] - Site translation cs
+    * [JAS-22] - site translation de
+
+
 --------
+
+ 1.0.1  [JAS-18] - Unable to save output into Excel format
 
  1.0.0
         JasperStarter now has commands: pr - process, lp - list printers.
