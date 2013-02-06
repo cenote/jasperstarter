@@ -84,16 +84,26 @@ public class App {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Config config = null;
+        try {
+            config = new Config();
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        }
+
         App app = App.getInstance();
 
         // create the command line parser
-        ArgumentParser parser = app.createArgumentParser();
+        ArgumentParser parser = app.createArgumentParser(config);
         if (args.length == 0) {
             System.out.println(parser.formatUsage());
             System.out.println("type: jasperstarter -h to get help");
             System.exit(0);
         }
-        app.namespace = app.parseArgumentParser(args, parser);
+        app.namespace = app.parseArgumentParser(args, parser, config);
+
+        System.out.println("config: locale=" + config.locale);
 
         // setting locale if given
         if (app.namespace.get(Dest.LOCALE) != null) {
@@ -295,7 +305,7 @@ public class App {
         return this.applicationProperties;
     }
 
-    private ArgumentParser createArgumentParser() {
+    private ArgumentParser createArgumentParser(Config config) {
         this.allArguments = new HashMap<String, Argument>();
         String jasperversion = Package.getPackage("net.sf.jasperreports.engine").
                 getImplementationVersion();
@@ -306,7 +316,7 @@ public class App {
                 .append("\n").append(" - JasperReports: ").append(jasperversion);
 
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-", "@")
-                .version(sb.toString());
+                .version(config.getVersionString());
 
         //ArgumentGroup groupOptions = parser.addArgumentGroup("options");
 
@@ -408,7 +418,7 @@ public class App {
         allArguments.put(argDbUrl.getDest(), argDbUrl);
     }
 
-    private Namespace parseArgumentParser(String[] args, ArgumentParser parser) {
+    private Namespace parseArgumentParser(String[] args, ArgumentParser parser, Config config) {
         Namespace ns = null;
         try {
             ns = parser.parseArgs(args);
@@ -439,6 +449,8 @@ public class App {
             }
             // parse again so changed arguments become effectiv
             ns = parser.parseArgs(args);
+            // parse again to fill the new config POJO
+            parser.parseArgs(args, config);
         } catch (ArgumentParserException ex) {
             parser.handleError(ex);
             System.exit(1);
