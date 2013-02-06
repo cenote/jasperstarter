@@ -198,7 +198,7 @@ public class Config {
     }
 
     public boolean hasJdbcDir() {
-        if (jdbcDir != null & !jdbcDir.equals("")) {
+        if (jdbcDir != null && !jdbcDir.equals("")) {
             return true;
         } else {
             return false;
@@ -210,7 +210,7 @@ public class Config {
     }
 
     public boolean hasLocale() {
-        if (locale != null & !locale.equals("")) {
+        if (locale != null && !locale.equals("")) {
             return true;
         } else {
             return false;
@@ -222,7 +222,7 @@ public class Config {
     }
 
     public boolean hasOutput() {
-        if (output != null & !output.equals("")) {
+        if (output != null && !output.equals("")) {
             return true;
         } else {
             return false;
@@ -238,7 +238,7 @@ public class Config {
     }
 
     public boolean hasParams() {
-        if (params != null & params.size() != 0) {
+        if (params != null && !params.isEmpty()) {
             return true;
         } else {
             return false;
@@ -250,7 +250,7 @@ public class Config {
     }
 
     public boolean hasPrinterName() {
-        if (printerName != null & !printerName.equals("")) {
+        if (printerName != null && !printerName.equals("")) {
             return true;
         } else {
             return false;
@@ -262,7 +262,7 @@ public class Config {
     }
 
     public boolean hasReportName() {
-        if (reportName != null & !reportName.equals("")) {
+        if (reportName != null && !reportName.equals("")) {
             return true;
         } else {
             return false;
