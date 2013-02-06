@@ -22,8 +22,10 @@ import de.cenote.jasperstarter.types.OutputFormat;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import net.sourceforge.argparse4j.annotation.Arg;
+import org.apache.commons.lang.LocaleUtils;
 
 /**
  * This POJO is intended to contain all command line parameters and other
@@ -127,6 +129,14 @@ public class Config {
         return askFilter;
     }
 
+    public boolean hasAskFilter() {
+        if (askFilter != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getCommand() {
         return command;
     }
@@ -159,6 +169,14 @@ public class Config {
         return dbType;
     }
 
+    public boolean hasDbType() {
+        if (dbType != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getDbUrl() {
         return dbUrl;
     }
@@ -179,12 +197,36 @@ public class Config {
         return jdbcDir;
     }
 
-    public String getLocale() {
-        return locale;
+    public boolean hasJdbcDir() {
+        if (jdbcDir != null & !jdbcDir.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Locale getLocale() {
+        return LocaleUtils.toLocale(locale);
+    }
+
+    public boolean hasLocale() {
+        if (locale != null & !locale.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getOutput() {
         return output;
+    }
+
+    public boolean hasOutput() {
+        if (output != null & !output.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<OutputFormat> getOutputFormats() {
@@ -195,16 +237,49 @@ public class Config {
         return params;
     }
 
+    public boolean hasParams() {
+        if (params != null & params.size() != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getPrinterName() {
         return printerName;
+    }
+
+    public boolean hasPrinterName() {
+        if (printerName != null & !printerName.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getReportName() {
         return reportName;
     }
 
+    public boolean hasReportName() {
+        if (reportName != null & !reportName.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String getResource() {
         return resource;
+    }
+
+    public boolean hasResource() {
+        // the resource default if set is "" .constant("")
+        if (resource != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean isWithPrintDialog() {

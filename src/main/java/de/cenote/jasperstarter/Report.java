@@ -83,6 +83,7 @@ import org.apache.commons.lang.LocaleUtils;
  */
 public class Report {
 
+    private Config config;
     private File inputFile;
     private InputType initialInputType;
     private JasperDesign jasperDesign;
@@ -96,12 +97,12 @@ public class Report {
      * @param inputFile
      * @throws IllegalArgumentException
      */
-    Report(File inputFile) throws IllegalArgumentException {
+    Report(Config config, File inputFile) throws IllegalArgumentException {
+        this.config = config;
         // store the given default to reset to it in fill()
         defaultLocale = Locale.getDefault();
-        Namespace namespace = App.getInstance().getNamespace();
 
-        if (namespace.getBoolean(Dest.DEBUG)) {
+        if (config.isVerbose()) {
             System.out.println("Original input file: " + inputFile.getAbsolutePath());
         }
 
@@ -126,7 +127,7 @@ public class Report {
         } else if (inputFile.isDirectory()) {
             throw new IllegalArgumentException("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
         }
-        if (namespace.getBoolean(Dest.DEBUG)) {
+        if (config.isVerbose()) {
             System.out.println("Using input file: " + inputFile.getAbsolutePath());
         }
         this.inputFile = inputFile;
@@ -168,7 +169,7 @@ public class Report {
         // generating output basename
         // get the basename of inputfile
         String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
-        if (namespace.getString(Dest.OUTPUT) == null) {
+        if (!config.hasOutput()) {
             // if output is omitted, use parent dir of input file
             File parent = inputFile.getParentFile();
             if (parent != null) {
@@ -177,13 +178,13 @@ public class Report {
                 this.output = new File(inputBasename);
             }
         } else {
-            this.output = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
+            this.output = new File(config.getOutput()).getAbsoluteFile();
         }
         if (this.output.isDirectory()) {
             // if output is an existing directory, add the basename of input
             this.output = new File(this.output, inputBasename);
         }
-        if (namespace.getBoolean(Dest.DEBUG)) {
+        if (config.isVerbose()) {
             System.out.println("Input absolute :  " + inputFile.getAbsolutePath());
             try {
                 System.out.println("Input canonical:  " + inputFile.getCanonicalPath());
@@ -192,8 +193,8 @@ public class Report {
             }
             System.out.println("Input:            " + inputFile.getName());
             System.out.println("Input basename:   " + inputBasename);
-            if (namespace.get(Dest.OUTPUT) != null) {
-                File outputParam = new File(namespace.getString(Dest.OUTPUT)).getAbsoluteFile();
+            if (config.hasOutput()) {
+                File outputParam = new File(config.getOutput()).getAbsoluteFile();
                 System.out.println("OutputParam:      " + outputParam.getAbsolutePath());
             }
             System.out.println("Output:           " + output.getAbsolutePath());
@@ -207,15 +208,12 @@ public class Report {
 
     private void compile() throws JRException {
         jasperReport = JasperCompileManager.compileReport(jasperDesign);
-        Namespace namespace = App.getInstance().getNamespace();
         // this option is only available if command process is active
-        if (namespace.get(Dest.WRITE_JASPER) != null) {
-            if (namespace.getBoolean(Dest.WRITE_JASPER)) {
-                String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
-                String outputDir = inputFile.getParent();
-                File outputFile = new File(outputDir + "/" + inputBasename + ".jasper");
-                JRSaver.saveObject(jasperReport, outputFile);
-            }
+        if (config.isWriteJasper()) {
+            String inputBasename = inputFile.getName().split("\\.(?=[^\\.]+$)")[0];
+            String outputDir = inputFile.getParent();
+            File outputFile = new File(outputDir + "/" + inputBasename + ".jasper");
+            JRSaver.saveObject(jasperReport, outputFile);
         }
     }
 
@@ -233,11 +231,10 @@ public class Report {
 
     public void fill() throws InterruptedException {
         if (initialInputType != InputType.JASPER_PRINT) {
-            Namespace namespace = App.getInstance().getNamespace();
             // get commandLineReportParams
             Map parameters = getCmdLineReportParams();
             // if prompt...
-            if (namespace.get(Dest.ASK) != null) {
+            if (config.hasAskFilter()) {
                 JRParameter[] reportParams = jasperReport.getParameters();
                 parameters = promptForParams(reportParams, parameters, jasperReport.getName());
             }
@@ -247,11 +244,11 @@ public class Report {
                         Locale.setDefault((Locale) parameters.get("REPORT_LOCALE"));
                     }
                 }
-                if (DbType.none.equals(namespace.get(Dest.DB_TYPE))) {
+                if (DbType.none.equals(config.getDbType())) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
                 } else {
                     Db db = new Db();
-                    Connection con = db.getConnection();
+                    Connection con = db.getConnection(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
                     con.close();
                 }
@@ -267,12 +264,9 @@ public class Report {
                 // reset to default
                 Locale.setDefault(defaultLocale);
             }
-            List<OutputFormat> formats = namespace.getList(Dest.OUTPUT_FORMATS);
+            List<OutputFormat> formats = config.getOutputFormats();
             try {
                 if (formats.contains(OutputFormat.jrprint)) {
-                    JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
-                }
-                if (namespace.getBoolean(Dest.KEEP)) {
                     JRSaver.saveObject(jasperPrint, this.output.getAbsolutePath() + ".jrprint");
                 }
             } catch (JRException e) {
@@ -282,24 +276,26 @@ public class Report {
     }
 
     public void print() throws JRException {
-        Namespace namespace = App.getInstance().getNamespace();
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         //printRequestAttributeSet.add(MediaSizeName.ISO_A4);
         PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
         //printServiceAttributeSet.add(new PrinterName("Fax", null));
         JRPrintServiceExporter exporter = new JRPrintServiceExporter();
-        if (namespace.get(Dest.REPORT_NAME) != null) {
-            jasperPrint.setName(namespace.getString(Dest.REPORT_NAME));
+        if (config.hasReportName()) {
+            jasperPrint.setName(config.getReportName());
         }
         exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
         //exporter.setParameter(JRExporterParameter.INPUT_FILE, this.jrprintFile);
-        if (namespace.get(Dest.PRINTER_NAME) != null) {
-            String printerName = namespace.getString(Dest.PRINTER_NAME);
+        if (config.hasPrinterName()) {
+            String printerName = config.getPrinterName();
             PrintService service = Printerlookup.getPrintservice(printerName, Boolean.TRUE, Boolean.TRUE);
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, service);
-            if (namespace.getBoolean(Dest.DEBUG)) {
-
-                System.out.println("printer-name: " + ((service == null) ? "No printer found with name \"" + printerName + "\"! Using default." : "found: " + service.getName()));
+            if (config.isVerbose()) {
+                System.out.println(
+                        "printer-name: " + ((service == null)
+                        ? "No printer found with name \""
+                        + printerName + "\"! Using default." : "found: "
+                        + service.getName()));
             }
         }
         //exporter.setParameter(JRExporterParameter.PAGE_INDEX, pageIndex);
@@ -308,7 +304,7 @@ public class Report {
         exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
         exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
         exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
-        if (namespace.getBoolean(Dest.WITH_PRINT_DIALOG)) {
+        if (config.isWithPrintDialog()) {
             setLookAndFeel();
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.TRUE);
         } else {
@@ -422,11 +418,10 @@ public class Report {
     }
 
     private Map getCmdLineReportParams() {
-        Namespace namespace = App.getInstance().getNamespace();
         Map parameters = new HashMap();
         List<String> params;
-        if (namespace.get(Dest.PARAMS) != null) {
-            params = namespace.getList(Dest.PARAMS);
+        if (config.hasParams()) {
+            params = config.getParams();
             String paramName = null;
             String paramType = null;
             String paramValue = null;
@@ -436,7 +431,7 @@ public class Report {
                     paramName = p.split("=")[0];
                     paramType = p.split("=")[1].split(":", 2)[0];
                     paramValue = p.split("=", 2)[1].split(":", 2)[1];
-                    if (namespace.getBoolean(Dest.DEBUG)) {
+                    if (config.isVerbose()) {
                         System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
                     }
                 } catch (Exception e) {
@@ -499,11 +494,10 @@ public class Report {
     }
 
     private Map promptForParams(JRParameter[] reportParams, Map params, String reportName) throws InterruptedException {
-        Namespace namespace = App.getInstance().getNamespace();
         boolean isForPromptingOnly = false;
         boolean isUserDefinedOnly = false;
         boolean emptyOnly = false;
-        switch ((AskFilter) namespace.get(Dest.ASK)) {
+        switch (config.getAskFilter()) {
             case ae:
                 emptyOnly = true;
             case a:
@@ -528,7 +522,7 @@ public class Report {
         if (JOptionPane.OK_OPTION != prompt.show()) {
             throw new InterruptedException("User aborted at parameter promt!");
         }
-        if (namespace.getBoolean(Dest.DEBUG)) {
+        if (config.isVerbose()) {
             System.out.println("----------------------------");
             System.out.println("Parameter prompt:");
             for (Object key : params.keySet()) {

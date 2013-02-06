@@ -16,11 +16,9 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
-import de.cenote.jasperstarter.types.Dest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import net.sourceforge.argparse4j.inf.Namespace;
 
 /**
  *
@@ -29,13 +27,12 @@ import net.sourceforge.argparse4j.inf.Namespace;
  */
 public class Db {
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Namespace namespace = App.getInstance().getNamespace();
+    public Connection getConnection(Config config) throws ClassNotFoundException, SQLException {
         Connection conn = null;
-        DbType dbtype = (DbType) namespace.get(Dest.DB_TYPE);
-        String host = namespace.getString(Dest.DB_HOST);
-        String user = namespace.getString(Dest.DB_USER);
-        String passwd = namespace.getString(Dest.DB_PASSWD);
+        DbType dbtype = config.getDbType();
+        String host = config.getDbHost();
+        String user = config.getDbUser();
+        String passwd = config.getDbPasswd();
         String driver = null;
         String dbname = null;
         String port = null;
@@ -43,24 +40,24 @@ public class Db {
         String connectString = null;
         if (DbType.mysql.equals(dbtype)) {
             driver = DbType.mysql.getDriver();
-            port = namespace.getInt(Dest.DB_PORT).toString();
-            dbname = namespace.getString(Dest.DB_NAME);
+            port = config.getDbPort().toString();
+            dbname = config.getDbName();
             connectString = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
         } else if (DbType.postgres.equals(dbtype)) {
             driver = DbType.postgres.getDriver();
-            port = namespace.getInt(Dest.DB_PORT).toString();
-            dbname = namespace.getString(Dest.DB_NAME);
+            port = config.getDbPort().toString();
+            dbname = config.getDbName();
             connectString = "jdbc:postgresql://" + host + ":" + port + "/" + dbname;
         } else if (DbType.oracle.equals(dbtype)) {
             driver = DbType.oracle.getDriver();
-            port = namespace.getInt(Dest.DB_PORT).toString();
-            sid = namespace.getString(Dest.DB_SID);
+            port = config.getDbPort().toString();
+            sid = config.getDbSid();
             connectString = "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid;
         } else if (DbType.generic.equals(dbtype)) {
-            driver = namespace.getString(Dest.DB_DRIVER);
-            connectString = namespace.getString(Dest.DB_URL);
+            driver = config.getDbDriver();
+            connectString = config.getDbUrl();
         }
-        if (namespace.getBoolean(Dest.DEBUG)) {
+        if (config.isVerbose()) {
             System.out.println("JDBC driver: " + driver);
             System.out.println("Connectstring: " + connectString);
             System.out.println("db-user: " + user);

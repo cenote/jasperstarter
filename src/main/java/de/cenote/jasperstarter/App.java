@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.PrintService;
@@ -47,7 +46,6 @@ import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.lang.LocaleUtils;
 
 /**
  *
@@ -56,29 +54,8 @@ import org.apache.commons.lang.LocaleUtils;
  */
 public class App {
 
-    private static App instance = null;
-    private Properties applicationProperties = null;
     private Namespace namespace = null;
     private Map<String, Argument> allArguments = null;
-
-    private App() {
-
-        this.applicationProperties = new Properties();
-        try {
-            this.applicationProperties.load(this.getClass().
-                    getResourceAsStream("/de/cenote/jasperstarter/application.properties"));
-        } catch (IOException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        }
-    }
-
-    public static App getInstance() {
-        if (App.instance == null) {
-            App.instance = new App();
-        }
-        return App.instance;
-    }
 
     /**
      * @param args the command line arguments
@@ -91,9 +68,7 @@ public class App {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
-
-        App app = App.getInstance();
-
+        App app = new App();
         // create the command line parser
         ArgumentParser parser = app.createArgumentParser(config);
         if (args.length == 0) {
@@ -103,22 +78,19 @@ public class App {
         }
         app.namespace = app.parseArgumentParser(args, parser, config);
 
-        System.out.println("config: locale=" + config.locale);
-
-        // setting locale if given
-        if (app.namespace.get(Dest.LOCALE) != null) {
-            Locale.setDefault(LocaleUtils.toLocale(
-                    (String) app.namespace.get(Dest.LOCALE)));
+         // setting locale if given
+        if (config.hasLocale()) {
+            Locale.setDefault(config.getLocale());
         }
 
-        switch (Command.getCommand(app.namespace.getString(Dest.COMMAND))) {
+        switch (Command.getCommand(config.getCommand())) {
             case COMPILE:
             case CP:
-                app.compile();
+                app.compile(config);
                 break;
             case PROCESS:
             case PR:
-                app.processReport();
+                app.processReport(config);
                 break;
             case LIST_PRINTERS:
             case LP:
@@ -127,8 +99,7 @@ public class App {
             case LIST_PARAMS:
             case PARAMS:
                 try {
-                    App.listReportParams(new File(app.namespace.
-                            getString(Dest.INPUT)).getAbsoluteFile());
+                    App.listReportParams(config, new File(config.getInput()).getAbsoluteFile());
                 } catch (IllegalArgumentException ex) {
                     System.err.println(ex.getMessage());
                     System.exit(1);
@@ -137,13 +108,12 @@ public class App {
         }
     }
 
-    private void compile() {
+    private void compile(Config config) {
         boolean error = false;
-        App app = App.getInstance();
-        File input = new File(app.namespace.getString(Dest.INPUT));
+        File input = new File(config.getInput());
         if (input.isFile()) {
             try {
-                Report report = new Report(input);
+                Report report = new Report(config, input);
                 report.compileToFile();
             } catch (IllegalArgumentException ex) {
                 System.err.println(ex.getMessage());
@@ -156,7 +126,7 @@ public class App {
             for (File file : files) {
                 try {
                     System.out.println("Compiling: \"" + file + "\"");
-                    Report report = new Report(file);
+                    Report report = new Report(config, file);
                     report.compileToFile();
                 } catch (IllegalArgumentException ex) {
                     System.err.println(ex.getMessage());
@@ -174,13 +144,12 @@ public class App {
         }
     }
 
-    private void processReport() {
-        App app = App.getInstance();
+    private void processReport(Config config) {
         // add the jdbc dir to classpath
         try {
-            if (app.namespace.get(Dest.JDBC_DIR) != null) {
-                File jdbcDir = new File(app.namespace.get(Dest.JDBC_DIR).toString());
-                if (app.namespace.getBoolean(Dest.DEBUG)) {
+            if (config.hasJdbcDir()) {
+                File jdbcDir = config.getJdbcDir();
+                if (config.isVerbose()) {
                     System.out.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
                 }
                 ApplicationClasspath.addJars(jdbcDir.getAbsolutePath());
@@ -196,14 +165,14 @@ public class App {
         }
 
         // add optional resources to classpath
-        if (app.namespace.get(Dest.RESOURCE) != null) {
+        if (config.hasResource()) {
             try {
-                if ("".equals(app.namespace.getString(Dest.RESOURCE))) { // the default
+                if ("".equals(config.getResource())) { // the default
                     // add the parent of input to classpath
-                    File res = new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile().getParentFile();
+                    File res = new File(config.getInput()).getAbsoluteFile().getParentFile();
                     if (res.isDirectory()) {
                         ApplicationClasspath.add(res);
-                        if (app.namespace.getBoolean(Dest.DEBUG)) {
+                        if (config.isVerbose()) {
                             System.out.println(
                                     "Added resource \"" + res + "\" to classpath");
                         }
@@ -213,9 +182,9 @@ public class App {
                     }
                 } else {
                     // add file or dir to classpath
-                    File res = new File(app.namespace.getString(Dest.RESOURCE));
+                    File res = new File(config.getResource());
                     ApplicationClasspath.add(res);
-                    if (app.namespace.getBoolean(Dest.DEBUG)) {
+                    if (config.isVerbose()) {
                         System.out.println(
                                 "Added resource \"" + res + "\" to classpath");
                     }
@@ -228,7 +197,7 @@ public class App {
 
         Report report = null;
         try {
-            report = new Report(new File(app.namespace.getString(Dest.INPUT)).getAbsoluteFile());
+            report = new Report(config, new File(config.getInput()).getAbsoluteFile());
         } catch (IllegalArgumentException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);
@@ -239,7 +208,7 @@ public class App {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
-        List<OutputFormat> formats = app.namespace.getList(Dest.OUTPUT_FORMATS);
+        List<OutputFormat> formats = config.getOutputFormats();
         Boolean viewIt = false;
         Boolean printIt = false;
         try {
@@ -301,19 +270,8 @@ public class App {
         }
     }
 
-    private Properties getApplicationProperties() {
-        return this.applicationProperties;
-    }
-
     private ArgumentParser createArgumentParser(Config config) {
         this.allArguments = new HashMap<String, Argument>();
-        String jasperversion = Package.getPackage("net.sf.jasperreports.engine").
-                getImplementationVersion();
-        StringBuffer sb = new StringBuffer("JasperStarter ")
-                .append(applicationProperties.getProperty("application.version"))
-                .append(" Rev ").append(applicationProperties.getProperty("application.revision"))
-                .append(" ").append(applicationProperties.getProperty("application.revision.date"))
-                .append("\n").append(" - JasperReports: ").append(jasperversion);
 
         ArgumentParser parser = ArgumentParsers.newArgumentParser("jasperstarter", false, "-", "@")
                 .version(config.getVersionString());
@@ -386,8 +344,6 @@ public class App {
         groupFillOptions.addArgument("-r").metavar("<file>").dest(Dest.RESOURCE)
                 .nargs("?").setConst("").help(
                 "path to report resource dir or jar file. If <file> is not given the input directory is used.");
-        groupFillOptions.addArgument("-k", "--keep").dest(Dest.KEEP).action(Arguments.storeTrue()).
-                help("don't delete the temporary .jrprint file. OBSOLETE use output format jrprint");
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
@@ -422,26 +378,28 @@ public class App {
         Namespace ns = null;
         try {
             ns = parser.parseArgs(args);
+            parser.parseArgs(args, config);
             // change some arguments to required depending on db-type
-            if (ns.get(Dest.DB_TYPE) != null) {
-                if (ns.get(Dest.DB_TYPE).equals(DbType.none)) {
-                } else if (ns.get(Dest.DB_TYPE).equals(DbType.mysql)) {
+            if (config.hasDbType()) {
+                if (config.getDbType().equals(DbType.none)) {
+                    // nothing to do here
+                } else if (config.getDbType().equals(DbType.mysql)) {
                     allArguments.get(Dest.DB_HOST).required(true);
                     allArguments.get(Dest.DB_USER).required(true);
                     allArguments.get(Dest.DB_NAME).required(true);
                     allArguments.get(Dest.DB_PORT).setDefault(DbType.mysql.getPort());
-                } else if (ns.get(Dest.DB_TYPE).equals(DbType.postgres)) {
+                } else if (config.getDbType().equals(DbType.postgres)) {
                     allArguments.get(Dest.DB_HOST).required(true);
                     allArguments.get(Dest.DB_USER).required(true);
                     allArguments.get(Dest.DB_NAME).required(true);
                     allArguments.get(Dest.DB_PORT).setDefault(DbType.postgres.getPort());
-                } else if (ns.get(Dest.DB_TYPE).equals(DbType.oracle)) {
+                } else if (config.getDbType().equals(DbType.oracle)) {
                     allArguments.get(Dest.DB_HOST).required(true);
                     allArguments.get(Dest.DB_USER).required(true);
                     allArguments.get(Dest.DB_PASSWD).required(true);
                     allArguments.get(Dest.DB_SID).required(true);
                     allArguments.get(Dest.DB_PORT).setDefault(DbType.oracle.getPort());
-                } else if (ns.get(Dest.DB_TYPE).equals(DbType.generic)) {
+                } else if (config.getDbType().equals(DbType.generic)) {
                     allArguments.get(Dest.DB_USER).required(true);
                     allArguments.get(Dest.DB_DRIVER).required(true);
                     allArguments.get(Dest.DB_URL).required(true);
@@ -470,13 +428,9 @@ public class App {
     /**
      * @return the namespace
      */
-    public Namespace getNamespace() {
-        return namespace;
-    }
-
-    public static void listReportParams(File input) throws IllegalArgumentException {
+    public static void listReportParams(Config config, File input) throws IllegalArgumentException {
         boolean all;
-        Report report = new Report(input);
+        Report report = new Report(config, input);
         JRParameter[] params = report.getReportParameters();
         int maxName = 0;
         int maxClassName = 0;
