@@ -289,4 +289,8 @@ public class Config {
     public boolean isWriteJasper() {
         return writeJasper;
     }
+
+    // END argparse4j arguments
+
+    // @todo: overwrite toString()
 }

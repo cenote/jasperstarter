@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -76,48 +77,68 @@ public class App {
             System.out.println("type: jasperstarter -h to get help");
             System.exit(0);
         }
-        app.namespace = app.parseArgumentParser(args, parser, config);
+        try {
+            app.parseArgumentParser(args, parser, config);
+        } catch (ArgumentParserException ex) {
+            parser.handleError(ex);
+            System.exit(1);
+        }
+        if (config.isVerbose()) {
+            System.out.print("Command line:");
+            for (String arg : args) {
+                System.out.print(" " + arg);
+            }
+            // @todo: this makes sense only if Config.toString() is overwitten
+//            System.out.print("\n");
+//            System.out.println(config);
+        }
 
-         // setting locale if given
+        // @todo: main() will not be executed in tests...
+        // setting locale if given
         if (config.hasLocale()) {
             Locale.setDefault(config.getLocale());
         }
 
-        switch (Command.getCommand(config.getCommand())) {
-            case COMPILE:
-            case CP:
-                app.compile(config);
-                break;
-            case PROCESS:
-            case PR:
-                app.processReport(config);
-                break;
-            case LIST_PRINTERS:
-            case LP:
-                app.listPrinters();
-                break;
-            case LIST_PARAMS:
-            case PARAMS:
-                try {
+        try {
+            switch (Command.getCommand(config.getCommand())) {
+                case COMPILE:
+                case CP:
+                    app.compile(config);
+                    break;
+                case PROCESS:
+                case PR:
+                    app.processReport(config);
+                    break;
+                case LIST_PRINTERS:
+                case LP:
+                    app.listPrinters();
+                    break;
+                case LIST_PARAMS:
+                case PARAMS:
                     App.listReportParams(config, new File(config.getInput()).getAbsoluteFile());
-                } catch (IllegalArgumentException ex) {
-                    System.err.println(ex.getMessage());
-                    System.exit(1);
-                }
-                break;
+                    break;
+            }
+        } catch (IllegalArgumentException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        } catch (InterruptedException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
+        } catch (JRException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(1);
         }
     }
 
     private void compile(Config config) {
-        boolean error = false;
+        IllegalArgumentException error = null;
         File input = new File(config.getInput());
         if (input.isFile()) {
             try {
                 Report report = new Report(config, input);
                 report.compileToFile();
             } catch (IllegalArgumentException ex) {
-                System.err.println(ex.getMessage());
-                error = true;
+                error = ex;
             }
         } else if (input.isDirectory()) {
             // compile all .jrxml files in this directory
@@ -129,22 +150,19 @@ public class App {
                     Report report = new Report(config, file);
                     report.compileToFile();
                 } catch (IllegalArgumentException ex) {
-                    System.err.println(ex.getMessage());
-                    error = true;
+                    error = ex;
                 }
             }
         } else {
-            System.err.println("Error: not a file: " + input.getName());
-            error = true;
+            error = new IllegalArgumentException("Error: not a file: " + input.getName());
         }
-        if (error) {
-            System.exit(1);
-        } else {
-            System.exit(0);
+        if (error != null) {
+            throw error;
         }
     }
 
-    private void processReport(Config config) {
+    private void processReport(Config config)
+            throws IllegalArgumentException, InterruptedException, JRException {
         // add the jdbc dir to classpath
         try {
             if (config.hasJdbcDir()) {
@@ -157,11 +175,9 @@ public class App {
                 ApplicationClasspath.addJarsRelative("../jdbc");
             }
         } catch (IOException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
+            throw new IllegalArgumentException("Error adding jdbc-dir", ex);
         } catch (URISyntaxException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
+            throw new IllegalArgumentException("Error adding jdbc-dir: \"../jdbc\"", ex);
         }
 
         // add optional resources to classpath
@@ -190,70 +206,59 @@ public class App {
                     }
                 }
             } catch (IOException ex) {
-                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-                System.exit(1);
+                throw new IllegalArgumentException("Error adding resource \""
+                        + config.getResource() + "\" to classpath", ex);
             }
         }
 
-        Report report = null;
-        try {
-            report = new Report(config, new File(config.getInput()).getAbsoluteFile());
-        } catch (IllegalArgumentException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(1);
-        }
-        try {
-            report.fill();  // produces visible output file if OutputFormat.jrprint is set
-        } catch (InterruptedException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(1);
-        }
+        Report report = new Report(config,
+                new File(config.getInput()).getAbsoluteFile());
+
+        report.fill();  // produces visible output file if OutputFormat.jrprint is set
+
         List<OutputFormat> formats = config.getOutputFormats();
         Boolean viewIt = false;
         Boolean printIt = false;
-        try {
-            for (OutputFormat f : formats) {
-                // OutputFormat.jrprint is handled in fill()
-                if (OutputFormat.print.equals(f)) {
-                    printIt = true;
-                } else if (OutputFormat.view.equals(f)) {
-                    viewIt = true;
-                } else if (OutputFormat.pdf.equals(f)) {
-                    report.exportPdf();
-                } else if (OutputFormat.docx.equals(f)) {
-                    report.exportDocx();
-                } else if (OutputFormat.odt.equals(f)) {
-                    report.exportOdt();
-                } else if (OutputFormat.rtf.equals(f)) {
-                    report.exportRtf();
-                } else if (OutputFormat.html.equals(f)) {
-                    report.exportHtml();
-                } else if (OutputFormat.xml.equals(f)) {
-                    report.exportXml();
-                } else if (OutputFormat.xls.equals(f)) {
-                    report.exportXls();
-                } else if (OutputFormat.xlsx.equals(f)) {
-                    report.exportXlsx();
-                } else if (OutputFormat.csv.equals(f)) {
-                    report.exportCsv();
-                } else if (OutputFormat.ods.equals(f)) {
-                    report.exportOds();
-                } else if (OutputFormat.pptx.equals(f)) {
-                    report.exportPptx();
-                } else if (OutputFormat.xhtml.equals(f)) {
-                    report.exportXhtml();
-                }
+
+        for (OutputFormat f : formats) {
+            // OutputFormat.jrprint is handled in fill()
+            if (OutputFormat.print.equals(f)) {
+                printIt = true;
+            } else if (OutputFormat.view.equals(f)) {
+                viewIt = true;
+            } else if (OutputFormat.pdf.equals(f)) {
+                report.exportPdf();
+            } else if (OutputFormat.docx.equals(f)) {
+                report.exportDocx();
+            } else if (OutputFormat.odt.equals(f)) {
+                report.exportOdt();
+            } else if (OutputFormat.rtf.equals(f)) {
+                report.exportRtf();
+            } else if (OutputFormat.html.equals(f)) {
+                report.exportHtml();
+            } else if (OutputFormat.xml.equals(f)) {
+                report.exportXml();
+            } else if (OutputFormat.xls.equals(f)) {
+                report.exportXls();
+            } else if (OutputFormat.xlsx.equals(f)) {
+                report.exportXlsx();
+            } else if (OutputFormat.csv.equals(f)) {
+                report.exportCsv();
+            } else if (OutputFormat.ods.equals(f)) {
+                report.exportOds();
+            } else if (OutputFormat.pptx.equals(f)) {
+                report.exportPptx();
+            } else if (OutputFormat.xhtml.equals(f)) {
+                report.exportXhtml();
             }
-            if (viewIt) {
-                report.view();
-            } else if (printIt) {
-                // print directly only if viewer is not activated
-                report.print();
-            }
-        } catch (JRException ex) {
-            Logger.getLogger(Db.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
         }
+        if (viewIt) {
+            report.view();
+        } else if (printIt) {
+            // print directly only if viewer is not activated
+            report.print();
+        }
+
     }
 
     private void listPrinters() {
@@ -374,55 +379,36 @@ public class App {
         allArguments.put(argDbUrl.getDest(), argDbUrl);
     }
 
-    private Namespace parseArgumentParser(String[] args, ArgumentParser parser, Config config) {
-        Namespace ns = null;
-        try {
-            ns = parser.parseArgs(args);
-            parser.parseArgs(args, config);
-            // change some arguments to required depending on db-type
-            if (config.hasDbType()) {
-                if (config.getDbType().equals(DbType.none)) {
-                    // nothing to do here
-                } else if (config.getDbType().equals(DbType.mysql)) {
-                    allArguments.get(Dest.DB_HOST).required(true);
-                    allArguments.get(Dest.DB_USER).required(true);
-                    allArguments.get(Dest.DB_NAME).required(true);
-                    allArguments.get(Dest.DB_PORT).setDefault(DbType.mysql.getPort());
-                } else if (config.getDbType().equals(DbType.postgres)) {
-                    allArguments.get(Dest.DB_HOST).required(true);
-                    allArguments.get(Dest.DB_USER).required(true);
-                    allArguments.get(Dest.DB_NAME).required(true);
-                    allArguments.get(Dest.DB_PORT).setDefault(DbType.postgres.getPort());
-                } else if (config.getDbType().equals(DbType.oracle)) {
-                    allArguments.get(Dest.DB_HOST).required(true);
-                    allArguments.get(Dest.DB_USER).required(true);
-                    allArguments.get(Dest.DB_PASSWD).required(true);
-                    allArguments.get(Dest.DB_SID).required(true);
-                    allArguments.get(Dest.DB_PORT).setDefault(DbType.oracle.getPort());
-                } else if (config.getDbType().equals(DbType.generic)) {
-                    allArguments.get(Dest.DB_USER).required(true);
-                    allArguments.get(Dest.DB_DRIVER).required(true);
-                    allArguments.get(Dest.DB_URL).required(true);
-                }
+    private void parseArgumentParser(String[] args, ArgumentParser parser, Config config) throws ArgumentParserException {
+        parser.parseArgs(args, config);
+        // change some arguments to required depending on db-type
+        if (config.hasDbType()) {
+            if (config.getDbType().equals(DbType.none)) {
+                // nothing to do here
+            } else if (config.getDbType().equals(DbType.mysql)) {
+                allArguments.get(Dest.DB_HOST).required(true);
+                allArguments.get(Dest.DB_USER).required(true);
+                allArguments.get(Dest.DB_NAME).required(true);
+                allArguments.get(Dest.DB_PORT).setDefault(DbType.mysql.getPort());
+            } else if (config.getDbType().equals(DbType.postgres)) {
+                allArguments.get(Dest.DB_HOST).required(true);
+                allArguments.get(Dest.DB_USER).required(true);
+                allArguments.get(Dest.DB_NAME).required(true);
+                allArguments.get(Dest.DB_PORT).setDefault(DbType.postgres.getPort());
+            } else if (config.getDbType().equals(DbType.oracle)) {
+                allArguments.get(Dest.DB_HOST).required(true);
+                allArguments.get(Dest.DB_USER).required(true);
+                allArguments.get(Dest.DB_PASSWD).required(true);
+                allArguments.get(Dest.DB_SID).required(true);
+                allArguments.get(Dest.DB_PORT).setDefault(DbType.oracle.getPort());
+            } else if (config.getDbType().equals(DbType.generic)) {
+                allArguments.get(Dest.DB_USER).required(true);
+                allArguments.get(Dest.DB_DRIVER).required(true);
+                allArguments.get(Dest.DB_URL).required(true);
             }
-            // parse again so changed arguments become effectiv
-            ns = parser.parseArgs(args);
-            // parse again to fill the new config POJO
-            parser.parseArgs(args, config);
-        } catch (ArgumentParserException ex) {
-            parser.handleError(ex);
-            System.exit(1);
         }
-        if (ns.getBoolean(Dest.DEBUG)) {
-            System.out.print("Command line:");
-            for (String arg : args) {
-                System.out.print(" " + arg);
-            }
-            System.out.print("\n");
-
-            System.out.println(ns);
-        }
-        return ns;
+        // parse again so changed arguments become effectiv
+        parser.parseArgs(args, config);
     }
 
     /**
