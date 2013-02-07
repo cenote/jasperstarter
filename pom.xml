@@ -311,6 +311,12 @@ limitations under the License.
             <version>6.5.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.9</version>
+            <scope>test</scope>
+        </dependency>
         
         <dependency>
             <groupId>net.sourceforge.argparse4j</groupId>
