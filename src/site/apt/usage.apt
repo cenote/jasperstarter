@@ -148,30 +148,30 @@ usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
 
 optional arguments:
   -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code or a
+  --locale <lang>        set locale  with  two-letter  ISO-639  code  or  a
                          combination of ISO-639 and ISO-3166 like de_DE
   -v, --verbose          display additional messages
   -V, --version          display version information and exit
 
 commands:
   <cmd>                  type <cmd> -h to get help on command
-    cp                   compile - compile reports
-    pr                   process - view, print or export an existing report
-    lp                   list printers - lists available printers on this
-                         system
-    params               list params - list parameters from given report
+    compile              (cp) - compile reports
+    process              (pr) - view, print or export an existing report
+    list_printers        (printers,lpr) - lists available printers
+    list_params          (params,lpa) - list parameters from given report
 +---
 
   Every command has it's own help which can be invoked with <\<command\> -h>.
 
 
-** The command <cp>
+** The command <compile> (<cp>)
 
-  The command <cp> is for compiling one report or all reports in a directory.
+  The command <compile> is for compiling one report or all reports in a
+  directory. <cp> is an alias for <compile>.
 
 +---
 $ jasperstarter cp -h
-usage: jasperstarter cp [-h] -i <file> [-o <file>]
+usage: jasperstarter compile [-h] -i <file> [-o <file>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -182,46 +182,45 @@ options:
 +---
 
 
-** The command <pr>
+** The command <process> (<pr>)
 
-  The command <<pr>> is for processing a report. Thant means viewing, printing
-  or exporting.
+  The command <process> is for processing a report. Thant means viewing,
+  printing or exporting. <pr> is an alias for <process>.
 
 +---
 $ jasperstarter pr -h
-usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-r [<file>]]
-                     [-k] [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
-                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
-                     [--db-port <port>] [--db-driver <name>]
-                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
-                     [-N <printername>] [-d] [-s <reportname>]
+usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] -i <file>
+                     [-o <file>] [-w] [-a [<filter>]] [-P <p> [<p> ...]]
+                     [-r [<file>]] [-t <dbtype>] [-H <dbhost>]
+                     [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
+                     [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [-N <printername>] [-d]
+                     [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
                          pptx, csv, html, xhtml, xml, jrprint
   -i <file>              input file (.jrxml|.jasper|.jrprint)
   -o <file>              directory or basename of outputfile(s)
 
 compile options:
-  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
                          prcessed
 
 fill options:
-  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+  -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
                          p, pe (see usage)
-  -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
+  -P <p> [<p> ...]       report parameter: name=type:value  [...]  | types:
                          string, int, double, date, image, locale
-  -r [<file>]            path to report resource dir or jar file. If
+  -r [<file>]            path to  report  resource  dir  or  jar  file.  If
                          <file> is not given the input directory is used.
-  -k, --keep             don't delete the temporary .jrprint file.
-                         OBSOLETE use output format jrprint
 
 db options:
-  -t <dbtype>            database type: none, mysql, postgres, oracle,
+  -t <dbtype>            database  type:  none,  mysql,  postgres,  oracle,
                          generic
   -H <dbhost>            database host
   -u <dbuser>            database user
@@ -231,7 +230,7 @@ db options:
   --db-port <port>       database port
   --db-driver <name>     jdbc driver class name for use with type: generic
   --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
-  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+  --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
 
 print options:
@@ -241,19 +240,21 @@ print options:
 +---
 
 
-** The command <lp>
+** The command <list_printers> (<printers>,<lpr>)
 
-  The command <lp> has no options. It lists the available printers on your
-  system which can be used with optin <-N> of the command <pr>.
+  The command <list_printers> has no options. It lists the available printers
+  on your system which can be used with optin <-N> of the command <process>.
+  <printers>,<lpr> are aliases for <list_printers>.
 
 
-** The command <params>
+** The command <list_parameters> (<params>,<lpa>)
 
-  The command <params> lists all user defined parameters of a given report.
+  The command <list_parameters> lists all user defined parameters of a given
+  report. <params>,<lpa> are aliases for <list_parameters>.
 
 +---
 $ jasperstarter params -h
-usage: jasperstarter params [-h] -i <file>
+usage: jasperstarter list_parameters [-h] -i <file>
 
 optional arguments:
   -h, --help             show this help message and exit

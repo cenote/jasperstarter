@@ -47,9 +47,9 @@ Invoke JasperStarter with _\-h_ to get an overview:
 
     $ jasperstarter -h
 
-Invoke JasperStarter with _pr \-h_ to get help on the process command:
+Invoke JasperStarter with _process \-h_ to get help on the process command:
 
-    $ jasperstarter pr -h
+    $ jasperstarter process -h
 
 Example with reportparameters:
 

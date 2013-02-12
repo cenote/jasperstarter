@@ -26,9 +26,11 @@ public enum Command {
     PROCESS,
     PR, // alias for PROCESS
     LIST_PRINTERS,
-    LP, // alias for LIST_PRINTERS
-    LIST_PARAMS,
-    PARAMS; // alias for LIST_PARAMS
+    PRINTERS, // alias for LIST_PRINTERS
+    LPR, // alias for LIST_PRINTERS
+    LIST_PARAMETERS,
+    PARAMS, // alias for LIST_PARAMS
+    LPA; // alias for LIST_PARAMS
 
     public static Command getCommand(String name) {
         return valueOf(name.toUpperCase());

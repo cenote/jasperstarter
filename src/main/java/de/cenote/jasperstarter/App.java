@@ -110,11 +110,13 @@ public class App {
                     app.processReport(config);
                     break;
                 case LIST_PRINTERS:
-                case LP:
+                case PRINTERS:
+                case LPR:
                     app.listPrinters();
                     break;
-                case LIST_PARAMS:
+                case LIST_PARAMETERS:
                 case PARAMS:
+                case LPA:
                     App.listReportParams(config, new File(config.getInput()).getAbsoluteFile());
                     break;
             }
@@ -294,20 +296,23 @@ public class App {
                 help("type <cmd> -h to get help on command").metavar("<cmd>").
                 dest(Dest.COMMAND);
 
-        Subparser parserCompile = subparsers.addParser("cp", true).help("compile - compile reports");
+        Subparser parserCompile =
+                subparsers.addParser("compile", true).aliases("cp")
+                .help("(cp) - compile reports");
         createCompileArguments(parserCompile);
-        Subparser parserProcess = subparsers.addParser("pr", true).help("process - view, print or export an existing report");
+
+        Subparser parserProcess =
+                subparsers.addParser("process", true).aliases("pr")
+                .help("(pr) - view, print or export an existing report");
         createProcessArguments(parserProcess);
-        // @todo: creating aliases does not work for now because of the ambigoius allArguments elements !!
-        // This does NOT work:
-        //Subparser parserProc    = subparsers.addParser("proc", true).help("alias for command process");
-        //createProcessArguments(parserProc);
 
-        Subparser parserListPrinters = subparsers.addParser("lp", true).
-                help("list printers - lists available printers on this system");
+        Subparser parserListPrinters =
+                subparsers.addParser("list_printers", true).aliases("printers","lpr")
+                .help("(printers,lpr) - lists available printers");
 
-        Subparser parserListParams = subparsers.addParser("params", true).
-                help("list params - list parameters from given report");
+        Subparser parserListParams = 
+                subparsers.addParser("list_parameters", true).aliases("params","lpa").
+                help("(params,lpa) - list parameters from a given report");
         createListParamsArguments(parserListParams);
 
         return parser;

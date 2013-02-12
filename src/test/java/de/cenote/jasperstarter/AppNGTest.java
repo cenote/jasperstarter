@@ -119,17 +119,20 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals("invalid choice: '' (choose from 'cp', 'pr', 'lp', 'params')", ex.getCause().getMessage());
+            assertEquals("invalid choice: '' (choose from 'compile', 'cp',"
+                    + " 'process', 'pr', 'list_printers', 'printers', 'lpr',"
+                    + " 'list_parameters', 'params', 'lpa')",
+                    ex.getCause().getMessage());
         }
     }
 
     /**
      * Test of private parseArgumentParser method, of class App
      *
-     * detailed tests for command pr
+     * detailed tests for command process
      */
     @Test(dependsOnMethods = {"testCreateArgumentParser"})
-    public void testParseArgumentParserCommandPr() throws NoSuchMethodException, IllegalAccessException {
+    public void testParseArgumentParserCommandProcess() throws NoSuchMethodException, IllegalAccessException {
         System.out.println("parseArgumentParser");
         App app = new App();
         String[] args = {};
@@ -153,6 +156,13 @@ public class AppNGTest {
                 Config.class);
         method.setAccessible(true);
         // just the process command
+        args = "process".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            assertEquals("argument -f is required", ex.getCause().getMessage());
+        }
+        // now the alias pr
         args = "pr".split(" ");
         try {
             method.invoke(app, args, parser, config);
