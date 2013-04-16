@@ -3,6 +3,22 @@ JasperStarter - Running JasperReports from command line
 ========================================================
 
 
+Release Notes - JasperStarter - Version 1.2.0
+----------------------------------------------
+
+This release is mainly due to the new JasperReports library version 5.0.4.
+
+** Improvement
+    * [JAS-25] - Implement command aliases
+
+** Task
+    * [JAS-19] - create an independent configuration bean as replacement for the
+                 parser dependend namspace object
+    * [JAS-20] - move any call of System.exit() to App.main()
+    * [JAS-21] - remove obsolete option --keep
+    * [JAS-26] - Use jasperreports library 5.0.4
+
+
 Release Notes - JasperStarter - Version 1.1.0
 ----------------------------------------------
 
