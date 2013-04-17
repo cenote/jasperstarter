@@ -133,7 +133,7 @@ public class AppNGTest {
      */
     @Test(dependsOnMethods = {"testCreateArgumentParser"})
     public void testParseArgumentParserCommandProcess() throws NoSuchMethodException, IllegalAccessException {
-        System.out.println("parseArgumentParser");
+        System.out.println("parseArgumentParserCommandProcess");
         App app = new App();
         String[] args = {};
         Config config = null;
@@ -398,5 +398,84 @@ public class AppNGTest {
 //            fail(ex.getCause().getMessage(), ex.getCause());
 //        }
 
+    }
+
+    /**
+     * Test of private parseArgumentParser method, of class App
+     *
+     * detailed tests for command process
+     */
+    @Test
+    public void testLocateInputFile() throws NoSuchMethodException,
+            IllegalAccessException, IOException {
+        System.out.println("locateInputFile");
+        App app = new App();
+        Method method = app.getClass().getDeclaredMethod(
+                "locateInputFile", File.class);
+        method.setAccessible(true);
+        // try a nonexistent file
+        try {
+            method.invoke(app, new File("nonexistent file"));
+        } catch (InvocationTargetException ex) {
+            assertTrue(ex.getCause().getMessage().startsWith("Error: file not found:"));
+        }
+        // try a directory
+        try {
+            method.invoke(app, new File("src"));
+        } catch (InvocationTargetException ex) {
+            assertTrue(ex.getCause().getMessage().endsWith("is a directory, file needed"));
+        }
+        // try basename of an existing file (must be created first)
+        File testfile1 = new File("target/test-classes/testfile.jrxml");
+        testfile1.createNewFile();
+
+        Object result = null;
+        try {
+            result = method.invoke(app, new File("target/test-classes/testfile"));
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+            //assertEquals("argument -f is required", ex.getCause().getMessage());
+            System.out.println(ex.getCause().getMessage());
+            assertTrue(ex.getCause().getMessage().endsWith("is a directory, file needed"));
+        }
+        assertEquals(((File) result).getName(), "testfile.jrxml");
+
+        // now create the next filetype of same basename and test again
+        File testfile2 = new File("target/test-classes/testfile.jasper");
+        testfile2.createNewFile();
+        try {
+            result = method.invoke(app, new File("target/test-classes/testfile"));
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+            //assertEquals("argument -f is required", ex.getCause().getMessage());
+            System.out.println(ex.getCause().getMessage());
+            assertTrue(ex.getCause().getMessage().endsWith("is a directory, file needed"));
+        }
+        assertEquals(((File) result).getName(), "testfile.jasper");
+
+        // now give the full filename, the same must be returned
+        try {
+            result = method.invoke(app, new File("target/test-classes/testfile.jrxml"));
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+            //assertEquals("argument -f is required", ex.getCause().getMessage());
+            System.out.println(ex.getCause().getMessage());
+            assertTrue(ex.getCause().getMessage().endsWith("is a directory, file needed"));
+        }
+        assertEquals(((File) result).getName(), "testfile.jrxml");
+
+        try {
+            result = method.invoke(app, new File("target/test-classes/testfile.jasper"));
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+            //assertEquals("argument -f is required", ex.getCause().getMessage());
+            System.out.println(ex.getCause().getMessage());
+            assertTrue(ex.getCause().getMessage().endsWith("is a directory, file needed"));
+        }
+        assertEquals(((File) result).getName(), "testfile.jasper");
+
+        // delete the testfiles
+        testfile1.delete();
+        testfile2.delete();
     }
 }

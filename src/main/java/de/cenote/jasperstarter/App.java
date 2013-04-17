@@ -212,9 +212,15 @@ public class App {
                         + config.getResource() + "\" to classpath", ex);
             }
         }
-
-        Report report = new Report(config,
-                new File(config.getInput()).getAbsoluteFile());
+        File inputFile = new File(config.getInput()).getAbsoluteFile();
+        if (config.isVerbose()) {
+            System.out.println("Original input file: " + inputFile.getAbsolutePath());
+        }
+        inputFile = locateInputFile(inputFile);
+        if (config.isVerbose()) {
+            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+        }
+        Report report = new Report(config, inputFile);
 
         report.fill();  // produces visible output file if OutputFormat.jrprint is set
 
@@ -261,6 +267,39 @@ public class App {
             report.print();
         }
 
+    }
+
+    /**
+     *
+     * @param inputFile file or basename of a JasperReports file
+     * @return a valid file that is not a directory and has a fileending of
+     * (jrxml, jasper, jrprint)
+     */
+    private File locateInputFile(File inputFile) {
+
+        if (!inputFile.exists()) {
+            File newInputfile;
+            // maybe the user omitted the file extension
+            // first trying .jasper
+            newInputfile = new File(inputFile.getAbsolutePath() + ".jasper");
+            if (newInputfile.isFile()) {
+                inputFile = newInputfile;
+            }
+            if (!inputFile.exists()) {
+                // second trying .jrxml
+                newInputfile = new File(inputFile.getAbsolutePath() + ".jrxml");
+                if (newInputfile.isFile()) {
+                    inputFile = newInputfile;
+                }
+            }
+        }
+        if (!inputFile.exists()) {
+            throw new IllegalArgumentException("Error: file not found: " + inputFile.getAbsolutePath());
+        } else if (inputFile.isDirectory()) {
+            throw new IllegalArgumentException("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
+        }
+
+        return inputFile;
     }
 
     private void listPrinters() {

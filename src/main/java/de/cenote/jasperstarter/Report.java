@@ -102,34 +102,6 @@ public class Report {
         // store the given default to reset to it in fill()
         defaultLocale = Locale.getDefault();
 
-        if (config.isVerbose()) {
-            System.out.println("Original input file: " + inputFile.getAbsolutePath());
-        }
-
-        if (!inputFile.exists()) {
-            File newInputfile;
-            // maybe the user omitted the file extension
-            // first trying .jasper
-            newInputfile = new File(inputFile.getAbsolutePath() + ".jasper");
-            if (newInputfile.isFile()) {
-                inputFile = newInputfile;
-            }
-            if (!inputFile.exists()) {
-                // second trying .jrxml
-                newInputfile = new File(inputFile.getAbsolutePath() + ".jrxml");
-                if (newInputfile.isFile()) {
-                    inputFile = newInputfile;
-                }
-            }
-        }
-        if (!inputFile.exists()) {
-            throw new IllegalArgumentException("Error: file not found: " + inputFile.getAbsolutePath());
-        } else if (inputFile.isDirectory()) {
-            throw new IllegalArgumentException("Error: " + inputFile.getAbsolutePath() + " is a directory, file needed");
-        }
-        if (config.isVerbose()) {
-            System.out.println("Using input file: " + inputFile.getAbsolutePath());
-        }
         this.inputFile = inputFile;
 
         Object inputObject = null;
