@@ -325,7 +325,9 @@ public class ParameterPanel extends JPanel {
     }
 
     private class DateActionListener implements ActionListener {
+
         JLabel selectedDate;
+
         @Override
         public void actionPerformed(ActionEvent e) {
 

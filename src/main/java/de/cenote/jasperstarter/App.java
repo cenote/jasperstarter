@@ -25,13 +25,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import net.sf.jasperreports.engine.JRException;
@@ -346,11 +343,11 @@ public class App {
         createProcessArguments(parserProcess);
 
         Subparser parserListPrinters =
-                subparsers.addParser("list_printers", true).aliases("printers","lpr")
+                subparsers.addParser("list_printers", true).aliases("printers", "lpr")
                 .help("(printers,lpr) - lists available printers");
 
-        Subparser parserListParams = 
-                subparsers.addParser("list_parameters", true).aliases("params","lpa").
+        Subparser parserListParams =
+                subparsers.addParser("list_parameters", true).aliases("params", "lpa").
                 help("(params,lpa) - list parameters from a given report");
         createListParamsArguments(parserListParams);
 

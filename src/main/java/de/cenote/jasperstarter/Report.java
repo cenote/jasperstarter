@@ -16,9 +16,7 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.gui.ParameterPrompt;
-import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DbType;
-import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.InputType;
 import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
@@ -73,7 +71,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.commons.lang.LocaleUtils;
 
 /**

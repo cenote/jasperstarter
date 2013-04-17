@@ -43,8 +43,6 @@ public class ConfigNGTest {
     public void tearDownMethod() throws Exception {
     }
 
-
-
     /**
      * Test of constructor, of class Config.
      */
@@ -56,7 +54,7 @@ public class ConfigNGTest {
             // @todo: Config() cannot get JasperReports version while testing
             instance = new Config();
         } catch (IOException ex) {
-           fail(ex.getMessage());
+            fail(ex.getMessage());
         }
         assertNotNull(instance);
     }
@@ -64,7 +62,7 @@ public class ConfigNGTest {
     /**
      * Test of getVersionString method, of class Config.
      */
-    @org.testng.annotations.Test(dependsOnMethods = { "testConfig" })
+    @org.testng.annotations.Test(dependsOnMethods = {"testConfig"})
     public void testGetVersionString() {
         System.out.println("getVersionString");
         Config instance = null;
@@ -77,7 +75,4 @@ public class ConfigNGTest {
         assertNotNull(result);
 
     }
-
-
-
 }
