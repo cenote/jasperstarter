@@ -116,9 +116,10 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals("invalid choice: '' (choose from 'compile', 'cp',"
-                    + " 'process', 'pr', 'list_printers', 'printers', 'lpr',"
-                    + " 'list_parameters', 'params', 'lpa')",
+            // new error output in argparse4j-0.4.0:
+            assertEquals("ambiguous command:  could match compile, cp,"
+                    + " list_parameters, list_printers, lpa, lpr, params, pr,"
+                    + " printers, process",
                     ex.getCause().getMessage());
         }
     }

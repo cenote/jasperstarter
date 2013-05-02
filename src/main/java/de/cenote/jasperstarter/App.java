@@ -334,21 +334,21 @@ public class App {
 
         Subparser parserCompile =
                 subparsers.addParser("compile", true).aliases("cp")
-                .help("(cp) - compile reports");
+                .help("compile reports");
         createCompileArguments(parserCompile);
 
         Subparser parserProcess =
                 subparsers.addParser("process", true).aliases("pr")
-                .help("(pr) - view, print or export an existing report");
+                .help("view, print or export an existing report");
         createProcessArguments(parserProcess);
 
         Subparser parserListPrinters =
                 subparsers.addParser("list_printers", true).aliases("printers", "lpr")
-                .help("(printers,lpr) - lists available printers");
+                .help("lists available printers");
 
         Subparser parserListParams =
                 subparsers.addParser("list_parameters", true).aliases("params", "lpa").
-                help("(params,lpa) - list parameters from a given report");
+                help("list parameters from a given report");
         createListParamsArguments(parserListParams);
 
         return parser;
