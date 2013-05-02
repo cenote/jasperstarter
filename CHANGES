@@ -3,6 +3,22 @@ JasperStarter - Running JasperReports from command line
 ========================================================
 
 
+
+Release Notes - JasperStarter - Version 1.3.0
+----------------------------------------------
+
+This release is mainly due to the new JasperReports library version 5.1.0.
+
+** Improvement
+    * [JAS-28] - Include argparse4j 0.4.0 which introduces some features to the
+                 user
+                 - Argument abbreviations
+                 - Subcommand abbreviations
+
+** Task
+    * [JAS-27] - Include JasperReports 5.1.0
+
+
 Release Notes - JasperStarter - Version 1.2.0
 ----------------------------------------------
 
