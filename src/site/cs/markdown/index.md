@@ -138,7 +138,7 @@ vyvolat JasperStarter v rámci vašeho IDE a získali report z databáze.
 
 ### Licence
 
-Copyright 2012 Cenote GmbH.
+Copyright 2012, 2013 Cenote GmbH.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
