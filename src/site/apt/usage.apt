@@ -414,13 +414,13 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
       * <<Name>> = <background>
 
-      * <<Parameter Class>> = <java.awt.image>
+      * <<Parameter Class>> = <java.awt.Image>
 
    * Place an image in your report and change it's properties:
 
       * <<Image Expression>> = <$P\{background\}>
 
-      * <<Expression Class>> = <java.awt.image>
+      * <<Expression Class>> = <java.awt.Image>
 
    * compile your report
 
