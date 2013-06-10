@@ -3,6 +3,16 @@ JasperStarter - Running JasperReports from command line
 ========================================================
 
 
+Release Notes - JasperStarter - Version 1.4.0
+----------------------------------------------
+
+** Bug
+    * [JAS-29] - Documentation typo java.awt.image
+
+** Task
+    * [JAS-31] - Include JasperReports 5.1.2
+    * [JAS-32] - Include argparse4j 0.4.1
+
 
 Release Notes - JasperStarter - Version 1.3.0
 ----------------------------------------------
