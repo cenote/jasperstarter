@@ -15,4 +15,4 @@
 # limitations under the License.
 
 SCRIPTPATH="$(dirname $0)"
-java -jar "$SCRIPTPATH/../lib/jasperstarter.jar" $*
+java -jar "$SCRIPTPATH/../lib/jasperstarter.jar" "$@"
