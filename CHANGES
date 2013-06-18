@@ -2,6 +2,13 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 1.4.1
+----------------------------------------------
+
+** Bug
+    * [JAS-33] - Report parameter with space produces error on Unix
+                 like systems
+
 
 Release Notes - JasperStarter - Version 1.4.0
 ----------------------------------------------
