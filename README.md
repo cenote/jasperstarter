@@ -9,9 +9,10 @@ It has the following features:
 
   * Run any JasperReport that needs a jdbc datasource or empty datasource
   * Use with any database for which a jdbc driver is available
-  * Execute reports that need runtime parameters. The following parameter types
-    are supported:
-    * string, int, double, date, image (see usage), locale
+  * Execute reports that need runtime parameters. Any parameter whose class has
+    a string constructor is accepted. Additionally the following types are
+    supported or have special handlers:
+    * date, image (see usage), locale
   * Optionally prompt for report parameters
   * Print directly to system default or given printer
   * Optionally show printer dialog to choose printer
@@ -53,8 +54,8 @@ Invoke JasperStarter with _process \-h_ to get help on the process command:
 
 Example with reportparameters:
 
-    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
-    -o report -p secret -P CustomerNo=string:10 StartFrom=date:2012-10-01
+    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i \
+    report.jasper -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 
 Example with hsql using database type generic:
 

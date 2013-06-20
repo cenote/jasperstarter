@@ -155,10 +155,12 @@ optional arguments:
 
 commands:
   <cmd>                  type <cmd> -h to get help on command
-    compile              (cp) - compile reports
-    process              (pr) - view, print or export an existing report
-    list_printers        (printers,lpr) - lists available printers
-    list_params          (params,lpa) - list parameters from given report
+    compile (cp)         compile reports
+    process (pr)         view, print or export an existing report
+    list_printers (printers,lpr)
+                         lists available printers
+    list_parameters (params,lpa)
+                         list parameters from a given report
 +---
 
   Every command has it's own help which can be invoked with <\<command\> -h>.
@@ -214,8 +216,7 @@ compile options:
 fill options:
   -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
                          p, pe (see usage)
-  -P <p> [<p> ...]       report parameter: name=type:value  [...]  | types:
-                         string, int, double, date, image, locale
+  -P <p> [<p> ...]       report parameter: name=value [...]
   -r [<file>]            path to  report  resource  dir  or  jar  file.  If
                          <file> is not given the input directory is used.
 
@@ -378,15 +379,17 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
 ** Reports with runtime parameters
 
-  Report parameters can consist of several types. Most types are self-explanatory.
-  JasperStarter supports the following types:
+  Report parameters can consist of several types (classes). JasperStarter can
+  generally handle all classes that have a constructor of type String.
+  Additionally JasperStarter has special handlers for some classes that have no
+  constructor of type String or otherwiese need special handling. These are:
 
-   * string, int, double, date, image, locale
+   * date, image, locale
 
   Multiple parameters can be separated by spaces. A parameter has the following
   form:
 
-   * \<<<name>>\><<=>>\<<<type>>\><<:>>\<<<value>>\>
+   * \<<<name>>\><<=>>\<<<value>>\>
 
   Replace <<name>> with the parameter name in your report. Parameter names are
   <<case sensitive>> !
@@ -400,7 +403,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
+-o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 +---
 
 
@@ -428,7 +431,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
+-o report -p secret -P background=/tmp/mybackgroundimage.jpg
 +---
 
 
@@ -439,14 +442,14 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
+-o report -p secret -P background="C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
   or quote the whole parameter:
 
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
+-o report -p secret -P "background=C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
 
@@ -456,8 +459,8 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 
   Every parameter defined in the report can be displayed but only those
   are supported for input, that have a type (class) with a constructor that
-  takes one string as an argument. Additionally special handlers for
-  <<java.util.Date>> and <<java.awt.Image>> are provided.
+  takes one string as an argument or there is a special handler implemented for
+  it.
 
   It is possible to filter the displayed parameters with the following optional
   arguments:
@@ -493,14 +496,14 @@ $ jasperstarter pr -i myreport.jasper -f view -a
   is already filled but the user can change it:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a
 +---
 
   The user will be prompted only for the empty <MyText> parameter. The <MyDate>
   parameter is already filled and not displayed:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a pe
 +---
 
 
