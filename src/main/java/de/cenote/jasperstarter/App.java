@@ -386,7 +386,7 @@ public class App {
                 + " (see usage)");
         groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS)
                 .nargs("+").help(
-                "report parameter: name=type:value [...] | types: string, int, double, date, image, locale");
+                "report parameter: name=value [...]");
         groupFillOptions.addArgument("-r").metavar("<file>").dest(Dest.RESOURCE)
                 .nargs("?").setConst("").help(
                 "path to report resource dir or jar file. If <file> is not given the input directory is used.");
