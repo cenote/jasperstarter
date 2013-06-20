@@ -162,11 +162,12 @@ optional arguments:
 
 commands:
   <cmd>                  type <cmd> -h to get help on command
-    cp                   compile - compile reports
-    pr                   process - view, print or export an existing report
-    lp                   list printers - lists available printers on this
-                         system
-    params               list params - list parameters from given report
+    compile (cp)         compile reports
+    process (pr)         view, print or export an existing report
+    list_printers (printers,lpr)
+                         lists available printers
+    list_parameters (params,lpa)
+                         list parameters from a given report
 +---
 
   Jedes Kommando hat seine eigene Hilfe, welche Sie durch den Aufruf von 
@@ -223,8 +224,7 @@ compile options:
 fill options:
   -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
                          p, pe (see usage)
-  -P <p> [<p> ...]       report parameter: name=type:value [...] | types:
-                         string, int, double, date, image, locale
+  -P <p> [<p> ...]       report parameter: name=value [...]
   -r [<file>]            path to report resource dir or jar file. If
                          <file> is not given the input directory is used.
   -k, --keep             don't delete the temporary .jrprint file.
@@ -391,15 +391,18 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
 ** Reports mit Laufzeitparametern
 
-  Report-Parameter können aus verschiedenen Typen bestehen. Die meisten Typen
-  sind selbsterklärend. JasperStarter unterstützt die folgenden Typen:
+  Report-Parameter können aus verschiedenen Typen (Klassen) bestehen.
+  JasperStarter kann generell alle Klassen behandlen, die einen Konstruktor vom
+  Typ String haben. Zuätzlich hat JasperStarter spezielle Routinen für Klassen,
+  die keinen Konstruktor vom Typ String haben oder anderweitig besonders
+  behandelt werden müssen. Dies sind:
 
-   * string, int, double, date, image, locale
+   * date, image, locale
 
   Mehrere Parameter können durch Leerzeichen getrennt werden. Ein Parameter hat
   die folgende Form:
 
-   * \<<<name>>\><<=>>\<<<typ>>\><<:>>\<<<wert>>\>
+   * \<<<name>>\><<=>>\<<<wert>>\>
 
   Ersetzen Sie <<name>> mit dem Parameter-Namen ihres Reports. Parameter-Namen
   unterscheiden sich durch <<Groß-Klein-Schreibung>> !
@@ -414,7 +417,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P CustomerNo=int:10 StartFrom=date:2012-10-01
+-o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 +---
 
 
@@ -443,7 +446,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
 +---
 $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P background=image:/tmp/mybackgroundimage.jpg
+-o report -p secret -P background=/tmp/mybackgroundimage.jpg
 +---
 
 
@@ -455,14 +458,14 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
 
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P background=image:"C:\Temp Files\My Image.jpg" otherValue=int:1
+-o report -p secret -P background="C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
   oder den ganzen Parameter:
 
 +---
 c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
--o report -p secret -P "background=image:C:\Temp Files\My Image.jpg" otherValue=int:1
+-o report -p secret -P "background=C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
 
@@ -472,8 +475,8 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
 
   Jeder Parameter, der in einem Report definiert wurde, kann angezeigt werden.
   Zur Eingabe werden aber nur diejenigen Parameter unterstüzt, dessen Typ
-  (Klasse) einen Konstruktor für eine Zeichenkette (String) hat. Darüber hinaus
-  werden <<java.util.Date>> und <<java.awt.Image>> unterstützt.
+  (Klasse) einen Konstruktor für eine Zeichenkette (String) hat oder für die
+  eine spezielle Routine vorhanden ist.
 
   Mit den folgenden optionalen Argumenten können die angezeigten Parameter
   gefiltert werden:
@@ -511,14 +514,14 @@ $ jasperstarter pr -i myreport.jasper -f view -a
   bereits gefüllt, kann aber vom Benutzer geändert werden:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a
 +---
 
   Der Benutzer wird nur nach dem leeren Parameter <MyText> gefragt. Der
   Parameter <MyDate> ist bereits gefüllt und wird nicht angezeigt:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=date:2013-01-30 -a pe
+$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a pe
 +---
 
 

@@ -10,9 +10,11 @@ Es hat die folgenden Eigenschaften:
   * Startet jeden JasperReport, der eine JDBC Datenquelle oder eine leere
     Datenquelle benötigt
   * Verwendbar mit jeder Datenbank, für die ein JDBC Treiber vorhanden ist
-  * Führt Reports aus, die Laufzeitparameter benötigen. Die folgenden Parameter-
-    typen werden unterstützt:
-    * string, int, double, date, image (siehe Verwendung), locale
+  * Führt Reports aus, die Laufzeitparameter benötigen. Jeder Parameter, dessen
+    Klasse einen Konstruktor vom Typ String hat, wird akzeptiert. Zusätzlich
+    werden die folgenden Parameter-typen unterstützt oder haben eine besondere
+    behandlung:
+    * date, image (siehe Verwendung), locale
   * Optionale Eingabeaufforderung für Report-Parameter
   * Druckt direkt auf den Standarddrucker oder auf einen benannten Drucker
   * Zeigt optional einen Druckerdialog zur Auswal des Druckers
@@ -61,8 +63,8 @@ erhalten:
 
 Beispiel mit Report-Parametern:
 
-    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
-    -o report -p secret -P CustomerNo=string:10 StartFrom=date:2012-10-01
+    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i \
+    report.jasper -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 
 Beispiel mit hsql unter Verwendung des Datenbanktyps generic:
 
