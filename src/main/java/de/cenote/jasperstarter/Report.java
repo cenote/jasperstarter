@@ -26,10 +26,14 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -387,37 +391,47 @@ public class Report {
     }
 
     private Map getCmdLineReportParams() {
+        JRParameter[] jrParameterArray = jasperReport.getParameters();
+        Map<String, JRParameter> jrParameters = new HashMap();
         Map parameters = new HashMap();
         List<String> params;
         if (config.hasParams()) {
             params = config.getParams();
+            for (JRParameter rp : jrParameterArray) {
+                jrParameters.put(rp.getName(), rp);
+            }
             String paramName = null;
-            String paramType = null;
+            //String paramType = null;
             String paramValue = null;
 
             for (String p : params) {
                 try {
                     paramName = p.split("=")[0];
-                    paramType = p.split("=")[1].split(":", 2)[0];
-                    paramValue = p.split("=", 2)[1].split(":", 2)[1];
+                    paramValue = p.split("=", 2)[1];
                     if (config.isVerbose()) {
-                        System.out.println("Using report parameter: " + paramName + " " + paramType + " " + paramValue);
+                        System.out.println("Using report parameter: "
+                                + paramName + " = " + paramValue);
                     }
                 } catch (Exception e) {
                     throw new IllegalArgumentException("Wrong report param format! " + p, e);
                 }
+                if (!jrParameters.containsKey(paramName)) {
+                    throw new IllegalArgumentException("Parameter '"
+                            + paramName + "' does not exist in report!");
+                }
+
+                JRParameter reportParam = jrParameters.get(paramName);
+
                 try {
-                    if ("string".equals(paramType.toLowerCase())) {
-                        parameters.put(paramName, paramValue);
-                    } else if ("int".equals(paramType.toLowerCase()) | "integer".equals(paramType.toLowerCase())) {
-                        parameters.put(paramName, new Integer(paramValue));
-                    } else if ("double".equals(paramType.toLowerCase())) {
-                        parameters.put(paramName, new Double(paramValue));
-                    } else if ("date".equals(paramType.toLowerCase())) {
+                    // special parameter handlers must also implemeted in
+                    // ParameterPanel.java
+                    if (Date.class
+                            .equals(reportParam.getValueClass())) {
                         // Date must be in ISO8601 format. Example 2012-12-31
                         DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
                         parameters.put(paramName, (Date) dateFormat.parse(paramValue));
-                    } else if ("image".equals(paramType.toLowerCase())) {
+                    } else if (Image.class
+                            .equals(reportParam.getValueClass())) {
                         Image image =
                                 Toolkit.getDefaultToolkit().createImage(
                                 JRLoader.loadBytes(new File(paramValue)));
@@ -426,13 +440,46 @@ public class Report {
                         try {
                             traker.waitForID(0);
                         } catch (Exception e) {
-                            throw new IllegalArgumentException("Image tracker error: " + e.getMessage(), e);
+                            throw new IllegalArgumentException(
+                                    "Image tracker error: " + e.getMessage(), e);
                         }
                         parameters.put(paramName, image);
-                    } else if ("locale".equals(paramType.toLowerCase())) {
+                    } else if (Locale.class
+                            .equals(reportParam.getValueClass())) {
                         parameters.put(paramName, LocaleUtils.toLocale(paramValue));
                     } else {
-                        throw new IllegalArgumentException("Invalid JasperStarter param type \"" + paramType + "\" in \"" + p + "\"");
+                        // handle generic parameters with string constructor
+                        try {
+                            parameters.put(paramName,
+                                    reportParam.getValueClass()
+                                    .getConstructor(String.class)
+                                    .newInstance(paramValue));
+                        } catch (InstantiationException ex) {
+                            throw new IllegalArgumentException("Parameter '"
+                                    + paramName + "' of type '"
+                                    + reportParam.getValueClass().getName()
+                                    + " caused " + ex.getClass().getName()
+                                    + " " + ex.getMessage(), ex);
+                        } catch (IllegalAccessException ex) {
+                            throw new IllegalArgumentException("Parameter '"
+                                    + paramName + "' of type '"
+                                    + reportParam.getValueClass().getName()
+                                    + " caused " + ex.getClass().getName()
+                                    + " " + ex.getMessage(), ex);
+                        } catch (InvocationTargetException ex) {
+                            Throwable cause = ex.getCause();
+                            throw new IllegalArgumentException("Parameter '"
+                                    + paramName + "' of type '"
+                                    + reportParam.getValueClass().getName()
+                                    + " caused " + cause.getClass().getName()
+                                    + " " + cause.getMessage(), cause);
+                        } catch (NoSuchMethodException ex) {
+                            throw new IllegalArgumentException("Parameter '"
+                                    + paramName + "' of type '"
+                                    + reportParam.getValueClass().getName()
+                                    + " with value '" + paramValue
+                                    + "' is not supported by JasperStarter!", ex);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("NumberFormatException: " + e.getMessage() + "\" in \"" + p + "\"", e);
