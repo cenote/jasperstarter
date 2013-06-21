@@ -16,8 +16,11 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Map;
+import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -74,5 +77,25 @@ public class DbNGTest {
         Db instance = new Db();
         Connection result = instance.getConnection(config);
         assertNotNull(result);
+    }
+
+    /**
+     * Test of getCsvDataSource method, of class Db.
+     */
+    @Test
+    public void testGetCsvDataSource() throws Exception {
+        System.out.println("getCsvDataSource");
+        Config config = new Config();
+        config.dbType = DbType.csv;
+        config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
+        config.csvCharset = "utf-8";
+        config.csvFieldDel = "|";
+        config.csvRecordDel = "\r\n";
+        config.csvUse1Row = true;
+        Db instance = new Db();
+        JRCsvDataSource jRCsvDataSource = instance.getCsvDataSource(config);
+        jRCsvDataSource.next();
+        Map names = jRCsvDataSource.getColumnNames();
+        assertEquals("{Name=0, Street=1, City=2, Phone=3}", names.toString());
     }
 }

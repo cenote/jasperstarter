@@ -389,6 +389,52 @@ public class AppNGTest {
         }
         // checking the oracle default port
         assertEquals(config.getDbPort(), new Integer("1521"));
+
+        // starting with csv
+        // create a fresh parser
+        try {
+            parser = (ArgumentParser) methodCreateArgumentParser.invoke(app, config);
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+        }
+        // try and error - follow the help message for next input
+        args = "pr -f pdf -i fakefile -t csv".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            assertEquals("argument --data-file is required", ex.getCause().getMessage());
+        }
+        // try and error - follow the help message for next input
+        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            assertEquals("argument --csv-columns is required", ex.getCause().getMessage());
+        }
+        // try and error - follow the help message for next input
+        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-columns a,b,c,d".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            // this is one minimal csv argument set
+            fail(ex.getCause().getMessage(), ex.getCause());
+        }
+        // create a fresh parser
+        try {
+            parser = (ArgumentParser) methodCreateArgumentParser.invoke(app, config);
+        } catch (InvocationTargetException ex) {
+            fail(ex.getCause().getMessage(), ex.getCause());
+        }
+        // --csv-columns only required unless --csv-use-1row is given
+        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-use-1row".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            // this is another minimal csv argument set
+            fail(ex.getCause().getMessage(), ex.getCause());
+        }
+
+
         // create a fresh parser
 //        try {
 //            parser = (ArgumentParser) methodCreateArgumentParser.invoke(app, config);
