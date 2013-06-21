@@ -75,7 +75,7 @@ public class Config {
     String csvColumns;
     @Arg(dest = Dest.CSV_RECORD_DEL)
     String csvRecordDel;
-    @Arg(dest=Dest.CSV_FIELD_DEL)
+    @Arg(dest = Dest.CSV_FIELD_DEL)
     String csvFieldDel; //representing a char
     @Arg(dest = Dest.CSV_CHARSET)
     String csvCharset;
@@ -234,15 +234,15 @@ public class Config {
         }
     }
 
-    public String getCsvRecordDel(){
+    public String getCsvRecordDel() {
         return csvRecordDel;
     }
 
-    public char getCsvFieldDel(){
+    public char getCsvFieldDel() {
         return csvFieldDel.charAt(0);
     }
 
-    public String getCsvCharset(){
+    public String getCsvCharset() {
         return csvCharset;
     }
 
