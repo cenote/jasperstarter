@@ -16,6 +16,7 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,8 +33,16 @@ import org.apache.commons.lang.StringEscapeUtils;
 public class Db {
 
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
-        JRCsvDataSource ds = new JRCsvDataSource(
-                JRLoader.getInputStream(config.getCsvFile()));
+        JRCsvDataSource ds;
+        try {
+            ds = new JRCsvDataSource(
+                    JRLoader.getInputStream(
+                    config.getCsvFile()), config.csvCharset);
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalArgumentException("Unknown CSV charset: "
+                    + config.csvCharset
+                    + ex.getMessage(), ex);
+        }
 
         ds.setUseFirstRowAsHeader(config.getCsvUse1Row());
         if (!config.getCsvUse1Row()) {

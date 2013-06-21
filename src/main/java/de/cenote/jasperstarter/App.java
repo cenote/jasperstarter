@@ -409,6 +409,7 @@ public class App {
         Argument argCsvColumns = groupDbOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
         groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
         groupDbOptions.addArgument("--csv-field-del").metavar("<char>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to ','");
+        groupDbOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to 'utf-8'");
 
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");

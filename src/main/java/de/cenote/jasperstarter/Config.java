@@ -77,6 +77,8 @@ public class Config {
     String csvRecordDel;
     @Arg(dest=Dest.CSV_FIELD_DEL)
     String csvFieldDel; //representing a char
+    @Arg(dest = Dest.CSV_CHARSET)
+    String csvCharset;
     @Arg(dest = Dest.LOCALE)
     String locale;
     @Arg(dest = Dest.OUTPUT)
@@ -238,6 +240,10 @@ public class Config {
 
     public char getCsvFieldDel(){
         return csvFieldDel.charAt(0);
+    }
+
+    public String getCsvCharset(){
+        return csvCharset;
     }
 
     public Locale getLocale() {

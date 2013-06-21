@@ -46,6 +46,7 @@ public interface Dest {
     public static String CSV_COLUMNS = "csv-columns";       // --csv-columns
     public static String CSV_RECORD_DEL = "csv-record-del"; // --csv-record-del
     public static String CSV_FIELD_DEL = "csv-field-del";   // --csv-field-del
+    public static String CSV_CHARSET = "csv-charset";       // --csv-charset
     public static String PRINTER_NAME = "printer-name";     // -N
     public static String WITH_PRINT_DIALOG = "with-print-dialog"; // -d
     public static String REPORT_NAME = "set-report-name";   // -s
