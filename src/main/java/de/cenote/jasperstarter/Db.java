@@ -37,7 +37,7 @@ public class Db {
         try {
             ds = new JRCsvDataSource(
                     JRLoader.getInputStream(
-                    config.getCsvFile()), config.csvCharset);
+                    config.getDataFile()), config.csvCharset);
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalArgumentException("Unknown CSV charset: "
                     + config.csvCharset

@@ -67,8 +67,8 @@ public class Config {
     String input;
     @Arg(dest = Dest.JDBC_DIR)
     File jdbcDir;
-    @Arg(dest = Dest.CSV_FILE)
-    File csvFile;
+    @Arg(dest = Dest.DATA_FILE)
+    File dataFile;
     @Arg(dest = Dest.CSV_USE_1ROW)
     boolean csvUse1Row;
     @Arg(dest = Dest.CSV_COLUMNS)
@@ -217,8 +217,8 @@ public class Config {
         }
     }
 
-    public File getCsvFile() {
-        return csvFile;
+    public File getDataFile() {
+        return dataFile;
     }
 
     public boolean getCsvUse1Row() {

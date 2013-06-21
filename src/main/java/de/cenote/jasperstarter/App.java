@@ -404,7 +404,7 @@ public class App {
         Argument argDbDriver = groupDbOptions.addArgument("--db-driver").metavar("<name>").dest(Dest.DB_DRIVER).help("jdbc driver class name for use with type: generic");
         Argument argDbUrl = groupDbOptions.addArgument("--db-url").metavar("<jdbcUrl>").dest(Dest.DB_URL).help("jdbc url without user, passwd with type:generic");
         groupDbOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).help("directory where jdbc driver jars are located. Defaults to ./jdbc");
-        Argument argCsvFile = groupDbOptions.addArgument("--csv-file").metavar("<file>").dest(Dest.CSV_FILE).type(File.class).help("CSV Datasource input file");
+        Argument argDataFile = groupDbOptions.addArgument("--data-file").metavar("<file>").dest(Dest.DATA_FILE).type(File.class).help("input file for file based datasource");
         groupDbOptions.addArgument("--csv-use-1row").metavar("true", "false").dest(Dest.CSV_USE_1ROW).action(Arguments.storeTrue()).help("Use first row as column headers");
         Argument argCsvColumns = groupDbOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
         groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
@@ -424,7 +424,7 @@ public class App {
         allArguments.put(argDbPort.getDest(), argDbPort);
         allArguments.put(argDbDriver.getDest(), argDbDriver);
         allArguments.put(argDbUrl.getDest(), argDbUrl);
-        allArguments.put(argCsvFile.getDest(), argCsvFile);
+        allArguments.put(argDataFile.getDest(), argDataFile);
         allArguments.put(argCsvColumns.getDest(), argCsvColumns);
     }
 
@@ -455,7 +455,7 @@ public class App {
                 allArguments.get(Dest.DB_DRIVER).required(true);
                 allArguments.get(Dest.DB_URL).required(true);
             } else if (DbType.csv.equals(config.getDbType())) {
-                allArguments.get(Dest.CSV_FILE).required(true);
+                allArguments.get(Dest.DATA_FILE).required(true);
                 if (!config.getCsvUse1Row()) {
                     allArguments.get(Dest.CSV_COLUMNS).required(true);
                 }
