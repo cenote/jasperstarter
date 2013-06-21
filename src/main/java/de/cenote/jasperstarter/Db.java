@@ -19,6 +19,10 @@ import de.cenote.jasperstarter.types.DbType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRCsvDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  *
@@ -26,6 +30,36 @@ import java.sql.SQLException;
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public class Db {
+
+    public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
+        JRCsvDataSource ds = new JRCsvDataSource(
+                JRLoader.getInputStream(config.getCsvFile()));
+
+        ds.setUseFirstRowAsHeader(config.getCsvUse1Row());
+        if (!config.getCsvUse1Row()) {
+            ds.setColumnNames(config.getCsvColumns());
+        }
+
+        ds.setRecordDelimiter(
+                StringEscapeUtils.unescapeJava(config.getCsvRecordDel()));
+        ds.setFieldDelimiter(config.getCsvFieldDel());
+
+        if (config.isVerbose()) {
+            System.out.println("Use first row: " + config.getCsvUse1Row());
+            System.out.print("CSV Columns:");
+            for (String name : config.getCsvColumns()) {
+                System.out.print(" " + name);
+            }
+            System.out.println("");
+            System.out.println("-----------------------");
+            System.out.println("Record delimiter literal: " + config.getCsvRecordDel());
+            System.out.println("Record delimiter: " + ds.getRecordDelimiter());
+            System.out.println("Field delimiter: " + ds.getFieldDelimiter());
+            System.out.println("-----------------------");
+        }
+
+        return ds;
+    }
 
     public Connection getConnection(Config config) throws ClassNotFoundException, SQLException {
         Connection conn = null;

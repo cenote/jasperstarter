@@ -55,6 +55,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
@@ -216,6 +217,10 @@ public class Report {
                 }
                 if (DbType.none.equals(config.getDbType())) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+                } else if (DbType.csv.equals(config.getDbType())) {
+                    Db db = new Db();
+                    JRCsvDataSource ds = db.getCsvDataSource(config);
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else {
                     Db db = new Db();
                     Connection con = db.getConnection(config);

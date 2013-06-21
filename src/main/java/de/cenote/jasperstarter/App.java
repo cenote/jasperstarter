@@ -394,7 +394,7 @@ public class App {
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
                 required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none).
-                help("database type: none, mysql, postgres, oracle, generic");
+                help("database type: none, csv, mysql, postgres, oracle, generic");
         Argument argDbHost = groupDbOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDbOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
         Argument argDbPasswd = groupDbOptions.addArgument("-p").metavar("<dbpasswd>").dest(Dest.DB_PASSWD).setDefault("").help("database password");
@@ -404,6 +404,11 @@ public class App {
         Argument argDbDriver = groupDbOptions.addArgument("--db-driver").metavar("<name>").dest(Dest.DB_DRIVER).help("jdbc driver class name for use with type: generic");
         Argument argDbUrl = groupDbOptions.addArgument("--db-url").metavar("<jdbcUrl>").dest(Dest.DB_URL).help("jdbc url without user, passwd with type:generic");
         groupDbOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).help("directory where jdbc driver jars are located. Defaults to ./jdbc");
+        Argument argCsvFile = groupDbOptions.addArgument("--csv-file").metavar("<file>").dest(Dest.CSV_FILE).type(File.class).help("CSV Datasource input file");
+        groupDbOptions.addArgument("--csv-use-1row").metavar("true", "false").dest(Dest.CSV_USE_1ROW).action(Arguments.storeTrue()).help("Use first row as column headers");
+        Argument argCsvColumns = groupDbOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
+        groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
+        groupDbOptions.addArgument("--csv-field-del").metavar("<char>").dest(Dest.CSV_FIELD_DEL).setDefault(',').help("CSV Field Delimiter - defaults to ','");
 
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
@@ -418,6 +423,8 @@ public class App {
         allArguments.put(argDbPort.getDest(), argDbPort);
         allArguments.put(argDbDriver.getDest(), argDbDriver);
         allArguments.put(argDbUrl.getDest(), argDbUrl);
+        allArguments.put(argCsvFile.getDest(), argCsvFile);
+        allArguments.put(argCsvColumns.getDest(), argCsvColumns);
     }
 
     private void parseArgumentParser(String[] args, ArgumentParser parser, Config config) throws ArgumentParserException {
@@ -446,6 +453,11 @@ public class App {
                 allArguments.get(Dest.DB_USER).required(true);
                 allArguments.get(Dest.DB_DRIVER).required(true);
                 allArguments.get(Dest.DB_URL).required(true);
+            } else if (DbType.csv.equals(config.getDbType())) {
+                allArguments.get(Dest.CSV_FILE).required(true);
+                if (!config.getCsvUse1Row()) {
+                    allArguments.get(Dest.CSV_COLUMNS).required(true);
+                }
             }
         }
         // parse again so changed arguments become effectiv

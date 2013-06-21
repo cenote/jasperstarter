@@ -23,6 +23,7 @@ package de.cenote.jasperstarter.types;
 public enum DbType {
 
     none,
+    csv,
     mysql("com.mysql.jdbc.Driver", 3306),
     postgres("org.postgresql.Driver", 5432),
     oracle("oracle.jdbc.OracleDriver", 1521),

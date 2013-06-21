@@ -67,6 +67,16 @@ public class Config {
     String input;
     @Arg(dest = Dest.JDBC_DIR)
     File jdbcDir;
+    @Arg(dest = Dest.CSV_FILE)
+    File csvFile;
+    @Arg(dest = Dest.CSV_USE_1ROW)
+    boolean csvUse1Row;
+    @Arg(dest = Dest.CSV_COLUMNS)
+    String csvColumns;
+    @Arg(dest = Dest.CSV_RECORD_DEL)
+    String csvRecordDel;
+    @Arg(dest=Dest.CSV_FIELD_DEL)
+    char csvFieldDel;
     @Arg(dest = Dest.LOCALE)
     String locale;
     @Arg(dest = Dest.OUTPUT)
@@ -203,6 +213,31 @@ public class Config {
         } else {
             return false;
         }
+    }
+
+    public File getCsvFile() {
+        return csvFile;
+    }
+
+    public boolean getCsvUse1Row() {
+        return csvUse1Row;
+    }
+
+    public String[] getCsvColumns() {
+        if (csvColumns == null) {
+            // return an empty array instead of null
+            return new String[0];
+        } else {
+            return csvColumns.split(",");
+        }
+    }
+
+    public String getCsvRecordDel(){
+        return csvRecordDel;
+    }
+
+    public char getCsvFieldDel(){
+        return csvFieldDel;
     }
 
     public Locale getLocale() {
