@@ -155,7 +155,7 @@ usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
 
 optional arguments:
   -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code or a
+  --locale <lang>        set locale  with  two-letter  ISO-639  code  or  a
                          combination of ISO-639 and ISO-3166 like de_DE
   -v, --verbose          display additional messages
   -V, --version          display version information and exit
@@ -181,7 +181,7 @@ commands:
 
 +---
 $ jasperstarter cp -h
-usage: jasperstarter cp [-h] -i <file> [-o <file>]
+usage: jasperstarter compile [-h] -i <file> [-o <file>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -200,39 +200,41 @@ options:
 
 +---
 $ jasperstarter pr -h
-usage: jasperstarter pr [-h] -f <fmt> [<fmt> ...] -i <file> [-o <file>]
-                     [-w] [-a [<filter>]] [-P <p> [<p> ...]] [-r [<file>]]
-                     [-k] [-t <dbtype>] [-H <dbhost>] [-u <dbuser>]
-                     [-p <dbpasswd>] [-n <dbname>] [--db-sid <sid>]
-                     [--db-port <port>] [--db-driver <name>]
-                     [--db-url <jdbcUrl>] [--jdbc-dir <dir>]
+usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] -i <file>
+                     [-o <file>] [-w] [-a [<filter>]] [-P <p> [<p> ...]]
+                     [-r [<file>]] [-t <dbtype>] [-H <dbhost>]
+                     [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
+                     [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [--data-file <file>]
+                     [--csv-use-1row] [--csv-columns <list>]
+                     [--csv-record-del <delimiter>]
+                     [--csv-field-del <char>] [--csv-charset <charset>]
                      [-N <printername>] [-d] [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
                          pptx, csv, html, xhtml, xml, jrprint
   -i <file>              input file (.jrxml|.jasper|.jrprint)
   -o <file>              directory or basename of outputfile(s)
 
 compile options:
-  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
                          prcessed
 
 fill options:
-  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+  -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
                          p, pe (see usage)
   -P <p> [<p> ...]       report parameter: name=value [...]
-  -r [<file>]            path to report resource dir or jar file. If
+  -r [<file>]            path to  report  resource  dir  or  jar  file.  If
                          <file> is not given the input directory is used.
-  -k, --keep             don't delete the temporary .jrprint file.
-                         OBSOLETE use output format jrprint
 
 db options:
-  -t <dbtype>            database type: none, mysql, postgres, oracle,
-                         generic
+  -t <dbtype>            database  type:   none,   csv,   mysql,  postgres,
+                         oracle, generic
   -H <dbhost>            database host
   -u <dbuser>            database user
   -p <dbpasswd>          database password
@@ -241,8 +243,17 @@ db options:
   --db-port <port>       database port
   --db-driver <name>     jdbc driver class name for use with type: generic
   --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
-  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+  --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
+  --data-file <file>     input file for file based datasource
+  --csv-use-1row         Use first row as column headers
+  --csv-columns <list>   Comma separated list of column names
+  --csv-record-del <delimiter>
+                         CSV Record Delimiter - defaults to line.separator
+  --csv-field-del <char>
+                         CSV Field Delimiter - defaults to ','
+  --csv-charset <charset>
+                         CSV charset - defaults to 'utf-8'
 
 print options:
   -N <printername>       name of printer
@@ -265,7 +276,7 @@ print options:
 
 +---
 $ jasperstarter params -h
-usage: jasperstarter params [-h] -i <file>
+usage: jasperstarter list_parameters [-h] -i <file>
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -386,6 +397,42 @@ $ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -
 
 +---
 $ jasperstarter pr -i myreport.jrprint -f view
++---
+
+
+** Reports mit einer CSV Datenquelle
+
+  Der CSV Datei Zeichensatz ist auf UTF-8 voreingestellt. Andere übliche
+  Zeichensätze sind cp1252 (Windows), ISO-8859-1 oder ISO-8859-15 (Linux).
+  Die können den CSV Zeichensatz mit dem Parameter <<--csv-charset>> angeben.
+
+  Datensätze werden üblicher Weise mit einem Zeilenumbruch getrennt aber dies
+  muss nicht so sein. Das Datensatz Trennzeichen ist auf den System
+  Zeilenumbruch voreingestellt welcher abhängig von ihrem Betriebssystem
+  unterschiedlich ist.
+  Wenn Sie CSV Dateien von einem anderen System verwenden, müssen Sie den
+  richtigen Zeilenumbruch mit dem Parameter <<--csv-record-del>> einstellen:
+
+   * Windows:     <<\r\n>>
+
+   * Linux / Mac: <<\n>>
+
+  Felder können mit einem beliebigen Zeichen getrennt sein und optional in
+  Anführungszeichen eingeschlossen sein. Das Feldtrennzeichen ist auf <<,>>
+  voreingestellt.
+
+  Ein einfaches Beispiel:
+
++---
+$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv --csv-use-1row
++---
+
+  Ein etwas komplexeres Beispiel:
+
++---
+$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv \
+--csv-columns Name,Phone --csv-record-del="\n" --csv-field-del="|" \
+--csv-charset=cp1252
 +---
 
 

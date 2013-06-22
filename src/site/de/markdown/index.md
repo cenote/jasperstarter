@@ -7,8 +7,8 @@ JasperStarter ist ein Opensource Befehlszeilen Starter und Batch Compiler für
 
 Es hat die folgenden Eigenschaften:
 
-  * Startet jeden JasperReport, der eine JDBC Datenquelle oder eine leere
-    Datenquelle benötigt
+  * Startet jeden JasperReport, der eine JDBC, CSV oder eine leere Datenquelle
+    benötigt
   * Verwendbar mit jeder Datenbank, für die ein JDBC Treiber vorhanden ist
   * Führt Reports aus, die Laufzeitparameter benötigen. Jeder Parameter, dessen
     Klasse einen Konstruktor vom Typ String hat, wird akzeptiert. Zusätzlich
