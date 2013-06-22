@@ -197,8 +197,11 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] -i <file>
                      [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
                      [--db-sid <sid>] [--db-port <port>]
                      [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [-N <printername>] [-d]
-                     [-s <reportname>]
+                     [--jdbc-dir <dir>] [--data-file <file>]
+                     [--csv-use-1row] [--csv-columns <list>]
+                     [--csv-record-del <delimiter>]
+                     [--csv-field-del <char>] [--csv-charset <charset>]
+                     [-N <printername>] [-d] [-s <reportname>]
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -221,8 +224,8 @@ fill options:
                          <file> is not given the input directory is used.
 
 db options:
-  -t <dbtype>            database  type:  none,  mysql,  postgres,  oracle,
-                         generic
+  -t <dbtype>            database  type:   none,   csv,   mysql,  postgres,
+                         oracle, generic
   -H <dbhost>            database host
   -u <dbuser>            database user
   -p <dbpasswd>          database password
@@ -233,6 +236,15 @@ db options:
   --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
   --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
+  --data-file <file>     input file for file based datasource
+  --csv-use-1row         Use first row as column headers
+  --csv-columns <list>   Comma separated list of column names
+  --csv-record-del <delimiter>
+                         CSV Record Delimiter - defaults to line.separator
+  --csv-field-del <char>
+                         CSV Field Delimiter - defaults to ','
+  --csv-charset <charset>
+                         CSV charset - defaults to 'utf-8'
 
 print options:
   -N <printername>       name of printer
@@ -374,6 +386,40 @@ $ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -
 
 +---
 $ jasperstarter pr -i myreport.jrprint -f view
++---
+
+
+** Reports with a CSV datasource
+
+  The CSV file charset defaults to UTF-8. Other common used charsets are
+  cp1252 (Windows), ISO-8859-1 or ISO-8859-15 (Linux). You can specify the csv
+  file charset with the <<--csv-charset>> parameter.
+
+  Records are usually delimited by a newline but this is not a must. The record
+  delimiter defaults to the system line separator which is different depending
+  on your operating system.
+  If you use CSV files from other systems you must provide the correct line
+  ending with the <<--csv-record-del>> parameter:
+
+   * Windows:     <<\r\n>>
+
+   * Linux / Mac: <<\n>>
+
+  Fields can be delimited by any char and optionally be enclosed by quotation
+  marks. The field delimiter defaults to <<,>>
+
+  A simple example:
+
++---
+$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv --csv-use-1row
++---
+
+  A more complex example:
+
++---
+$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv \
+--csv-columns Name,Phone --csv-record-del="\n" --csv-field-del="|" \
+--csv-charset=cp1252
 +---
 
 
