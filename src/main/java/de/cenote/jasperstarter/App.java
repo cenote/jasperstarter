@@ -459,10 +459,11 @@ public class App {
         boolean all;
         Report report = new Report(config, input);
         JRParameter[] params = report.getReportParameters();
-        int maxName = 0;
-        int maxClassName = 0;
-        int maxDesc = 0;
+        int maxName = 1;
+        int maxClassName = 1;
+        int maxDesc = 1;
         all = false; // this is a default for now
+        // determine proper length of stings for nice alignment
         for (JRParameter param : params) {
             if (!param.isSystemDefined() || all) {
                 if (param.getName() != null) {
