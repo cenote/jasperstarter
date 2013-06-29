@@ -198,7 +198,7 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] -i <file>
                      [--db-sid <sid>] [--db-port <port>]
                      [--db-driver <name>] [--db-url <jdbcUrl>]
                      [--jdbc-dir <dir>] [--data-file <file>]
-                     [--csv-use-1row] [--csv-columns <list>]
+                     [--csv-first-row] [--csv-columns <list>]
                      [--csv-record-del <delimiter>]
                      [--csv-field-del <char>] [--csv-charset <charset>]
                      [-N <printername>] [-d] [-s <reportname>]
@@ -237,7 +237,7 @@ db options:
   --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
   --data-file <file>     input file for file based datasource
-  --csv-use-1row         Use first row as column headers
+  --csv-first-row        first row contains column headers
   --csv-columns <list>   Comma separated list of column names
   --csv-record-del <delimiter>
                          CSV Record Delimiter - defaults to line.separator
@@ -411,7 +411,7 @@ $ jasperstarter pr -i myreport.jrprint -f view
   A simple example:
 
 +---
-$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv --csv-use-1row
+$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv --csv-first-row
 +---
 
   A more complex example:
