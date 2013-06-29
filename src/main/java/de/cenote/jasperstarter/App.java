@@ -405,7 +405,7 @@ public class App {
         Argument argDbUrl = groupDbOptions.addArgument("--db-url").metavar("<jdbcUrl>").dest(Dest.DB_URL).help("jdbc url without user, passwd with type:generic");
         groupDbOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).help("directory where jdbc driver jars are located. Defaults to ./jdbc");
         Argument argDataFile = groupDbOptions.addArgument("--data-file").metavar("<file>").dest(Dest.DATA_FILE).type(File.class).help("input file for file based datasource");
-        groupDbOptions.addArgument("--csv-use-1row").metavar("true", "false").dest(Dest.CSV_USE_1ROW).action(Arguments.storeTrue()).help("Use first row as column headers");
+        groupDbOptions.addArgument("--csv-first-row").metavar("true", "false").dest(Dest.CSV_FIRST_ROW).action(Arguments.storeTrue()).help("first row contains column headers");
         Argument argCsvColumns = groupDbOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
         groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
         groupDbOptions.addArgument("--csv-field-del").metavar("<char>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to ','");
@@ -456,7 +456,7 @@ public class App {
                 allArguments.get(Dest.DB_URL).required(true);
             } else if (DbType.csv.equals(config.getDbType())) {
                 allArguments.get(Dest.DATA_FILE).required(true);
-                if (!config.getCsvUse1Row()) {
+                if (!config.getCsvFirstRow()) {
                     allArguments.get(Dest.CSV_COLUMNS).required(true);
                 }
             }

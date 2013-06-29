@@ -91,7 +91,7 @@ public class DbNGTest {
         config.csvCharset = "utf-8";
         config.csvFieldDel = "|";
         config.csvRecordDel = "\r\n";
-        config.csvUse1Row = true;
+        config.csvFirstRow = true;
         Db instance = new Db();
         JRCsvDataSource jRCsvDataSource = instance.getCsvDataSource(config);
         jRCsvDataSource.next();

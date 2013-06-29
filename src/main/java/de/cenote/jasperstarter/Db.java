@@ -44,8 +44,8 @@ public class Db {
                     + ex.getMessage(), ex);
         }
 
-        ds.setUseFirstRowAsHeader(config.getCsvUse1Row());
-        if (!config.getCsvUse1Row()) {
+        ds.setUseFirstRowAsHeader(config.getCsvFirstRow());
+        if (!config.getCsvFirstRow()) {
             ds.setColumnNames(config.getCsvColumns());
         }
 
@@ -54,7 +54,7 @@ public class Db {
         ds.setFieldDelimiter(config.getCsvFieldDel());
 
         if (config.isVerbose()) {
-            System.out.println("Use first row: " + config.getCsvUse1Row());
+            System.out.println("Use first row: " + config.getCsvFirstRow());
             System.out.print("CSV Columns:");
             for (String name : config.getCsvColumns()) {
                 System.out.print(" " + name);

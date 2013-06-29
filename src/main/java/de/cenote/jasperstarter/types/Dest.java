@@ -42,7 +42,7 @@ public interface Dest {
     public static String DB_URL = "db-url";                 // --db-url
     public static String JDBC_DIR = "jdbc-dir";             // --jdbc-dir
     public static String DATA_FILE = "data-file";           // --data-file
-    public static String CSV_USE_1ROW = "csv-use-1row";     // --csv-use-1row
+    public static String CSV_FIRST_ROW = "csv-first-row";     // --csv-first-row
     public static String CSV_COLUMNS = "csv-columns";       // --csv-columns
     public static String CSV_RECORD_DEL = "csv-record-del"; // --csv-record-del
     public static String CSV_FIELD_DEL = "csv-field-del";   // --csv-field-del

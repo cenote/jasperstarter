@@ -426,7 +426,7 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // --csv-columns only required unless --csv-use-1row is given
-        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-use-1row".split(" ");
+        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-first-row".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
