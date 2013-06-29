@@ -2,6 +2,14 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 1.4.2
+----------------------------------------------
+
+** Bug
+    * [JAS-41] - Command "jasperstarter params" gives no useful result
+                 if param has no description 
+
+
 Release Notes - JasperStarter - Version 1.4.1
 ----------------------------------------------
 
