@@ -356,13 +356,13 @@ public class App {
 
     private void createCompileArguments(Subparser parser) {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
-        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or directory");
-        groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
+        groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or directory");
+        groupOptions.addArgument("-o").metavar("<output>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
     }
 
     private void createListParamsArguments(Subparser parser) {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
-        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or (.jasper)");
+        groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml) or (.jasper)");
     }
 
     private void createProcessArguments(Subparser parser) {
@@ -370,8 +370,8 @@ public class App {
         groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
                 help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint");
-        groupOptions.addArgument("-i").metavar("<file>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
-        groupOptions.addArgument("-o").metavar("<file>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
+        groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
+        groupOptions.addArgument("-o").metavar("<output>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
         //groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
 
         ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");
@@ -384,12 +384,13 @@ public class App {
                 .setConst(AskFilter.p)
                 .help("ask for report parameters. Filter: a, ae, u, ue, p, pe"
                 + " (see usage)");
-        groupFillOptions.addArgument("-P").metavar("<p>").dest(Dest.PARAMS)
+        groupFillOptions.addArgument("-P").metavar("<param>").dest(Dest.PARAMS)
                 .nargs("+").help(
                 "report parameter: name=value [...]");
-        groupFillOptions.addArgument("-r").metavar("<file>").dest(Dest.RESOURCE)
+        groupFillOptions.addArgument("-r").metavar("<resource>").dest(Dest.RESOURCE)
                 .nargs("?").setConst("").help(
-                "path to report resource dir or jar file. If <file> is not given the input directory is used.");
+                "path to report resource dir or jar file. If <resource> is not"
+                + " given the input directory is used.");
 
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
@@ -408,8 +409,8 @@ public class App {
         groupDbOptions.addArgument("--csv-first-row").metavar("true", "false").dest(Dest.CSV_FIRST_ROW).action(Arguments.storeTrue()).help("first row contains column headers");
         Argument argCsvColumns = groupDbOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
         groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
-        groupDbOptions.addArgument("--csv-field-del").metavar("<char>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to ','");
-        groupDbOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to 'utf-8'");
+        groupDbOptions.addArgument("--csv-field-del").metavar("<delimiter>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to \",\"");
+        groupDbOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to \"utf-8\"");
 
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");

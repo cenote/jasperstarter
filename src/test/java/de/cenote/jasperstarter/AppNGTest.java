@@ -158,14 +158,14 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals("argument -f is required", ex.getCause().getMessage());
+            assertEquals("too few arguments", ex.getCause().getMessage());
         }
         // now the alias pr
         args = "pr".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals("argument -f is required", ex.getCause().getMessage());
+            assertEquals("too few arguments", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
         args = "pr -f".split(" ");
@@ -190,18 +190,11 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals("argument -i is required", ex.getCause().getMessage());
-        }
-        // try and error - follow the help message for next input
-        args = "pr -f pdf -i".split(" ");
-        try {
-            method.invoke(app, args, parser, config);
-        } catch (InvocationTargetException ex) {
-            assertEquals("argument -i: expected one argument", ex.getCause().getMessage());
+            assertEquals("too few arguments", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
         // this one shoud be complete (no db report):
-        args = "pr -f pdf -i fakefile".split(" ");
+        args = "pr fakefile -f pdf ".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -209,14 +202,14 @@ public class AppNGTest {
         }
         // starting with db reports
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t".split(" ");
+        args = "pr fakefile -f pdf -t".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -t: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t ''".split(" ");
+        args = "pr fakefile -f pdf -t ''".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -226,7 +219,7 @@ public class AppNGTest {
             assertEquals(sb.toString(), ex.getCause().getMessage());
         }
         // this one shoud be complete (no db report):
-        args = "pr -f pdf -i fakefile -t none".split(" ");
+        args = "pr fakefile -f pdf -t none".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -234,49 +227,49 @@ public class AppNGTest {
         }
         // starting with db mysql ( first modification of parser)
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql".split(" ");
+        args = "pr fakefile -f pdf -t mysql".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -H is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -H: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H myhost".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H myhost".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -u is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H myhost -u".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H myhost -u".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -u: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H myhost -u myuser".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H myhost -u myuser".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -n is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H myhost -u myuser -n".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H myhost -u myuser -n".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -n: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t mysql -H myhost -u myuser -n dbname".split(" ");
+        args = "pr fakefile -f pdf -t mysql -H myhost -u myuser -n dbname".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -294,7 +287,7 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t postgres".split(" ");
+        args = "pr fakefile -f pdf -t postgres".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -302,7 +295,7 @@ public class AppNGTest {
         }
         // try and error - follow the help message for next input
         // argument -H is tested before, so fulfill immediate with argument
-        args = "pr -f pdf -i fakefile -t postgres -H myhost".split(" ");
+        args = "pr fakefile -f pdf -t postgres -H myhost".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -310,7 +303,7 @@ public class AppNGTest {
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
-        args = "pr -f pdf -i fakefile -t postgres -H myhost -u myuser".split(" ");
+        args = "pr fakefile -f pdf -t postgres -H myhost -u myuser".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -318,7 +311,7 @@ public class AppNGTest {
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
-        args = "pr -f pdf -i fakefile -t postgres -H myhost -u myuser -n dbname".split(" ");
+        args = "pr fakefile -f pdf -t postgres -H myhost -u myuser -n dbname".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -336,7 +329,7 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t oracle".split(" ");
+        args = "pr fakefile -f pdf -t oracle".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -344,7 +337,7 @@ public class AppNGTest {
         }
         // try and error - follow the help message for next input
         // argument -H is tested before, so fulfill immediate with argument
-        args = "pr -f pdf -i fakefile -t oracle -H myhost".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -352,35 +345,35 @@ public class AppNGTest {
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
-        args = "pr -f pdf -i fakefile -t oracle -H myhost -u myuser".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost -u myuser".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -p is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t oracle -H myhost -u myuser -p".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument -p: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t oracle -H myhost -u myuser -p passwd".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument --db-sid is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t oracle -H myhost -u myuser -p passwd --db-sid".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd --db-sid".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument --db-sid: expected one argument", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t oracle -H myhost -u myuser -p passwd --db-sid orcl".split(" ");
+        args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd --db-sid orcl".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -398,21 +391,21 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t csv".split(" ");
+        args = "pr fakefile -f pdf -t csv".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument --data-file is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile".split(" ");
+        args = "pr fakefile -f pdf -t csv --data-file fakedatafile".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
             assertEquals("argument --csv-columns is required", ex.getCause().getMessage());
         }
         // try and error - follow the help message for next input
-        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-columns a,b,c,d".split(" ");
+        args = "pr fakefile -f pdf -t csv --data-file fakedatafile --csv-columns a,b,c,d".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -426,7 +419,7 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // --csv-columns only required unless --csv-use-1row is given
-        args = "pr -f pdf -i fakefile -t csv --data-file fakedatafile --csv-first-row".split(" ");
+        args = "pr fakefile -f pdf -t csv --data-file fakedatafile --csv-first-row".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {

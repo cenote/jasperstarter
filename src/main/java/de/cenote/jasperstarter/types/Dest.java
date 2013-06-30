@@ -24,7 +24,7 @@ public interface Dest {
 
     public static String COMMAND = "command";
     public static String OUTPUT_FORMATS = "output-formats"; // -f
-    public static String INPUT = "input";                   // -i
+    public static String INPUT = "input";                   // <input>
     public static String OUTPUT = "output";                 // -o
     public static String LOCALE = "locale";                 // --locale
     public static String DEBUG = "debug";                   // -v
