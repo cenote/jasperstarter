@@ -54,12 +54,12 @@ Invoke JasperStarter with _process \-h_ to get help on the process command:
 
 Example with reportparameters:
 
-    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i \
-    report.jasper -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
+    $ jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost \
+     -n mydb -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 
 Example with hsql using database type generic:
 
-    $ jasperstarter pr -t generic -f pdf -i report.jasper -o report -u sa \
+    $ jasperstarter pr report.jasper -t generic -f pdf -o report -u sa \
     --db-driver org.hsqldb.jdbcDriver \
     --db-url jdbc:hsqldb:hsql://localhost
 
@@ -127,6 +127,15 @@ Now you can execute JasperStarter without IDE:
 or
 
     $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
+
+During development you might want not to be annoyed by tests. So the following
+options are useful:
+
+    $ package -P dev -D skipTests
+
+or
+
+    $ package -P dev -D maven.test.failure.ignore=true
 
 To run JasperStarter from within your IDE add _\--jdbc-dir jdbc_ to the argument
 list of your run configuration. Otherwise you will get an error:

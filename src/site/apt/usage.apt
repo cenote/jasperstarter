@@ -173,14 +173,14 @@ commands:
 
 +---
 $ jasperstarter cp -h
-usage: jasperstarter compile [-h] -i <file> [-o <file>]
+usage: jasperstarter compile [-h] [-o <output>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
-  -i <file>              input file (.jrxml) or directory
-  -o <file>              directory or basename of outputfile(s)
+  <input>                input file (.jrxml) or directory
+  -o <output>            directory or basename of outputfile(s)
 +---
 
 
@@ -191,17 +191,18 @@ options:
 
 +---
 $ jasperstarter pr -h
-usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] -i <file>
-                     [-o <file>] [-w] [-a [<filter>]] [-P <p> [<p> ...]]
-                     [-r [<file>]] [-t <dbtype>] [-H <dbhost>]
+usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
+                     [-a [<filter>]] [-P <param> [<param> ...]]
+                     [-r [<resource>]] [-t <dbtype>] [-H <dbhost>]
                      [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
                      [--db-sid <sid>] [--db-port <port>]
                      [--db-driver <name>] [--db-url <jdbcUrl>]
                      [--jdbc-dir <dir>] [--data-file <file>]
                      [--csv-first-row] [--csv-columns <list>]
                      [--csv-record-del <delimiter>]
-                     [--csv-field-del <char>] [--csv-charset <charset>]
-                     [-N <printername>] [-d] [-s <reportname>]
+                     [--csv-field-del <delimiter>]
+                     [--csv-charset <charset>] [-N <printername>] [-d]
+                     [-s <reportname>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -209,8 +210,8 @@ optional arguments:
 options:
   -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
                          pptx, csv, html, xhtml, xml, jrprint
-  -i <file>              input file (.jrxml|.jasper|.jrprint)
-  -o <file>              directory or basename of outputfile(s)
+  <input>                input file (.jrxml|.jasper|.jrprint)
+  -o <output>            directory or basename of outputfile(s)
 
 compile options:
   -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
@@ -219,9 +220,11 @@ compile options:
 fill options:
   -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
                          p, pe (see usage)
-  -P <p> [<p> ...]       report parameter: name=value [...]
-  -r [<file>]            path to  report  resource  dir  or  jar  file.  If
-                         <file> is not given the input directory is used.
+  -P <param> [<param> ...]
+                         report parameter: name=value [...]
+  -r [<resource>]        path to  report  resource  dir  or  jar  file.  If
+                         <resource> is not  given  the  input  directory is
+                         used.
 
 db options:
   -t <dbtype>            database  type:   none,   csv,   mysql,  postgres,
@@ -241,10 +244,10 @@ db options:
   --csv-columns <list>   Comma separated list of column names
   --csv-record-del <delimiter>
                          CSV Record Delimiter - defaults to line.separator
-  --csv-field-del <char>
-                         CSV Field Delimiter - defaults to ','
+  --csv-field-del <delimiter>
+                         CSV Field Delimiter - defaults to ","
   --csv-charset <charset>
-                         CSV charset - defaults to 'utf-8'
+                         CSV charset - defaults to "utf-8"
 
 print options:
   -N <printername>       name of printer
@@ -267,13 +270,13 @@ print options:
 
 +---
 $ jasperstarter params -h
-usage: jasperstarter list_parameters [-h] -i <file>
+usage: jasperstarter list_parameters [-h] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
-  -i <file>              input file (.jrxml) or (.jasper)
+  <input>                input file (.jrxml) or (.jasper)
 +---
 
   The columns have the following meaning:
@@ -289,7 +292,7 @@ options:
   Example output:
 
 +---
-$ jasperstarter params -i myreport.jasper
+$ jasperstarter params myreport.jasper
 P background java.awt.Image   Background image
 P MyName     java.lang.String Title of some component
 P MyDate     java.util.Date
@@ -321,7 +324,7 @@ volker
   Example invocation with command file:
 
 +---
-$ jasperstarter pr -f view -i myreport @db.conf
+$ jasperstarter pr myreport -f view @db.conf
 +---
 
   <<Attention! The command file should not contain any empty lines and just>>
@@ -333,7 +336,7 @@ $ jasperstarter pr -f view -i myreport @db.conf
   To process a report you must provide the process command <<pr>> which needs
   the following options:
 
-    * <<<-i>>> input file (report definition, compiled report or filled report).
+    * <<<\<input\>>>> input file (report definition, compiled report or filled report).
 
     * <<<-f>>> a space separated list of output formats.
 
@@ -351,13 +354,35 @@ $ jasperstarter pr -f view -i myreport @db.conf
 
   For output <<<-o>>> see section "File Handling".
 
+  <<<\<input\>>>> is now just an argument. The order of options and this
+  argument does not matter but an argument cannot be placed behind an option
+  that takes a vague number of arguments by itself. These options are:
+
+    * <-f> <-a> <-P> <-r>
+
+  So the following statement will <<not>> work:
+
++---
+$ jasperstarter -f view myreport.jasper
++---
+
+  But these will:
+
++---
+$ jasperstarter -f print pdf -d myreport.jasper
+$ jasperstarter -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
++---
+
+  The easiest way to circumvent any problems regarding arguments is to always
+  place <<<\<input\>>>> at the first position right behind the command as shown in
+  the following examples.
 
 ** The minimum non database report
 
   The minimum options needed, to process a report with an empty datasource:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -t none
+$ jasperstarter pr myreport.jasper -f view
 +---
 
 
@@ -367,7 +392,7 @@ $ jasperstarter pr -i myreport.jasper -f view -t none
   connection:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
+$ jasperstarter pr myreport.jasper -f pdf -t mysql -H localhost -n mydb -u appuser
 +---
 
 
@@ -379,13 +404,13 @@ $ jasperstarter pr -i myreport.jasper -f pdf -t mysql -H localhost -n mydb -u ap
   Just fill one report:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
+$ jasperstarter pr myreport.jasper -f jrprint -t mysql -H localhost -n mydb -u appuser
 +---
 
   View a previously filled report:
 
 +---
-$ jasperstarter pr -i myreport.jrprint -f view
+$ jasperstarter pr myreport.jrprint -f view
 +---
 
 
@@ -401,9 +426,9 @@ $ jasperstarter pr -i myreport.jrprint -f view
   If you use CSV files from other systems you must provide the correct line
   ending with the <<--csv-record-del>> parameter:
 
-   * Windows:     <<\r\n>>
+   * Windows: <<\r\n>>
 
-   * Linux / Mac: <<\n>>
+   * Linux/Mac: <<\n>>
 
   Fields can be delimited by any char and optionally be enclosed by quotation
   marks. The field delimiter defaults to <<,>>
@@ -411,13 +436,13 @@ $ jasperstarter pr -i myreport.jrprint -f view
   A simple example:
 
 +---
-$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv --csv-first-row
+$ jasperstarter pr csv.jrxml -f view -t csv --data-file data.csv --csv-first-row
 +---
 
   A more complex example:
 
 +---
-$ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv \
+$ jasperstarter pr csv.jrxml -f view -t csv --data-file data.csv \
 --csv-columns Name,Phone --csv-record-del="\n" --csv-field-del="|" \
 --csv-charset=cp1252
 +---
@@ -448,7 +473,7 @@ $ jasperstarter pr -f view -i csv.jrxml -t csv --data-file data.csv \
   For example <de> or <de_DE>.
 
 +---
-$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+$ jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost -n mydb \
 -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 +---
 
@@ -476,7 +501,7 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
   Now you can process your report with JasperStarter:
 
 +---
-$ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+$ jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost -n mydb \
 -o report -p secret -P background=/tmp/mybackgroundimage.jpg
 +---
 
@@ -487,14 +512,14 @@ $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper 
   There are two ways you can do that. Just quote the value:
 
 +---
-c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+c:\jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost -n mydb \
 -o report -p secret -P background="C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
   or quote the whole parameter:
 
 +---
-c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
+c:\jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost -n mydb \
 -o report -p secret -P "background=C:\Temp Files\My Image.jpg" otherValue=1
 +---
 
@@ -535,21 +560,21 @@ c:\jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper
   The user will be prompted for the two parameters:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -a
+$ jasperstarter pr myreport.jasper -f view -a
 +---
 
   The user will be prompted for the two parameters. The <MyDate> parameter
   is already filled but the user can change it:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a
+$ jasperstarter pr myreport.jasper -f view -P MyDate=2013-01-30 -a
 +---
 
   The user will be prompted only for the empty <MyText> parameter. The <MyDate>
   parameter is already filled and not displayed:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a pe
+$ jasperstarter pr myreport.jasper -f view -P MyDate=2013-01-30 -a pe
 +---
 
 
@@ -561,20 +586,20 @@ $ jasperstarter pr -i myreport.jasper -f view -P MyDate=2013-01-30 -a pe
   <<-r>> without any arguments:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -r
+$ jasperstarter pr myreport.jasper -f view -r
 +---
 
   If the resource is located in another directory or in a jar file the path can
   be given as an argument:
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -r myresources/
+$ jasperstarter pr myreport.jasper -f view -r myresources/
 +---
 
   or
 
 +---
-$ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
+$ jasperstarter pr myreport.jasper -f view -r myresources.jar
 +---
 
 
@@ -595,19 +620,19 @@ $ jasperstarter pr -i myreport.jasper -f view -r myresources.jar
   used for as output filename:
 
 +---
-(...) -f pdf odt -i myreports/report1
+(...) myreports/report1 -f pdf odt
 +---
 
   or
 
 +---
-(...) -f pdf odt -i myreports/report1.jasper
+(...) myreports/report1.jasper -f pdf odt
 +---
 
   or
 
 +---
-(...) -f pdf odt -i myreports/report1.jrxml
+(...) myreports/report1.jrxml -f pdf odt
 +---
 
   results in:
@@ -621,7 +646,7 @@ myreports/report1.pdf
   in that directory:
 
 +---
-(...) -f pdf odt -i myreports/report1.jasper -o month01/
+(...) myreports/report1.jasper -f pdf odt -o month01/
 +---
 
   results in:
@@ -635,7 +660,7 @@ month01/report1.pdf
   filenames:
 
 +---
-(...) -f pdf odt -i myreports/report1.jasper -o month01/journal.xyz
+(...) myreports/report1.jasper -f pdf odt -o month01/journal.xyz
 +---
 
   results in:
