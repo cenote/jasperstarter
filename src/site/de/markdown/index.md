@@ -63,12 +63,12 @@ erhalten:
 
 Beispiel mit Report-Parametern:
 
-    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i \
-    report.jasper -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
+    $ jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost \
+     -n mydb -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 
 Beispiel mit hsql unter Verwendung des Datenbanktyps generic:
 
-    $ jasperstarter pr -t generic -f pdf -i report.jasper -o report -u sa \
+    $ jasperstarter pr report.jasper -t generic -f pdf -o report -u sa \
     --db-driver org.hsqldb.jdbcDriver \
     --db-url jdbc:hsqldb:hsql://localhost
 
@@ -138,6 +138,15 @@ Nun können Sie JasperStarter ohne IDE aufrufen:
 oder
 
     $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
+
+Wärend der Entwicklung möchten Sie vielleicht nicht von Tests gestört werden.
+Daher sind die folgenden Optionen sinnvoll:
+
+    $ package -P dev -D skipTests
+
+oder
+
+    $ package -P dev -D maven.test.failure.ignore=true
 
 Um JasperStarter aus Ihrer IDE heraus auszuführen, fügen Sie _\--jdbc-dir jdbc_
 zu den Argumenten Ihrer Startkonfiguration hinzu. Andernfalls erhalten Sie
