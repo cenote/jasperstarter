@@ -140,28 +140,28 @@ public class ParameterPrompt {
 
         optionPane.addPropertyChangeListener(
                 new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(PropertyChangeEvent e) {
-                        String prop = e.getPropertyName();
-                        if (dialog.isVisible()
-                                && (e.getSource() == optionPane)
-                                && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
-                            //If you were going to check something
-                            //before closing the window, you'd do
-                            //it here.
-                            if (valid.get()
-                                    | ((Integer) optionPane.getValue())
-                                    .intValue() == JOptionPane.CANCEL_OPTION) {
-                                // cancel is possible on invalid options too
-                                dialog.setVisible(false);
-                            } else {
-                                // reset to an unused option so next click on the
-                                // same button triggers PropertyChangeEvent again
-                                optionPane.setValue(new Integer(JOptionPane.NO_OPTION));
-                            }
-                        }
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                String prop = e.getPropertyName();
+                if (dialog.isVisible()
+                        && (e.getSource() == optionPane)
+                        && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
+                    //If you were going to check something
+                    //before closing the window, you'd do
+                    //it here.
+                    if (valid.get()
+                            | ((Integer) optionPane.getValue())
+                            .intValue() == JOptionPane.CANCEL_OPTION) {
+                        // cancel is possible on invalid options too
+                        dialog.setVisible(false);
+                    } else {
+                        // reset to an unused option so next click on the
+                        // same button triggers PropertyChangeEvent again
+                        optionPane.setValue(new Integer(JOptionPane.NO_OPTION));
                     }
-                });
+                }
+            }
+        });
 
         dialog.pack();
         dialog.setVisible(true);

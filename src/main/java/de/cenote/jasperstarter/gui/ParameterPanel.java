@@ -111,12 +111,12 @@ public class ParameterPanel extends JPanel {
 
         paramValue.addActionListener(
                 new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // validate on KEY Enter (like TAB)
-                        ((JComponent) e.getSource()).transferFocus();
-                    }
-                });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // validate on KEY Enter (like TAB)
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
 
         if (Date.class
                 .equals(jrParameter.getValueClass())) {

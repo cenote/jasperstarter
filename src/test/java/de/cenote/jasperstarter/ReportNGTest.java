@@ -18,12 +18,8 @@ package de.cenote.jasperstarter;
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.OutputFormat;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRParameter;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -305,7 +301,6 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/noDB-params.jrxml";
         Report instance = new Report(config, new File(config.getInput()));
-        JRParameter[] expResult = null;
         JRParameter[] result = instance.getReportParameters();
         // there are 19 system parameters
         assertEquals(result[19].getName(), "myString");
