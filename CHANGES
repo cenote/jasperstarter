@@ -2,6 +2,38 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 2.0.0
+----------------------------------------------
+
+The command line syntax has changed in this release! 
+<input> is now an argument and the format of report parameters has changed.
+Specifying the parameter type is no longer necessary. The type is determined
+from the report and it is no longer possible to provide a non existent
+parameter.
+The major new feature is support for csv files as a datasource.
+
+** Bug
+    * [JAS-37] - The artifact org.apache.commons:commons-io:jar:1.3.2 has been
+                 relocated to commons-io:commons-io:jar:1.3.2
+    * [JAS-41] - Command "jasperstarter params" gives no useful result if param
+                 has no description
+
+** Improvement
+    * [JAS-15] - Report parameters should be handled in a more generic way
+    * [JAS-42] - Accept <input> as positional argument instead of an option
+
+** New Feature
+    * [JAS-30] - CSV as a datasource for Jasperstarter
+
+** Task
+    * [JAS-23] - create unit test
+    * [JAS-24] - create example reports
+    * [JAS-34] - site translation de for release 2.0
+    * [JAS-35] - site translation cz for release 2.0
+    * [JAS-38] - Update build dependencies
+    * [JAS-39] - Include JasperReports 5.2.0
+
+
 Release Notes - JasperStarter - Version 1.4.2
 ----------------------------------------------
 
