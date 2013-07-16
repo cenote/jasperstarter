@@ -174,10 +174,10 @@ commands:
   <\<command\> -h> erhalten.
 
 
-** Das Kommando <cp>
+** Das Kommando <compile> (<cp>)
 
-  Mit dem Kommando <cp> (compile) können Sie einen einzelnen Report oder alle
-  Reports in einem Verzeichnis kompilieren.
+  Mit dem Kommando <compilep> können Sie einen einzelnen Report oder alle
+  Reports in einem Verzeichnis kompilieren.  <cp> ist ein Alias für <compile>.
 
 +---
 $ jasperstarter cp -h
@@ -265,17 +265,19 @@ print options:
 +---
 
 
-** Das Kommando <lp>
+** Das Kommando <list_printers> (<printers>,<lpr>)
 
-  Das Kommando <lp> (list printers) hat keine Optionen. Es listet alle
+  Das Kommando <list_printers> hat keine Optionen. Es listet alle
   verfügbaren Drucker auf Ihrem System, welche Sie mit der Option <-N> des
-  Kommandos <pr> verwenden können.
+  Kommandos <process> verwenden können. <printers>,<lpr> sind Aliases für
+  <list_printers>.
 
 
-** Das Kommando <params>
 
-  Das Kommando <params> listet alle benutzerdefinierten Parameter eines
-  angegebenen Reports auf.
+** Das Kommando <list_parameters> (<params>,<lpa>)
+
+  Das Kommando <list_parameters> listet alle benutzerdefinierten Parameter eines
+  angegebenen Reports auf. <params>,<lpa> sind Aliases für <list_parameters>.
 
 +---
 $ jasperstarter params -h
@@ -365,7 +367,7 @@ $ jasperstarter pr myreport -f view @db.conf
   Für die Option <<<-o>>> (output) siehe Abschnitt "Datei Behandlung".
 
   <<<\<input\>>>> ist nun einfach ein Argument. Die Reihenfolge von Optionen und
-  diesem Argument ist nicht von Bedeutung allerdings kann ein Argument nicht
+  diesem Argument ist nicht von Bedeutung, allerdings kann ein Argument nicht
   hinter einer Option platziert werden, die selbst eine unbestimmte Anzahl an
   Argumenten erwartet. Diese Optionen sind:
 
@@ -431,11 +433,11 @@ $ jasperstarter pr myreport.jrprint -f view
 
   Der CSV Datei Zeichensatz ist auf UTF-8 voreingestellt. Andere übliche
   Zeichensätze sind cp1252 (Windows), ISO-8859-1 oder ISO-8859-15 (Linux).
-  Die können den CSV Zeichensatz mit dem Parameter <<--csv-charset>> angeben.
+  Sie können den CSV Zeichensatz mit dem Parameter <<--csv-charset>> angeben.
 
-  Datensätze werden üblicher Weise mit einem Zeilenumbruch getrennt aber dies
-  muss nicht so sein. Das Datensatz Trennzeichen ist auf den System
-  Zeilenumbruch voreingestellt welcher abhängig von ihrem Betriebssystem
+  Datensätze werden üblicherweise mit einem Zeilenumbruch getrennt, aber dies
+  muss nicht so sein. Das Datensatz-Trennzeichen ist auf den System
+  Zeilenumbruch voreingestellt, welcher abhängig von Ihrem Betriebssystem
   unterschiedlich ist.
   Wenn Sie CSV Dateien von einem anderen System verwenden, müssen Sie den
   richtigen Zeilenumbruch mit dem Parameter <<--csv-record-del>> einstellen:

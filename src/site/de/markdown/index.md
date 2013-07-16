@@ -13,7 +13,7 @@ Es hat die folgenden Eigenschaften:
   * Führt Reports aus, die Laufzeitparameter benötigen. Jeder Parameter, dessen
     Klasse einen Konstruktor vom Typ String hat, wird akzeptiert. Zusätzlich
     werden die folgenden Parameter-typen unterstützt oder haben eine besondere
-    behandlung:
+    Behandlung:
     * date, image (siehe Verwendung), locale
   * Optionale Eingabeaufforderung für Report-Parameter
   * Druckt direkt auf den Standarddrucker oder auf einen benannten Drucker
@@ -56,10 +56,10 @@ Rufen Sie JasperStarter mit _\-h_ auf um einen Überblick zu erhalten:
 
     $ jasperstarter -h
 
-Rufen Sie JasperStarter mit _pr \-h_ auf um Hilfe für das Kommando _process_ zu
+Rufen Sie JasperStarter mit _process \-h_ auf um Hilfe für das Kommando _process_ zu
 erhalten:
 
-    $ jasperstarter pr -h
+    $ jasperstarter process -h
 
 Beispiel mit Report-Parametern:
 
@@ -139,7 +139,7 @@ oder
 
     $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
 
-Wärend der Entwicklung möchten Sie vielleicht nicht von Tests gestört werden.
+Während der Entwicklung möchten Sie vielleicht nicht von Tests gestört werden.
 Daher sind die folgenden Optionen sinnvoll:
 
     $ package -P dev -D skipTests
