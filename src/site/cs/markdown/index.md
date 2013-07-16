@@ -7,12 +7,13 @@ JasperStarter je open-source spouštěč pro příkazový řádek a batch kompil
 
 Má následující vlastnosti:
 
-  * spustí jakýkoliv JasperReport, který potřebuje jdbc datový zdroj či prázdný
+  * spustí jakýkoliv JasperReport, který potřebuje jdbc, csv či prázdný
     datový zdroj
   * lze použít pro jakoukoliv databázi, pro kterou existuje jdbc driver
-  * Provádí reporty, které vyžadují runtime parametery. Podporuje následující
-    druhy parametrů:
-    * string, int, double, date, image (viz použití), locale
+  * Provádí reporty, které vyžadují runtime parametery. Podporuje všechny 
+    parametry, jejichž class (volba) vyžaduje konstruktor typu String. Navíc
+    podporuje následující druhy parametrů, nebo pro ně má speciální funkci:
+    * date, image (see usage), locale
   * Umožňuje vybrat si z nabídky parametrů reportu
   * Umožňuje tisk na vybrané nebo na defaultní tiskárně
   * Nabízí možnost zobrazit tiskový dialog pro výběr tiskárny
@@ -50,18 +51,18 @@ Vyvoláním JasperStarteru s _\-h_ získáte přehled:
 
     $ jasperstarter -h
 
-Vyvoláním JasperStarteru s _pr \-h_ získáte nápovědu k příkazu _process_
+Vyvoláním JasperStarteru s _process \-h_ získáte nápovědu k příkazu _process_
 
-    $ jasperstarter pr -h
+    $ jasperstarter process -h
 
 Příklad s parametry reportu:
 
-    $ jasperstarter pr -t mysql -u myuser -f pdf -H myhost -n mydb -i report.jasper \
-    -o report -p secret -P CustomerNo=string:10 StartFrom=date:2012-10-01
+    $ jasperstarter pr report.jasper -t mysql -u myuser -f pdf -H myhost \
+     -n mydb -o report -p secret -P CustomerNo=10 StartFrom=2012-10-01
 
 Příklad s hsql s použitím databáze typu generic:
 
-    $ jasperstarter pr -t generic -f pdf -i report.jasper -o report -u sa \
+    $ jasperstarter pr report.jasper -t generic -f pdf -o report -u sa \
     --db-driver org.hsqldb.jdbcDriver \
     --db-url jdbc:hsqldb:hsql://localhost
 
@@ -126,6 +127,15 @@ Teď můžete spustit JasperStarter bez IDE:
 nebo
 
     $ java -jar target/jasperstarter-dev-bin/lib/jasperstarter.jar
+
+Pokud vás během vývoje omezují testy, zkuste následující užitečnou možnost:
+
+    $ package -P dev -D skipTests
+
+nebo
+
+    $ package -P dev -D maven.test.failure.ignore=true
+
 
 Pokud chcete sputit JasperStarter v rámci vašeho IDE, přidejte k seznamu příkazů
 v konfiguraci _\--jdbc-dir jdbc_. Bez toho dostanete chybovou hlášku:
