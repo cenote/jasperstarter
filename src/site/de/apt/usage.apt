@@ -269,7 +269,7 @@ print options:
 
   Das Kommando <list_printers> hat keine Optionen. Es listet alle
   verfügbaren Drucker auf Ihrem System, welche Sie mit der Option <-N> des
-  Kommandos <process> verwenden können. <printers>,<lpr> sind Aliases für
+  Kommandos <process> verwenden können. <printers>, <lpr> sind Aliases für
   <list_printers>.
 
 
@@ -277,7 +277,7 @@ print options:
 ** Das Kommando <list_parameters> (<params>,<lpa>)
 
   Das Kommando <list_parameters> listet alle benutzerdefinierten Parameter eines
-  angegebenen Reports auf. <params>,<lpa> sind Aliases für <list_parameters>.
+  angegebenen Reports auf. <params>, <lpa> sind Aliases für <list_parameters>.
 
 +---
 $ jasperstarter params -h

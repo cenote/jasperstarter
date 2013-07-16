@@ -260,13 +260,13 @@ print options:
 
   The command <list_printers> has no options. It lists the available printers
   on your system which can be used with optin <-N> of the command <process>.
-  <printers>,<lpr> are aliases for <list_printers>.
+  <printers>, <lpr> are aliases for <list_printers>.
 
 
 ** The command <list_parameters> (<params>,<lpa>)
 
   The command <list_parameters> lists all user defined parameters of a given
-  report. <params>,<lpa> are aliases for <list_parameters>.
+  report. <params>, <lpa> are aliases for <list_parameters>.
 
 +---
 $ jasperstarter params -h

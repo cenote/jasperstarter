@@ -260,12 +260,12 @@ print options:
 
   Příkaz <list_printers> nemá žádné volby. Vypíše všechny tiskárny dostupné
   ve vašem systému, které můžete použít s volbou <-N> u příkazu <process>.
-  <printers>,<lpr> je alias pro <list_printers>.
+  <printers>, <lpr> je alias pro <list_printers>.
 
 ** Příkaz <list_parameters> (<params>,<lpa>)
 
   Příkaz <list_parameterss> nabídne seznam všech parametrů reportu definovaných
-  uživatelem. <params>,<lpa> are aliases for <list_parameters>.
+  uživatelem. <params>, <lpa> are aliases for <list_parameters>.
 
 
 +---
