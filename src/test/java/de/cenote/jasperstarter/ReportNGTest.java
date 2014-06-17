@@ -302,7 +302,8 @@ public class ReportNGTest {
         config.input = "target/test-classes/reports/noDB-params.jrxml";
         Report instance = new Report(config, new File(config.getInput()));
         JRParameter[] result = instance.getReportParameters();
-        // there are 19 system parameters
-        assertEquals(result[19].getName(), "myString");
+        // there are 20 system parameters and 4 user parameters
+        // take the first user parameter        
+        assertEquals(result[20].getName(), "myString");
     }
 }
