@@ -23,6 +23,10 @@ limitations under the License.
     <name>JasperStarter</name>
     <version>2.1-SNAPSHOT</version>
 
+    <prerequisites>
+        <maven>2.2.1</maven>
+    </prerequisites>
+
     <url>http://jasperstarter.sourceforge.net/</url>
     <description>JasperStarter is a command line launcher for JasperReports.</description>
     <organization>
@@ -90,7 +94,7 @@ limitations under the License.
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.3</version>
                 <executions>
                     <execution>
                         <id>hgchangeset</id>
@@ -267,6 +271,21 @@ limitations under the License.
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>             
         </plugins>
     </build>
     
@@ -672,7 +691,7 @@ limitations under the License.
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
+                        <version>1.3.1</version>
                         <executions>
                             <execution>
                                 <id>windows-setup-compile</id>
@@ -719,7 +738,7 @@ limitations under the License.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.15</version>
+                        <version>2.17</version>
                         <configuration>
                             <suiteXmlFiles>
                                 <suiteXmlFile>target/nb-private/testng-suite.xml</suiteXmlFile>
