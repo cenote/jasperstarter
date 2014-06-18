@@ -111,6 +111,7 @@ limitations under the License.
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <compilerArgument>${compilerArgument}</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>
