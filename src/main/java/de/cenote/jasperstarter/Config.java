@@ -97,6 +97,8 @@ public class Config {
     boolean withPrintDialog;
     @Arg(dest = Dest.WRITE_JASPER)
     boolean writeJasper;
+    @Arg(dest = Dest.COPIES)
+    Integer copies;
 
     // end of argparse4j arguments
     /**
@@ -180,7 +182,7 @@ public class Config {
     public DbType getDbType() {
         return dbType;
     }
-
+    
     public boolean hasDbType() {
         if (dbType != null) {
             return true;
@@ -330,6 +332,19 @@ public class Config {
     public boolean isWriteJasper() {
         return writeJasper;
     }
+    
+    public Integer getCopies() {
+        return copies;
+    }
+
+    public boolean hasCopies() {
+        if (copies != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     // END argparse4j arguments
     // @todo: overwrite toString()
 }

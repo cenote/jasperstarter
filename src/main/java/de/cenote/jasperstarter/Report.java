@@ -43,6 +43,7 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.HashPrintServiceAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.PrintServiceAttributeSet;
+import javax.print.attribute.standard.Copies;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -253,6 +254,9 @@ public class Report {
     public void print() throws JRException {
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         //printRequestAttributeSet.add(MediaSizeName.ISO_A4);
+        if (config.hasCopies()){
+            printRequestAttributeSet.add(new Copies(config.getCopies().intValue()));
+        }
         PrintServiceAttributeSet printServiceAttributeSet = new HashPrintServiceAttributeSet();
         //printServiceAttributeSet.add(new PrinterName("Fax", null));
         JRPrintServiceExporter exporter = new JRPrintServiceExporter();

@@ -51,4 +51,5 @@ public interface Dest {
     public static String WITH_PRINT_DIALOG = "with-print-dialog"; // -d
     public static String REPORT_NAME = "set-report-name";   // -s
     public static String WRITE_JASPER = "write-jasper";     // -w, --write-jasper
+    public static String COPIES = "copies";                 // -c
 }

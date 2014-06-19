@@ -39,6 +39,7 @@ import net.sourceforge.argparse4j.inf.Argument;
 import net.sourceforge.argparse4j.inf.ArgumentGroup;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import net.sourceforge.argparse4j.inf.FeatureControl;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
@@ -416,6 +417,9 @@ public class App {
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
         groupPrintOptions.addArgument("-d").dest(Dest.WITH_PRINT_DIALOG).action(Arguments.storeTrue()).help("show print dialog when printing");
         groupPrintOptions.addArgument("-s").metavar("<reportname>").dest(Dest.REPORT_NAME).help("set internal report/document name when printing");
+        groupPrintOptions.addArgument("-c").metavar("<copies>").dest(Dest.COPIES)
+                .type(Integer.class).choices(Arguments.range(1, Integer.MAX_VALUE))
+                .help("number of copies. Defaults to 1");
 
         allArguments.put(argDbHost.getDest(), argDbHost);
         allArguments.put(argDbUser.getDest(), argDbUser);
