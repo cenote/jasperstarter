@@ -2,6 +2,19 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 2.1.0
+----------------------------------------------
+
+** Bug
+    * [JAS-40] - No page title is set in index.html
+
+** New Feature
+    * [JAS-50] - Accept number of copies when printing
+
+** Task
+    * [JAS-47] - Include JasperReports 5.6.0
+
+
 Release Notes - JasperStarter - Version 2.0.0
 ----------------------------------------------
 
