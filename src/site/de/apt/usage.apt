@@ -211,7 +211,7 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [--csv-record-del <delimiter>]
                      [--csv-field-del <delimiter>]
                      [--csv-charset <charset>] [-N <printername>] [-d]
-                     [-s <reportname>] <input>
+                     [-s <reportname>] [-c <copies>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -262,6 +262,7 @@ print options:
   -N <printername>       name of printer
   -d                     show print dialog when printing
   -s <reportname>        set internal report/document name when printing
+  -c <copies>            number of copies. Defaults to 1
 +---
 
 

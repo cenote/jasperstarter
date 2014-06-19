@@ -202,23 +202,23 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [--csv-record-del <delimiter>]
                      [--csv-field-del <delimiter>]
                      [--csv-charset <charset>] [-N <printername>] [-d]
-                     [-s <reportname>] <input>
+                     [-s <reportname>] [-c <copies>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls, xlsx, docx, odt, ods,
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
                          pptx, csv, html, xhtml, xml, jrprint
   <input>                input file (.jrxml|.jasper|.jrprint)
   -o <output>            directory or basename of outputfile(s)
 
 compile options:
-  -w, --write-jasper     write .jasper file to imput dir if jrxml is
+  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
                          prcessed
 
 fill options:
-  -a [<filter>]          ask for report parameters. Filter: a, ae, u, ue,
+  -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
                          p, pe (see usage)
   -P <param> [<param> ...]
                          report parameter: name=value [...]
@@ -227,8 +227,8 @@ fill options:
                          used.
 
 db options:
-  -t <dbtype>            database type: none, mysql, postgres, oracle,
-                         generic
+  -t <dbtype>            database  type:   none,   csv,   mysql,  postgres,
+                         oracle, generic
   -H <dbhost>            database host
   -u <dbuser>            database user
   -p <dbpasswd>          database password
@@ -237,7 +237,7 @@ db options:
   --db-port <port>       database port
   --db-driver <name>     jdbc driver class name for use with type: generic
   --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
-  --jdbc-dir <dir>       directory where jdbc driver jars are located.
+  --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
   --data-file <file>     input file for file based datasource
   --csv-first-row        first row contains column headers
@@ -253,6 +253,7 @@ print options:
   -N <printername>       name of printer
   -d                     show print dialog when printing
   -s <reportname>        set internal report/document name when printing
+  -c <copies>            number of copies. Defaults to 1
 +---
 
 
