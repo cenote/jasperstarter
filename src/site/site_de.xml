@@ -52,7 +52,7 @@ limitations under the License.
             <item name="Dateien" href="files.html" />
             <item name="Downloads" href="http://sourceforge.net/projects/jasperstarter/files/" />
             <item name="Sourceforge" href="http://sourceforge.net/projects/jasperstarter/" />
-            <item name="Freecode" href="http://freecode.com/projects/jasperstarter" />
+            <item name="Ohloh" href="http://www.ohloh.net/p/jasperstarter" />
         </menu>
         <menu name="Howto">
             <item name="Unicode pdf export" href="unicode-pdf-export.html" />
