@@ -288,6 +288,39 @@ limitations under the License.
                 <version>2.6</version>
             </plugin>             
         </plugins>
+        <pluginManagement>
+        	<plugins>
+        		<plugin>
+ 					<groupId>org.eclipse.m2e</groupId>
+ 					<artifactId>lifecycle-mapping</artifactId>
+ 					<version>1.0.0</version>
+					<!--This plugin's configuration is used to store Eclipse 
+                		m2e settings only. It has no influence on the Maven build itself. --> 					
+ 					<configuration>
+   						<lifecycleMappingMetadata>
+     						<pluginExecutions>
+       							<pluginExecution>
+         							<pluginExecutionFilter>
+         							 	<groupId>org.codehaus.mojo</groupId>
+                						<artifactId>buildnumber-maven-plugin</artifactId>
+                						<versionRange>[1.0,)</versionRange>
+										<goals>
+             								<goal>hgchangeset</goal>
+           								</goals>
+         							</pluginExecutionFilter>
+         							<action>
+           								<execute>
+           									<runOnIncremental>true</runOnIncremental>
+           								</execute>
+         							</action>
+       							</pluginExecution>
+     						</pluginExecutions>
+   						</lifecycleMappingMetadata>
+ 					</configuration>                						
+        		</plugin>
+        	</plugins>
+        </pluginManagement>
+
     </build>
     
     <reporting>
@@ -750,4 +783,5 @@ limitations under the License.
             </build>
         </profile>
     </profiles>
+
 </project>
