@@ -2,6 +2,13 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 2.1.2
+---------------------------------------------
+
+** Bug
+    * [JAS-53] - Property net.sf.jasperreports.export.xls.one.page.per.sheet was overrided
+
+
 Release Notes - JasperStarter - Version 2.1.1
 ----------------------------------------------
 
