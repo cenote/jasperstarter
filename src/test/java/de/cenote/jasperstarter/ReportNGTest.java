@@ -85,7 +85,7 @@ public class ReportNGTest {
         config.csvFieldDel = "|";
         config.csvRecordDel = "\r\n";
         config.csvFirstRow = true;
-        config.outputFormats = new ArrayList(Arrays.asList(OutputFormat.jrprint));
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.jrprint")).exists(), true);
