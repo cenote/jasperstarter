@@ -215,7 +215,7 @@ public class Report {
     public void fill() throws InterruptedException {
         if (initialInputType != InputType.JASPER_PRINT) {
             // get commandLineReportParams
-            Map parameters = getCmdLineReportParams();
+            Map<String, Object> parameters = getCmdLineReportParams();
             // if prompt...
             if (config.hasAskFilter()) {
                 JRParameter[] reportParams = jasperReport.getParameters();
@@ -353,7 +353,7 @@ public class Report {
     }
 
 	public void exportXls() throws JRException {
-		Map dateFormats = new HashMap();
+		Map<String, String> dateFormats = new HashMap<String, String>();
 		dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
 		JRXlsExporter exporter = new JRXlsExporter();
@@ -368,7 +368,7 @@ public class Report {
 	}
 
     public void exportXlsx() throws JRException {
-        Map dateFormats = new HashMap();
+        Map<String, String> dateFormats = new HashMap<String, String>();
         dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
         JRXlsxExporter exporter = new JRXlsxExporter();
@@ -414,10 +414,10 @@ public class Report {
 		exporter.exportReport();
 	}
 
-    private Map getCmdLineReportParams() {
+    private Map<String, Object> getCmdLineReportParams() {
         JRParameter[] jrParameterArray = jasperReport.getParameters();
-        Map<String, JRParameter> jrParameters = new HashMap();
-        Map parameters = new HashMap();
+        Map<String, JRParameter> jrParameters = new HashMap<String, JRParameter>();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         List<String> params;
         if (config.hasParams()) {
             params = config.getParams();
@@ -533,7 +533,7 @@ public class Report {
         }
     }
 
-    private Map promptForParams(JRParameter[] reportParams, Map params, String reportName) throws InterruptedException {
+    private Map<String, Object> promptForParams(JRParameter[] reportParams, Map<String, Object> params, String reportName) throws InterruptedException {
         boolean isForPromptingOnly = false;
         boolean isUserDefinedOnly = false;
         boolean emptyOnly = false;

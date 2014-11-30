@@ -16,6 +16,7 @@
 package de.cenote.jasperstarter.gui;
 
 import com.toedter.calendar.JCalendar;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,6 +40,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
@@ -50,6 +52,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
+
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
@@ -65,7 +68,7 @@ public class ParameterPanel extends JPanel {
     private int textFieldHeight;
     UIDefaults uiDefaults = javax.swing.UIManager.getDefaults();
 
-    public ParameterPanel(final JRParameter jrParameter, final Map params,
+    public ParameterPanel(final JRParameter jrParameter, final Map<String, Object> params,
             AtomicBoolean valid) {
 
         this.valid = valid;
@@ -166,7 +169,7 @@ public class ParameterPanel extends JPanel {
 
     private class DateInputVerifier extends ParameterInputVerifier {
 
-        DateInputVerifier(JRParameter jrParameter, Map params) {
+        DateInputVerifier(JRParameter jrParameter, Map<String, Object> params) {
             super(jrParameter, params);
         }
 
@@ -198,7 +201,7 @@ public class ParameterPanel extends JPanel {
 
     private class ImageInputVerifier extends ParameterInputVerifier {
 
-        ImageInputVerifier(JRParameter jrParameter, Map params) {
+        ImageInputVerifier(JRParameter jrParameter, Map<String, Object> params) {
             super(jrParameter, params);
         }
 
@@ -256,7 +259,7 @@ public class ParameterPanel extends JPanel {
 
     private class GenericInputVerifier extends ParameterInputVerifier {
 
-        GenericInputVerifier(JRParameter jrParameter, Map params) {
+        GenericInputVerifier(JRParameter jrParameter, Map<String, Object> params) {
             super(jrParameter, params);
         }
 
@@ -289,9 +292,9 @@ public class ParameterPanel extends JPanel {
     private abstract class ParameterInputVerifier extends InputVerifier {
 
         JRParameter jrParameter;
-        Map params;
+        Map<String, Object> params;
 
-        ParameterInputVerifier(JRParameter jrParameter, Map params) {
+        ParameterInputVerifier(JRParameter jrParameter, Map<String, Object> params) {
             this.jrParameter = jrParameter;
             this.params = params;
         }

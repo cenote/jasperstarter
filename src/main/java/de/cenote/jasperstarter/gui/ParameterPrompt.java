@@ -53,7 +53,7 @@ public class ParameterPrompt {
     AtomicBoolean valid = new AtomicBoolean();
 
     public ParameterPrompt(Component parent, JRParameter[] jrParameters,
-            Map params, String reportName, boolean isForPromptingOnly,
+            Map<String, Object> params, String reportName, boolean isForPromptingOnly,
             boolean isUserDefinedOnly, boolean emptyOnly) {
 
         this.valid.set(true);
