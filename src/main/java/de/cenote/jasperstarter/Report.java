@@ -52,7 +52,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -62,13 +61,11 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.engine.export.JRXhtmlExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.oasis.JROdsExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
@@ -77,6 +74,15 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterConfiguration;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
+import net.sf.jasperreports.export.SimpleWriterExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsExporterConfiguration;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import net.sf.jasperreports.view.JasperViewer;
 
 import org.apache.commons.lang.LocaleUtils;
@@ -272,12 +278,12 @@ public class Report {
         if (config.hasReportName()) {
             jasperPrint.setName(config.getReportName());
         }
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        //exporter.setParameter(JRExporterParameter.INPUT_FILE, this.jrprintFile);
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        SimplePrintServiceExporterConfiguration expConfig = new SimplePrintServiceExporterConfiguration();
         if (config.hasPrinterName()) {
             String printerName = config.getPrinterName();
             PrintService service = Printerlookup.getPrintservice(printerName, Boolean.TRUE, Boolean.TRUE);
-            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, service);
+            expConfig.setPrintService(service);
             if (config.isVerbose()) {
                 System.out.println(
                         "printer-name: " + ((service == null)
@@ -289,15 +295,16 @@ public class Report {
         //exporter.setParameter(JRExporterParameter.PAGE_INDEX, pageIndex);
         //exporter.setParameter(JRExporterParameter.START_PAGE_INDEX, pageStartIndex);
         //exporter.setParameter(JRExporterParameter.END_PAGE_INDEX, pageEndIndex);
-        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
-        exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, printServiceAttributeSet);
-        exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+        expConfig.setPrintRequestAttributeSet(printRequestAttributeSet);
+        expConfig.setPrintServiceAttributeSet(printServiceAttributeSet);
+        expConfig.setDisplayPageDialog(Boolean.FALSE);
         if (config.isWithPrintDialog()) {
             setLookAndFeel();
-            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.TRUE);
+            expConfig.setDisplayPrintDialog(Boolean.TRUE);
         } else {
-            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+        	expConfig.setDisplayPrintDialog(Boolean.FALSE);
         }
+        exporter.setConfiguration(expConfig);
         exporter.exportReport();
     }
 
@@ -311,29 +318,29 @@ public class Report {
                 this.output.getAbsolutePath() + ".pdf");
     }
 
-    public void exportRtf() throws JRException {
-        JRRtfExporter exporter = new JRRtfExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".rtf");
-        exporter.exportReport();
-    }
+	public void exportRtf() throws JRException {
+		JRRtfExporter exporter = new JRRtfExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleWriterExporterOutput(this.output
+				.getAbsolutePath() + ".rtf"));
+		exporter.exportReport();
+	}
 
-    public void exportDocx() throws JRException {
-        JRDocxExporter exporter = new JRDocxExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".docx");
-        exporter.exportReport();
-    }
+	public void exportDocx() throws JRException {
+		JRDocxExporter exporter = new JRDocxExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(this.output
+				.getAbsolutePath() + ".docx"));
+		exporter.exportReport();
+	}
 
-    public void exportOdt() throws JRException {
-        JROdtExporter exporter = new JROdtExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".odt");
-        exporter.exportReport();
-    }
+	public void exportOdt() throws JRException {
+		JROdtExporter exporter = new JROdtExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(this.output
+				.getAbsolutePath() + ".odt"));
+		exporter.exportReport();
+	}
 
     public void exportHtml() throws JRException {
         JasperExportManager.exportReportToHtmlFile(jasperPrint,
@@ -345,63 +352,67 @@ public class Report {
                 this.output.getAbsolutePath() + ".xml", false);
     }
 
-    public void exportXls() throws JRException {
-        Map dateFormats = new HashMap();
-        dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
+	public void exportXls() throws JRException {
+		Map dateFormats = new HashMap();
+		dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
-        JRXlsExporter exporter = new JRXlsExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".xls");
-        exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
-        exporter.setParameter(JRXlsExporterParameter.FORMAT_PATTERNS_MAP, dateFormats);
-        exporter.exportReport();
-    }
+		JRXlsExporter exporter = new JRXlsExporter();
+		SimpleXlsReportConfiguration repConfig = new SimpleXlsReportConfiguration();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+				this.output.getAbsolutePath() + ".xls"));
+		repConfig.setDetectCellType(Boolean.TRUE);
+		repConfig.setFormatPatternsMap(dateFormats);
+		exporter.setConfiguration(repConfig);
+		exporter.exportReport();
+	}
 
     public void exportXlsx() throws JRException {
         Map dateFormats = new HashMap();
         dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
 
         JRXlsxExporter exporter = new JRXlsxExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".xlsx");
-        exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
-        exporter.setParameter(JRXlsExporterParameter.FORMAT_PATTERNS_MAP, dateFormats);
+        SimpleXlsxReportConfiguration repConfig = new SimpleXlsxReportConfiguration();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+				this.output.getAbsolutePath() + ".xlsx"));       
+        repConfig.setDetectCellType(Boolean.TRUE);
+        repConfig.setFormatPatternsMap(dateFormats);
+        exporter.setConfiguration(repConfig);
         exporter.exportReport();
     }
 
     public void exportCsv() throws JRException {
         JRCsvExporter exporter = new JRCsvExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".csv");
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleWriterExporterOutput(
+				this.output.getAbsolutePath() + ".csv")); 
         exporter.exportReport();
     }
 
     public void exportOds() throws JRException {
         JROdsExporter exporter = new JROdsExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".ods");
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+				this.output.getAbsolutePath() + ".ods"));       
         exporter.exportReport();
     }
 
-    public void exportPptx() throws JRException {
-        JRPptxExporter exporter = new JRPptxExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".pptx");
-        exporter.exportReport();
-    }
+	public void exportPptx() throws JRException {
+		JRPptxExporter exporter = new JRPptxExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+				this.output.getAbsolutePath() + ".pptx"));
+		exporter.exportReport();
+	}
 
-    public void exportXhtml() throws JRException {
-        JRXhtmlExporter exporter = new JRXhtmlExporter();
-        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-        exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                this.output.getAbsolutePath() + ".x.html");
-        exporter.exportReport();
-    }
+	public void exportXhtml() throws JRException {
+		HtmlExporter exporter = new HtmlExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleHtmlExporterOutput(this.output
+				.getAbsolutePath() + ".x.html"));
+		exporter.exportReport();
+	}
 
     private Map getCmdLineReportParams() {
         JRParameter[] jrParameterArray = jasperReport.getParameters();
