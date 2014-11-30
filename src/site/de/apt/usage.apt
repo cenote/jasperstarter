@@ -210,8 +210,9 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [--csv-first-row] [--csv-columns <list>]
                      [--csv-record-del <delimiter>]
                      [--csv-field-del <delimiter>]
-                     [--csv-charset <charset>] [-N <printername>] [-d]
-                     [-s <reportname>] [-c <copies>] <input>
+                     [--csv-charset <charset>] [--xml-xpath <xpath>]
+                     [-N <printername>] [-d] [-s <reportname>]
+                     [-c <copies>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
@@ -236,7 +237,7 @@ fill options:
                          used.
 
 db options:
-  -t <dbtype>            database  type:   none,   csv,   mysql,  postgres,
+  -t <dbtype>            database type: none,  csv,  xml,  mysql, postgres,
                          oracle, generic
   -H <dbhost>            database host
   -u <dbuser>            database user
@@ -257,6 +258,7 @@ db options:
                          CSV Field Delimiter - defaults to ","
   --csv-charset <charset>
                          CSV charset - defaults to "utf-8"
+  --xml-xpath <xpath>    XPATH for xml Datasource
 
 print options:
   -N <printername>       name of printer

@@ -16,13 +16,17 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
+
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
@@ -69,6 +73,17 @@ public class Db {
 
         return ds;
     }
+    
+	public JRXmlDataSource getXmlDataSource(Config config) throws JRException {
+		JRXmlDataSource ds;
+		ds = new JRXmlDataSource(JRLoader.getInputStream(config.getDataFile()),
+				config.xmlXpath);
+		if (config.isVerbose()) {
+			System.out.println("Data file: " + config.getDataFile());
+			System.out.println("XML xpath: " + config.xmlXpath);
+		}
+		return ds;
+	}
 
     public Connection getConnection(Config config) throws ClassNotFoundException, SQLException {
         Connection conn = null;

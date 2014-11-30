@@ -20,6 +20,7 @@ import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.InputType;
 import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
+
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
@@ -38,6 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.HashPrintServiceAttributeSet;
@@ -47,6 +49,7 @@ import javax.print.attribute.standard.Copies;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -57,6 +60,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
@@ -74,6 +78,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+
 import org.apache.commons.lang.LocaleUtils;
 
 /**
@@ -222,6 +227,10 @@ public class Report {
                     Db db = new Db();
                     JRCsvDataSource ds = db.getCsvDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
+                } else if (DbType.xml.equals(config.getDbType())) {
+                    Db db = new Db();
+                    JRXmlDataSource ds = db.getXmlDataSource(config);
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);                
                 } else {
                     Db db = new Db();
                     Connection con = db.getConnection(config);

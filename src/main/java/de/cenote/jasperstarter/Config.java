@@ -79,6 +79,8 @@ public class Config {
     String csvFieldDel; //representing a char
     @Arg(dest = Dest.CSV_CHARSET)
     String csvCharset;
+    @Arg(dest = Dest.XML_XPATH)
+    String xmlXpath;
     @Arg(dest = Dest.LOCALE)
     String locale;
     @Arg(dest = Dest.OUTPUT)

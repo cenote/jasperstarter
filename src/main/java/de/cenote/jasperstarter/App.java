@@ -396,7 +396,7 @@ public class App {
         ArgumentGroup groupDbOptions = parser.addArgumentGroup("db options");
         groupDbOptions.addArgument("-t").metavar("<dbtype>").dest(Dest.DB_TYPE).
                 required(false).type(Arguments.enumType(DbType.class)).setDefault(DbType.none).
-                help("database type: none, csv, mysql, postgres, oracle, generic");
+                help("database type: none, csv, xml, mysql, postgres, oracle, generic");
         Argument argDbHost = groupDbOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDbOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
         Argument argDbPasswd = groupDbOptions.addArgument("-p").metavar("<dbpasswd>").dest(Dest.DB_PASSWD).setDefault("").help("database password");
@@ -412,6 +412,7 @@ public class App {
         groupDbOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");
         groupDbOptions.addArgument("--csv-field-del").metavar("<delimiter>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to \",\"");
         groupDbOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to \"utf-8\"");
+        Argument argXmlXpath = groupDbOptions.addArgument("--xml-xpath").metavar("<xpath>").dest(Dest.XML_XPATH).help("XPath for XML Datasource");
 
         ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
         groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
@@ -431,6 +432,7 @@ public class App {
         allArguments.put(argDbUrl.getDest(), argDbUrl);
         allArguments.put(argDataFile.getDest(), argDataFile);
         allArguments.put(argCsvColumns.getDest(), argCsvColumns);
+        allArguments.put(argXmlXpath.getDest(), argXmlXpath);
     }
 
     private void parseArgumentParser(String[] args, ArgumentParser parser, Config config) throws ArgumentParserException {
@@ -464,6 +466,9 @@ public class App {
                 if (!config.getCsvFirstRow()) {
                     allArguments.get(Dest.CSV_COLUMNS).required(true);
                 }
+            } else if (DbType.xml.equals(config.getDbType())) {
+            	allArguments.get(Dest.DATA_FILE).required(true);
+            	allArguments.get(Dest.XML_XPATH).required(true);
             }
         }
         // parse again so changed arguments become effectiv
