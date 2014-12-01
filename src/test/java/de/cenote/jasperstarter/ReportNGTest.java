@@ -306,4 +306,24 @@ public class ReportNGTest {
         // take the first user parameter        
         assertEquals(result[20].getName(), "myString");
     }
+    
+    /**
+     * Test of fill method with xml datasource, of class Report.
+     */
+    @Test
+    public void testFillFromXmlDatasource() throws Exception {
+        System.out.println("fill from xmldatasource");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/CancelAck.jrxml";
+        //config.dbType = DbType.none;
+        config.dbType = DbType.xml;
+        config.dataFile = new File("target/test-classes/CancelAck.xml");
+        config.xmlXpath = "/CancelResponse/CancelResult/ID";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
+    }
+    
 }

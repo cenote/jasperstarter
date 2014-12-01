@@ -16,12 +16,17 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
+
+import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import static org.testng.Assert.*;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -97,5 +102,23 @@ public class DbNGTest {
         jRCsvDataSource.next();
         Map names = jRCsvDataSource.getColumnNames();
         assertEquals("{Name=0, Street=1, City=2, Phone=3}", names.toString());
+    }
+    
+    /**
+     * Test of getXmlDataSource method, of class Db.
+     */
+    @Test
+    public void testGetXmlDataSource() throws Exception {
+    	System.out.println("getxmlDataSource");
+    	Config config = new Config();
+    	config.dbType = DbType.xml;
+    	config.dataFile = new File("target/test-classes/CancelAck.xml");
+    	config.xmlXpath = "/CancelResponse/CancelResult/ID";
+    	Db instance = new Db();
+    	JRXmlDataSource jRXmlDataSource = instance.getXmlDataSource(config);
+    	jRXmlDataSource.next();
+    	// ToDo: don't know jet how to get any value out of it here. 
+    	// So just checking if object exists:
+    	assertEquals("net.sf.jasperreports.engine.data.JRXmlDataSource", jRXmlDataSource.getClass().getCanonicalName());
     }
 }
