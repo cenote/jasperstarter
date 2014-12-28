@@ -617,7 +617,7 @@ limitations under the License.
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <finalName>${project.artifactId}-${project.version}-${changeSet}</finalName>
+                <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}</finalName>
             </build>
 
         </profile>
