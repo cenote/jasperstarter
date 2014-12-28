@@ -2,6 +2,16 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release Notes - JasperStarter - Version 2.2.1
+
+** Bug
+    * [JAS-58] - DB type generic should not require a username
+    * [JAS-62] - Linux startup script does not work if called via symlink
+
+** Task
+    * [JAS-57] - Switching from Mercurial to Git (Branch Jasperstarter-2.2)
+
+
 Release Notes - JasperStarter - Version 2.2.0
 ----------------------------------------------
 
