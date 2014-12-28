@@ -458,7 +458,6 @@ public class App {
                 allArguments.get(Dest.DB_SID).required(true);
                 allArguments.get(Dest.DB_PORT).setDefault(DbType.oracle.getPort());
             } else if (config.getDbType().equals(DbType.generic)) {
-                allArguments.get(Dest.DB_USER).required(true);
                 allArguments.get(Dest.DB_DRIVER).required(true);
                 allArguments.get(Dest.DB_URL).required(true);
             } else if (DbType.csv.equals(config.getDbType())) {
