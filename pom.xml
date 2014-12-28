@@ -40,7 +40,7 @@ limitations under the License.
     
     <scm>
         <connection>scm:git:https://bitbucket.org/cenote/jasperstarter.git</connection>
-        <developerConnection>scm:git:ssh://git@bitbucket.org:cenote/jasperstarter.git</developerConnection>
+        <developerConnection>scm:git:git@bitbucket.org:cenote/jasperstarter.git</developerConnection>
         <url>https://bitbucket.org/cenote/jasperstarter/src</url>
     </scm>
     <issueManagement>
