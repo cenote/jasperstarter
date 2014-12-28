@@ -39,8 +39,8 @@ limitations under the License.
     <packaging>jar</packaging>
     
     <scm>
-        <connection>scm:hg:https://bitbucket.org/cenote/jasperstarter/</connection>
-        <developerConnection>scm:hg:ssh://hg@bitbucket.org/cenote/jasperstarter</developerConnection>
+        <connection>scm:git:https://bitbucket.org/cenote/jasperstarter.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:cenote/jasperstarter.git</developerConnection>
         <url>https://bitbucket.org/cenote/jasperstarter/src</url>
     </scm>
     <issueManagement>
@@ -78,17 +78,27 @@ limitations under the License.
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <id>hgchangeset</id>
-                        <goals>
-                            <goal>hgchangeset</goal>
-                        </goals>
-                    </execution>
-                </executions>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.1.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<verbose>true</verbose>
+					<dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<gitDescribe>
+						<always>true</always>
+						<abbrev>7</abbrev>
+						<dirty>-dirty</dirty>
+						<forceLongFormat>false</forceLongFormat>
+					</gitDescribe>
+				</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
