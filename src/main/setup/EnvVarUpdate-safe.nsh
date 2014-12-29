@@ -158,6 +158,7 @@ Function ${UN}EnvVarUpdate
   ${OrIf} $8 >= ${NSIS_MAX_STRLEN}
     SetErrors
     DetailPrint "Current $1 length ($6) too long to modify in NSIS; set manually if needed"
+    MessageBox MB_ICONEXCLAMATION "Current $1 length too long to modify in NSIS; set manually if needed."
     Pop $8
     Pop $7
     Pop $6
