@@ -5,7 +5,7 @@
   !include "MUI2.nsh"
 
   !include "LogicLib.nsh"
-  !include "EnvVarUpdate.nsh"
+  !include "EnvVarUpdate-safe.nsh"
 
 ;--------------------------------
   SetCompressor lzma
