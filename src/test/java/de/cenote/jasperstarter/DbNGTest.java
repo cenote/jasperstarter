@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Cenote GmbH.
+ * Copyright 2013-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ public class DbNGTest {
         JRCsvDataSource jRCsvDataSource = instance.getCsvDataSource(config);
         jRCsvDataSource.next();
         Map names = jRCsvDataSource.getColumnNames();
-        assertEquals("{Name=0, Street=1, City=2, Phone=3}", names.toString());
+        assertEquals(names.toString(), "{Name=0, Street=1, City=2, Phone=3}");
     }
     
     /**
@@ -119,6 +119,6 @@ public class DbNGTest {
     	jRXmlDataSource.next();
     	// ToDo: don't know jet how to get any value out of it here. 
     	// So just checking if object exists:
-    	assertEquals("net.sf.jasperreports.engine.data.JRXmlDataSource", jRXmlDataSource.getClass().getCanonicalName());
+    	assertEquals(jRXmlDataSource.getClass().getCanonicalName(), "net.sf.jasperreports.engine.data.JRXmlDataSource");
     }
 }
