@@ -232,42 +232,42 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -H is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t mysql");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -H: expected one argument");
+            assertEquals(ex.getCause().getMessage(), "argument -H: expected one argument", "-t mysql -H");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H myhost".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -u is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t mysql -H myhost");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H myhost -u".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -u: expected one argument");
+            assertEquals(ex.getCause().getMessage(), "argument -u: expected one argument", "-t mysql -H myhost -u");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H myhost -u myuser".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -n is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t mysql -H myhost -u myuser");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H myhost -u myuser -n".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -n: expected one argument");
+            assertEquals(ex.getCause().getMessage(), "argument -n: expected one argument", "-t mysql -H myhost -u myuser -n");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t mysql -H myhost -u myuser -n dbname".split(" ");
@@ -292,7 +292,7 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -H is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t postgres");
         }
         // try and error - follow the help message for next input
         // argument -H is tested before, so fulfill immediate with argument
@@ -300,7 +300,7 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -u is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t postgres -H myhost");
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
@@ -308,7 +308,7 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -n is required");
+            assertEquals(ex.getCause().getMessage(), "argument -n is required", "-t postgres -H myhost -u myuser");
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
@@ -334,7 +334,7 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -H is required");
+            assertEquals(ex.getCause().getMessage(), "argument --db-sid is required", "-t oracle");
         }
         // try and error - follow the help message for next input
         // argument -H is tested before, so fulfill immediate with argument
@@ -342,7 +342,7 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -u is required");
+            assertEquals(ex.getCause().getMessage(), "argument --db-sid is required", "-t oracle -H myhost");
         }
         // try and error - follow the help message for next input
         // argument -u is tested before, so fulfill immediate with argument
@@ -350,28 +350,28 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -p is required");
+            assertEquals(ex.getCause().getMessage(), "argument --db-sid is required", "-t oracle -H myhost -u myuser");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument -p: expected one argument");
+            assertEquals(ex.getCause().getMessage(), "argument -p: expected one argument", "-t oracle -H myhost -u myuser -p");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument --db-sid is required");
+            assertEquals(ex.getCause().getMessage(), "argument --db-sid is required", "-t oracle -H myhost -u myuser -p passwd");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd --db-sid".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument --db-sid: expected one argument");
+            assertEquals(ex.getCause().getMessage(), "argument --db-sid: expected one argument", "-t oracle -H myhost -u myuser -p passwd --db-sid");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t oracle -H myhost -u myuser -p passwd --db-sid orcl".split(" ");
@@ -396,14 +396,14 @@ public class AppNGTest {
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument --data-file is required");
+            assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required", "-t csv");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t csv --data-file fakedatafile".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required");
+            assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required", "-t csv --data-file fakedatafile");
         }
         // try and error - follow the help message for next input
         args = "pr fakefile -f pdf -t csv --data-file fakedatafile --csv-columns a,b,c,d".split(" ");
