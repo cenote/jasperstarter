@@ -361,7 +361,7 @@ limitations under the License.
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>6.0.0</version>
+            <version>6.0.3</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
