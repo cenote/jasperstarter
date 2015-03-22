@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Cenote GmbH.
+ * Copyright 2013-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,11 @@ public class Config {
     boolean writeJasper;
     @Arg(dest = Dest.COPIES)
     Integer copies;
-
+    @Arg(dest = Dest.OUT_FIELD_DEL)
+    String outFieldDel;
+    @Arg(dest = Dest.OUT_CHARSET)
+    String outCharset;
+    
     // end of argparse4j arguments
     /**
      *
@@ -346,7 +350,13 @@ public class Config {
             return false;
         }
     }
-    
+    public String getOutFieldDel() {
+        return outFieldDel;
+    }
+    public String getOutCharset() {
+        return outCharset;
+    }
+
     // END argparse4j arguments
-    // @todo: overwrite toString()
+    // TODO: overwrite toString()
 }

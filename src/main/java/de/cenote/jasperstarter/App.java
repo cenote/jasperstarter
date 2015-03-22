@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cenote GmbH.
+ * Copyright 2012-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -250,12 +250,16 @@ public class App {
                 report.exportXlsx();
             } else if (OutputFormat.csv.equals(f)) {
                 report.exportCsv();
+            } else if (OutputFormat.csvMeta.equals(f)) {
+                report.exportCsvMeta();
             } else if (OutputFormat.ods.equals(f)) {
                 report.exportOds();
             } else if (OutputFormat.pptx.equals(f)) {
                 report.exportPptx();
             } else if (OutputFormat.xhtml.equals(f)) {
                 report.exportXhtml();
+            } else {
+            	throw new IllegalArgumentException("Error output format \"" + f +  "\" not implemented!");
             }
         }
         if (viewIt) {
@@ -370,7 +374,7 @@ public class App {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
         groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
-                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, html, xhtml, xml, jrprint");
+                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint");
         groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
         groupOptions.addArgument("-o").metavar("<output>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
         //groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
@@ -414,14 +418,16 @@ public class App {
         groupDbOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to \"utf-8\"");
         Argument argXmlXpath = groupDbOptions.addArgument("--xml-xpath").metavar("<xpath>").dest(Dest.XML_XPATH).help("XPath for XML Datasource");
 
-        ArgumentGroup groupPrintOptions = parser.addArgumentGroup("print options");
-        groupPrintOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
-        groupPrintOptions.addArgument("-d").dest(Dest.WITH_PRINT_DIALOG).action(Arguments.storeTrue()).help("show print dialog when printing");
-        groupPrintOptions.addArgument("-s").metavar("<reportname>").dest(Dest.REPORT_NAME).help("set internal report/document name when printing");
-        groupPrintOptions.addArgument("-c").metavar("<copies>").dest(Dest.COPIES)
+        ArgumentGroup groupOutputOptions = parser.addArgumentGroup("output options");
+        groupOutputOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
+        groupOutputOptions.addArgument("-d").dest(Dest.WITH_PRINT_DIALOG).action(Arguments.storeTrue()).help("show print dialog when printing");
+        groupOutputOptions.addArgument("-s").metavar("<reportname>").dest(Dest.REPORT_NAME).help("set internal report/document name when printing");
+        groupOutputOptions.addArgument("-c").metavar("<copies>").dest(Dest.COPIES)
                 .type(Integer.class).choices(Arguments.range(1, Integer.MAX_VALUE))
                 .help("number of copies. Defaults to 1");
-
+        groupOutputOptions.addArgument("--out-field-del").metavar("<delimiter>").dest(Dest.OUT_FIELD_DEL).setDefault(",").help("Export CSV (Metadata) Field Delimiter - defaults to \",\"");
+        groupOutputOptions.addArgument("--out-charset").metavar("<charset>").dest(Dest.OUT_CHARSET).setDefault("utf-8").help("Export CSV (Metadata) Charset - defaults to \"utf-8\"");
+        
         allArguments.put(argDbHost.getDest(), argDbHost);
         allArguments.put(argDbUser.getDest(), argDbUser);
         allArguments.put(argDbPasswd.getDest(), argDbPasswd);

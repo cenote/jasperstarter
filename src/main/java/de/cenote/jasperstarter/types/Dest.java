@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cenote GmbH.
+ * Copyright 2012-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,8 @@ public interface Dest {
     public static String CSV_FIELD_DEL = "csv-field-del";   // --csv-field-del
     public static String CSV_CHARSET = "csv-charset";       // --csv-charset
     public static String XML_XPATH = "xml-xpath";           // --xml-xpath
+    public static String OUT_FIELD_DEL = "out-field-del"; // --out-field-del
+    public static String OUT_CHARSET = "out-charset";       // --out-charset
     public static String PRINTER_NAME = "printer-name";     // -N
     public static String WITH_PRINT_DIALOG = "with-print-dialog"; // -d
     public static String REPORT_NAME = "set-report-name";   // -s

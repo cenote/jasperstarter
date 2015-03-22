@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cenote GmbH.
+ * Copyright 2012-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public enum OutputFormat {
     // jxl,          // not implemented jet
     // jxlMetadata,  // not implemented jet
     csv,
-    // csvMetadata,  // not implemented jet
+    csvMeta,
     ods,
     pptx,
     xhtml;

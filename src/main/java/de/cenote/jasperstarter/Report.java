@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cenote GmbH.
+ * Copyright 2012-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRCsvMetadataExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
@@ -74,6 +75,8 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.export.SimpleCsvExporterConfiguration;
+import net.sf.jasperreports.export.SimpleCsvMetadataExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterConfiguration;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
@@ -384,11 +387,26 @@ public class Report {
 
     public void exportCsv() throws JRException {
         JRCsvExporter exporter = new JRCsvExporter();
+        SimpleCsvExporterConfiguration configuration = new SimpleCsvExporterConfiguration();
+        configuration.setFieldDelimiter(config.getOutFieldDel());
+        exporter.setConfiguration(configuration);
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 		exporter.setExporterOutput(new SimpleWriterExporterOutput(
-				this.output.getAbsolutePath() + ".csv")); 
+				this.output.getAbsolutePath() + ".csv", config.getOutCharset()));
         exporter.exportReport();
     }
+
+    // the CSV Metadata Exporter
+    public void exportCsvMeta() throws JRException {
+    	JRCsvMetadataExporter exporter = new JRCsvMetadataExporter();
+    	SimpleCsvMetadataExporterConfiguration configuration = new SimpleCsvMetadataExporterConfiguration();
+    	configuration.setFieldDelimiter(config.getOutFieldDel());
+    	exporter.setConfiguration(configuration);
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleWriterExporterOutput(
+				this.output.getAbsolutePath() + ".csv", config.getOutCharset()));
+        exporter.exportReport();
+    }    
 
     public void exportOds() throws JRException {
         JROdsExporter exporter = new JROdsExporter();
