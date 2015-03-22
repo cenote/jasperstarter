@@ -15,7 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
-import de.cenote.jasperstarter.types.DbType;
+import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.OutputFormat;
 
 import java.io.BufferedReader;
@@ -84,7 +84,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jasper";
         //config.dbType = DbType.none;
-        config.dbType = DbType.csv;
+        config.dbType = DsType.csv;
         config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
         config.csvCharset = "utf8";
         config.csvFieldDel = "|";
@@ -105,7 +105,7 @@ public class ReportNGTest {
         Config config = null;
         config = new Config();
         config.input = "target/test-classes/reports/csvMeta.jrxml";
-        config.dbType = DbType.csv;
+        config.dbType = DsType.csv;
         config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
         config.csvCharset = "utf8";
         config.csvFieldDel = "|";
@@ -374,7 +374,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/CancelAck.jrxml";
         //config.dbType = DbType.none;
-        config.dbType = DbType.xml;
+        config.dbType = DsType.xml;
         config.dataFile = new File("target/test-classes/CancelAck.xml");
         config.xmlXpath = "/CancelResponse/CancelResult/ID";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));

@@ -16,7 +16,7 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.gui.ParameterPrompt;
-import de.cenote.jasperstarter.types.DbType;
+import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.InputType;
 import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
@@ -230,13 +230,13 @@ public class Report {
                         Locale.setDefault((Locale) parameters.get("REPORT_LOCALE"));
                     }
                 }
-                if (DbType.none.equals(config.getDbType())) {
+                if (DsType.none.equals(config.getDbType())) {
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
-                } else if (DbType.csv.equals(config.getDbType())) {
+                } else if (DsType.csv.equals(config.getDbType())) {
                     Db db = new Db();
                     JRCsvDataSource ds = db.getCsvDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
-                } else if (DbType.xml.equals(config.getDbType())) {
+                } else if (DsType.xml.equals(config.getDbType())) {
                     Db db = new Db();
                     JRXmlDataSource ds = db.getXmlDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);                

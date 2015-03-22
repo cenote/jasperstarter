@@ -15,7 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
-import de.cenote.jasperstarter.types.DbType;
+import de.cenote.jasperstarter.types.DsType;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
@@ -87,7 +87,7 @@ public class Db {
 
     public Connection getConnection(Config config) throws ClassNotFoundException, SQLException {
         Connection conn = null;
-        DbType dbtype = config.getDbType();
+        DsType dbtype = config.getDbType();
         String host = config.getDbHost();
         String user = config.getDbUser();
         String passwd = config.getDbPasswd();
@@ -96,22 +96,22 @@ public class Db {
         String port = null;
         String sid = null;
         String connectString = null;
-        if (DbType.mysql.equals(dbtype)) {
-            driver = DbType.mysql.getDriver();
+        if (DsType.mysql.equals(dbtype)) {
+            driver = DsType.mysql.getDriver();
             port = config.getDbPort().toString();
             dbname = config.getDbName();
             connectString = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
-        } else if (DbType.postgres.equals(dbtype)) {
-            driver = DbType.postgres.getDriver();
+        } else if (DsType.postgres.equals(dbtype)) {
+            driver = DsType.postgres.getDriver();
             port = config.getDbPort().toString();
             dbname = config.getDbName();
             connectString = "jdbc:postgresql://" + host + ":" + port + "/" + dbname;
-        } else if (DbType.oracle.equals(dbtype)) {
-            driver = DbType.oracle.getDriver();
+        } else if (DsType.oracle.equals(dbtype)) {
+            driver = DsType.oracle.getDriver();
             port = config.getDbPort().toString();
             sid = config.getDbSid();
             connectString = "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid;
-        } else if (DbType.generic.equals(dbtype)) {
+        } else if (DsType.generic.equals(dbtype)) {
             driver = config.getDbDriver();
             connectString = config.getDbUrl();
         }

@@ -31,7 +31,7 @@ public interface Dest {
     public static String ASK = "ask";                       // -a
     public static String PARAMS = "params";                 // -P
     public static String RESOURCE = "resource";             // -r
-    public static String DB_TYPE = "db-type";               // -t
+    public static String DS_TYPE = "db-type";               // -t
     public static String DB_HOST = "db-host";               // -H
     public static String DB_USER = "db-user";               // -u
     public static String DB_PASSWD = "db-passwd";           // -p

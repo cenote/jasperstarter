@@ -16,7 +16,7 @@
 package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.AskFilter;
-import de.cenote.jasperstarter.types.DbType;
+import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.OutputFormat;
 import java.io.File;
@@ -55,8 +55,8 @@ public class Config {
     Integer dbPort;
     @Arg(dest = Dest.DB_SID)
     String dbSid;
-    @Arg(dest = Dest.DB_TYPE)
-    DbType dbType;
+    @Arg(dest = Dest.DS_TYPE)
+    DsType dbType;
     @Arg(dest = Dest.DB_URL)
     String dbUrl;
     @Arg(dest = Dest.DB_USER)
@@ -185,7 +185,7 @@ public class Config {
         return dbSid;
     }
 
-    public DbType getDbType() {
+    public DsType getDbType() {
         return dbType;
     }
     

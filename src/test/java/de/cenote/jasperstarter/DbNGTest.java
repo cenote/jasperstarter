@@ -15,7 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
-import de.cenote.jasperstarter.types.DbType;
+import de.cenote.jasperstarter.types.DsType;
 
 import java.io.File;
 import java.sql.Connection;
@@ -74,7 +74,7 @@ public class DbNGTest {
     public void testGetConnection() throws Exception {
         System.out.println("getConnection");
         Config config = new Config();
-        config.dbType = DbType.generic;
+        config.dbType = DsType.generic;
         config.dbDriver = "org.hsqldb.jdbc.JDBCDriver";
         config.dbUrl = "jdbc:hsqldb:mem:mymemdb;ifexists=true";
         config.dbUser = "SA";
@@ -91,7 +91,7 @@ public class DbNGTest {
     public void testGetCsvDataSource() throws Exception {
         System.out.println("getCsvDataSource");
         Config config = new Config();
-        config.dbType = DbType.csv;
+        config.dbType = DsType.csv;
         config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
         config.csvCharset = "utf-8";
         config.csvFieldDel = "|";
@@ -111,7 +111,7 @@ public class DbNGTest {
     public void testGetXmlDataSource() throws Exception {
     	System.out.println("getxmlDataSource");
     	Config config = new Config();
-    	config.dbType = DbType.xml;
+    	config.dbType = DsType.xml;
     	config.dataFile = new File("target/test-classes/CancelAck.xml");
     	config.xmlXpath = "/CancelResponse/CancelResult/ID";
     	Db instance = new Db();

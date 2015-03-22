@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Cenote GmbH.
+ * Copyright 2012-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 package de.cenote.jasperstarter.types;
 
 /**
- *
+ * Types of Datasources
+ * 
  * @author Volker Voßkämper <vvo at cenote.de>
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
-public enum DbType {
+public enum DsType {
 
     none,
     csv,
@@ -32,12 +33,12 @@ public enum DbType {
     private final String driver;
     private final Integer port;
 
-    DbType() {
+    DsType() {
         this.driver = null;
         this.port = null;
     }
 
-    DbType(String driver, Integer port) {
+    DsType(String driver, Integer port) {
         this.driver = driver;
         this.port = port;
     }
