@@ -41,7 +41,7 @@
 				<reportElement x="-20" y="21" width="595" height="1" forecolor="#666666"/>
 			</line>
 			<staticText>
-				<reportElement x="278" y="0" width="133" height="20"/>
+				<reportElement x="320" y="0" width="133" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -55,14 +55,14 @@
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="0" width="178" height="20"/>
+				<reportElement x="100" y="0" width="200" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Street]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="415" y="0" width="140" height="20"/>
+				<reportElement x="450" y="0" width="140" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -73,7 +73,7 @@
 	<detail>
 		<band height="24">
 			<textField>
-				<reportElement x="278" y="0" width="133" height="20"/>
+				<reportElement x="320" y="0" width="133" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{City}]]></textFieldExpression>
 			</textField>
@@ -83,12 +83,12 @@
 				<textFieldExpression><![CDATA[$F{Name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="0" width="178" height="20"/>
+				<reportElement x="100" y="0" width="200" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Street}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="0" width="140" height="20"/>
+				<reportElement x="450" y="0" width="140" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Phone}]]></textFieldExpression>
 			</textField>
