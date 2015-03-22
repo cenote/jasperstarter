@@ -17,11 +17,16 @@ package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DbType;
 import de.cenote.jasperstarter.types.OutputFormat;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import net.sf.jasperreports.engine.JRParameter;
 import static org.testng.Assert.*;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -237,6 +242,13 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.exportCsv();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.csv")).exists(), true);
+        // now read the file - it could have 0 bytes if something goes wrong
+        BufferedReader in = new BufferedReader(new FileReader(
+        		"target/test-classes/reports/compileToFile.csv"));
+        // check the 3. line
+        in.readLine();
+        in.readLine();
+        assertEquals(in.readLine(), ",Name,Street,,City,Phone,");
     }
 
     /**
