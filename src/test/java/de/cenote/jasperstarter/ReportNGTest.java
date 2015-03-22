@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Cenote GmbH.
+ * Copyright 2013-2015 Cenote GmbH.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,27 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.jrprint")).exists(), true);
+    }
+
+    /**
+     * Test of fill method for metadata export, of class Report.
+     */
+    @Test
+    public void testFillMeta() throws Exception {
+        System.out.println("fillMeta");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/csvMeta.jrxml";
+        config.dbType = DbType.csv;
+        config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
+        config.csvCharset = "utf8";
+        config.csvFieldDel = "|";
+        config.csvRecordDel = "\r\n";
+        config.csvFirstRow = true;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/csvMeta.jrprint")).exists(), true);
     }
 
     /**
@@ -239,6 +260,7 @@ public class ReportNGTest {
         Config config = null;
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
+        config.outCharset = "utf-8";
         Report instance = new Report(config, new File(config.getInput()));
         instance.exportCsv();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.csv")).exists(), true);
@@ -249,6 +271,29 @@ public class ReportNGTest {
         in.readLine();
         in.readLine();
         assertEquals(in.readLine(), ",Name,Street,,City,Phone,");
+    }
+
+    /**
+     * Test of exportCsvMeta method, of class Report.
+     */
+    @Test(dependsOnMethods = {"testFillMeta"})
+    public void testExportCsvMeta() throws Exception {
+        System.out.println("exportCsvMeta");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/csvMeta.jrprint";
+        config.outCharset = "utf-8";
+        config.outFieldDel = "|";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.exportCsvMeta();
+        assertEquals(((File) new File("target/test-classes/reports/csvMeta.csv")).exists(), true);
+        // now read the file - it could have 0 bytes if something goes wrong
+        BufferedReader in = new BufferedReader(new FileReader(
+        		"target/test-classes/reports/csvMeta.csv"));
+        // check the 3. line
+        in.readLine();
+        in.readLine();
+        assertEquals(in.readLine(), "Carl Grant|Ap #507-5431 Consectetuer, Avenue|Chippenham|1-472-350-4152");
     }
 
     /**

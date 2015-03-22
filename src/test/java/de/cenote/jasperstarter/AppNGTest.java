@@ -183,7 +183,7 @@ public class AppNGTest {
             StringBuilder sb = new StringBuilder();
             sb.append("argument -f: could not convert '''' (choose from ");
             sb.append("{view,print,jrprint,pdf,rtf,docx,odt,html,xml,xls,");
-            sb.append("xlsx,csv,ods,pptx,xhtml})");
+            sb.append("xlsx,csv,csvMeta,ods,pptx,xhtml})");
             assertEquals(ex.getCause().getMessage(), sb.toString());
         }
         // try and error - follow the help message for next input
