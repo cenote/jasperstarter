@@ -1,4 +1,4 @@
-~~ Copyright 2012 Cenote GmbH.
+~~ Copyright 2012-2015 Cenote GmbH.
 ~~
 ~~ Licensed under the Apache License, Version 2.0 (the "License");
 ~~ you may not use this file except in compliance with the License.
@@ -193,7 +193,7 @@ options:
 $ jasperstarter pr -h
 usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [-a [<filter>]] [-P <param> [<param> ...]]
-                     [-r [<resource>]] [-t <dbtype>] [-H <dbhost>]
+                     [-r [<resource>]] [-t <dstype>] [-H <dbhost>]
                      [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
                      [--db-sid <sid>] [--db-port <port>]
                      [--db-driver <name>] [--db-url <jdbcUrl>]
@@ -203,14 +203,15 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [--csv-field-del <delimiter>]
                      [--csv-charset <charset>] [--xml-xpath <xpath>]
                      [-N <printername>] [-d] [-s <reportname>]
-                     [-c <copies>] <input>
+                     [-c <copies>] [--out-field-del <delimiter>]
+                     [--out-charset <charset>] <input>
 
 optional arguments:
   -h, --help             show this help message and exit
 
 options:
   -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
-                         pptx, csv, html, xhtml, xml, jrprint
+                         pptx, csv, csvMeta, html, xhtml, xml, jrprint
   <input>                input file (.jrxml|.jasper|.jrprint)
   -o <output>            directory or basename of outputfile(s)
 
@@ -227,9 +228,9 @@ fill options:
                          <resource> is not  given  the  input  directory is
                          used.
 
-db options:
-  -t <dbtype>            database type: none,  csv,  xml,  mysql, postgres,
-                         oracle, generic
+datasource options:
+  -t <dstype>            datasource type: none, csv,  xml, mysql, postgres,
+                         oracle, generic (jdbc)
   -H <dbhost>            database host
   -u <dbuser>            database user
   -p <dbpasswd>          database password
@@ -249,13 +250,19 @@ db options:
                          CSV Field Delimiter - defaults to ","
   --csv-charset <charset>
                          CSV charset - defaults to "utf-8"
-  --xml-xpath <xpath>    XPATH for xml Datasource
+  --xml-xpath <xpath>    XPath for XML Datasource
 
-print options:
+output options:
   -N <printername>       name of printer
   -d                     show print dialog when printing
   -s <reportname>        set internal report/document name when printing
   -c <copies>            number of copies. Defaults to 1
+  --out-field-del <delimiter>
+                         Export CSV (Metadata)  Field  Delimiter - defaults
+                         to ","
+  --out-charset <charset>
+                         Export CSV (Metadata) Charset  - defaults to "utf-
+                         8"
 +---
 
 
@@ -606,6 +613,20 @@ $ jasperstarter pr myreport.jasper -f view -r myresources.jar
 +---
 
 
+** Exporting Reports using Metadata
+
+  The standard export to csv (xls, xlsx, ods) depends on layout and
+  produces unexpected results most time. The solution to this is using
+  metadata which clearly define which data is exported and how.
+  This metadata must be added to the report definition <jrxml>.
+
+  See {{http://jasperreports.sourceforge.net/sample.reference/jasper/#csvmetadataexport}}
+
+  Additionaly use the format <-f csvMeta> instead of <-f csv> with
+  JasperStarter. Have a look at the example section at the end of this
+  file.
+
+
 * File Handling
 
   If the input file (option <<<-i>>> ) is not found, <.jasper> is added to the
@@ -672,3 +693,58 @@ month01/report1.pdf
 month01/journal.xyz.odt
 month01/journal.xyz.pdf
 +---
+
+
+* Examples
+
+  There are several example reports provided whithin the JasperStarter
+  distribution. They can be found in the <examples> folder.
+
+  For the following examples cd into the <examples> folder and execute
+  the commands as described.
+
+  List of example files:
+
++---
+CancelAck.jrxml
+CancelAck.xml
+charactersetTest.jrxml
+csvExampleHeaders.csv
+csv.jrxml
+csvMeta.jrxml
+i18n-bundle_de.properties
+i18n-bundle.properties
+i18n-bundle_ru.properties
+noDB-i18n.jrxml
+noDB-params.jrxml
++---
+
+** csvMeta.jrxml
+
+  This is an example report for exporting csv with the help of
+  metadata. Don't get confused by the fact that the report uses a csv
+  file as datasource. The output of the export should result in a file
+  named csvMeta.csv.
+
+  To just view the report type:
+
++---
+jasperstarter pr csvMeta.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" 
++---
+
+  To make the metadata export type:
+
++---
+jasperstarter pr csvMeta.jrxml -f csvMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
++---
+
+  The input and output files should only differ in line ending depending
+  on your operating system.
+
++---
+diff -yW140 --ignore-all-space csvExampleHeaders.csv csvMeta.csv
++---
+
+  To have an idea on how to add metadata to your report just take a
+  look on <csv.jrxml> and <csvMeta.jrxml>. They mainly differ in the
+  added metadata, the order of the fields and a fixed string.
