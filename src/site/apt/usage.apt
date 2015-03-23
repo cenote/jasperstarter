@@ -719,6 +719,44 @@ noDB-i18n.jrxml
 noDB-params.jrxml
 +---
 
+** charactersetTest.jrxml
+
+  A simple report whithout any datasource (just static text) showing
+  different character sets. To view this report type:
+
++---
+jasperstarter pr charactersetTest.jrxml -f view
++---
+
+  To get a pdf from this report type:
+
++---
+jasperstarter pr charactersetTest.jrxml -f pdf
++---
+
+  Viewing the pdf you will miss the foreign characters as long as you
+  did not provide the Arial font as a resouce.
+  See {{{./unicode-pdf-export.html}Unicode PDF export}}
+
+
+** csv.jrxml
+
+  To view the report type:
+
++---
+jasperstarter pr csv.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" 
++---
+
+  To export the report to csv type:
+
++---
+jasperstarter pr csv.jrxml -f csv -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
++---
+
+  The result is not what you probably expect. The data depends on the
+  layout of the report. See <csv.csv>.
+
+
 ** csvMeta.jrxml
 
   This is an example report for exporting csv with the help of
@@ -748,3 +786,95 @@ diff -yW140 --ignore-all-space csvExampleHeaders.csv csvMeta.csv
   To have an idea on how to add metadata to your report just take a
   look on <csv.jrxml> and <csvMeta.jrxml>. They mainly differ in the
   added metadata, the order of the fields and a fixed string.
+
+
+** CancelAck.jrxml
+
+  This is a report with a xml datasource. To view it type:
+
++---
+jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/CancelResult/ID --data-file CancelAck.xml
++---
+
+
+** noDB-i18n.jrxm
+
+  This is a localized report. To start with the defaults just type:
+
++---
+jasperstarter pr noDB-i18n.jrxml -f view
++---
+
+  To start explicit with german localisation you have three
+  options. The first and the second option change the locale of the
+  user interface too:
+
+  Change the locale of the environment (Unix)
+
++---
+LANG=de_DE.UTF-8 jasperstarter pr noDB-i18n.jrxml -f view
++---
+
+  Provide the locale parameter:
+
++---
+jasperstarter --locale de_DE pr noDB-i18n.jrxml -f view
++---
+
+  Provide the build in report parameter <REPORT_LOCALE>. This changes
+  only the locale inside the report but the UI remains in the default
+  locale (your systems locale):
+
++---
+jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=de_DE
++---
+
+  Same with russian localisation:
+
++---
+jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=ru
++---
+
+
+** noDB-params.jrxml
+
+  This report accepts parameters. If you don't provide a parameter the
+  report can be shown but the values are empty:
+
++---
+jasperstarter pr noDB-params.jrxml -f view
++---
+
+  To get a list of possible parameters type:
+
++---
+jasperstarter lpa noDB-params.jrxml
++---
+
+  Let JasperStarter ask you for the Parameters:
+
++---
+jasperstarter pr noDB-params.jrxml -f view -a
++---
+
+  Provide one or more parameters on command line (Parameter names are
+  case sensitive):
+
++---
+jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" myInt=5
++---
+
+  Provide a parameter on command line as a default but ask the user
+  for all parameters:
+
++---
+jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a
++---
+
+  Provide a parameter on the command line and ask the user only for
+  the remaining empty ones:
+
++---
+jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a pe
++---
+
