@@ -258,6 +258,8 @@ public class App {
                 report.exportPptx();
             } else if (OutputFormat.xhtml.equals(f)) {
                 report.exportXhtml();
+            } else if (OutputFormat.jrprint.equals(f)) {
+            	// nothing to do. Option is used in Report.fill()
             } else {
             	throw new IllegalArgumentException("Error output format \"" + f +  "\" not implemented!");
             }
