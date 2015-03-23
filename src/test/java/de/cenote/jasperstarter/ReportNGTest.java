@@ -250,6 +250,28 @@ public class ReportNGTest {
         HSSFCell cell   = row.getCell(2);
         assertEquals(cell.getStringCellValue(), "Carl Grant");
     }
+    
+    /**
+     * Test of exportXlsMeta method, of class Report.
+     */
+    @Test(dependsOnMethods = {"testFillMeta"})
+    public void testExportXlsMeta() throws Exception {
+        System.out.println("exportXlsMeta");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/csvMeta.jrprint";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.exportXlsMeta();
+        assertEquals(((File) new File("target/test-classes/reports/csvMeta.xls")).exists(), true);
+        // Read the content of a cell:
+        InputStream inputStream = new FileInputStream("target/test-classes/reports/csvMeta.xls");
+        HSSFWorkbook wb = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = wb.getSheetAt(0);       // first sheet
+        // select cell C12
+        HSSFRow row     = sheet.getRow(11);
+        HSSFCell cell   = row.getCell(2);
+        assertEquals(cell.getStringCellValue(), "Dampremy");
+    }
 
     /**
      * Test of exportXlsx method, of class Report.
