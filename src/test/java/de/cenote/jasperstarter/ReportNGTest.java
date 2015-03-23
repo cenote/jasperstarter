@@ -20,13 +20,19 @@ import de.cenote.jasperstarter.types.OutputFormat;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.sf.jasperreports.engine.JRParameter;
 import static org.testng.Assert.*;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -235,6 +241,14 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.exportXls();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xls")).exists(), true);
+        // Read the content of a cell:
+        InputStream inputStream = new FileInputStream("target/test-classes/reports/compileToFile.xls");
+        HSSFWorkbook wb = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = wb.getSheetAt(0);       // first sheet
+        // select cell C12
+        HSSFRow row     = sheet.getRow(11);
+        HSSFCell cell   = row.getCell(2);
+        assertEquals(cell.getStringCellValue(), "Carl Grant");
     }
 
     /**
