@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.csv.write.header" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.write.header" value="true"/>
 	<parameter name="myString" class="java.lang.String"/>
 	<field name="Name" class="java.lang.String"/>
 	<field name="Street" class="java.lang.String"/>
@@ -84,6 +85,7 @@
             <textField>
                 <reportElement x="3" y="0" width="97" height="20">
                     <property name="net.sf.jasperreports.export.csv.column.name" value="Name"/>
+                    <property name="net.sf.jasperreports.export.xls.column.name" value="Name"/>
                 </reportElement>
                 <textElement/>
                 <textFieldExpression><![CDATA[$F{Name}]]></textFieldExpression>
@@ -91,6 +93,7 @@
             <textField>
                 <reportElement x="100" y="0" width="200" height="20">
                     <property name="net.sf.jasperreports.export.csv.column.name" value="Street"/>
+                    <property name="net.sf.jasperreports.export.xls.column.name" value="Street"/>
                 </reportElement>
                 <textElement/>
                 <textFieldExpression><![CDATA[$F{Street}]]></textFieldExpression>
@@ -98,6 +101,7 @@
 			<textField>
 				<reportElement x="320" y="0" width="133" height="20">
                     <property name="net.sf.jasperreports.export.csv.column.name" value="City"/>
+                    <property name="net.sf.jasperreports.export.xls.column.name" value="City"/>
                 </reportElement>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{City}]]></textFieldExpression>
@@ -105,6 +109,7 @@
             <textField>
 				<reportElement x="450" y="0" width="140" height="20">
                     <property name="net.sf.jasperreports.export.csv.column.name" value="Phone"/>
+                    <property name="net.sf.jasperreports.export.xls.column.name" value="Phone"/>
                 </reportElement>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Phone}]]></textFieldExpression>
