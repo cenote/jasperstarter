@@ -67,6 +67,7 @@ import net.sf.jasperreports.engine.export.JRCsvMetadataExporter;
 import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsMetadataExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdsExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
@@ -84,6 +85,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsExporterConfiguration;
+import net.sf.jasperreports.export.SimpleXlsMetadataReportConfiguration;
 import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import net.sf.jasperreports.view.JasperViewer;
@@ -369,6 +371,22 @@ public class Report {
 		exporter.setConfiguration(repConfig);
 		exporter.exportReport();
 	}
+
+	// the XLS Metadata Exporter
+	public void exportXlsMeta() throws JRException {
+		Map<String, String> dateFormats = new HashMap<String, String>();
+		dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
+
+		JRXlsMetadataExporter exporter = new JRXlsMetadataExporter();
+		SimpleXlsMetadataReportConfiguration repConfig = new SimpleXlsMetadataReportConfiguration();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(
+				this.output.getAbsolutePath() + ".xls"));
+		repConfig.setDetectCellType(Boolean.TRUE);
+		repConfig.setFormatPatternsMap(dateFormats);
+		exporter.setConfiguration(repConfig);
+		exporter.exportReport();
+	}	
 
     public void exportXlsx() throws JRException {
         Map<String, String> dateFormats = new HashMap<String, String>();

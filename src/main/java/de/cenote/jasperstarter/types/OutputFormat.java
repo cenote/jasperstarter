@@ -34,6 +34,7 @@ public enum OutputFormat {
     xml,
     // xmlembed,     // not implemented jet
     xls,
+    xlsMeta,
     xlsx,
     // jxl,          // not implemented jet
     // jxlMetadata,  // not implemented jet

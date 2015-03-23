@@ -182,7 +182,7 @@ public class AppNGTest {
         } catch (InvocationTargetException ex) {
             StringBuilder sb = new StringBuilder();
             sb.append("argument -f: could not convert '''' (choose from ");
-            sb.append("{view,print,jrprint,pdf,rtf,docx,odt,html,xml,xls,");
+            sb.append("{view,print,jrprint,pdf,rtf,docx,odt,html,xml,xls,xlsMeta,");
             sb.append("xlsx,csv,csvMeta,ods,pptx,xhtml})");
             assertEquals(ex.getCause().getMessage(), sb.toString());
         }

@@ -246,6 +246,8 @@ public class App {
                 report.exportXml();
             } else if (OutputFormat.xls.equals(f)) {
                 report.exportXls();
+            } else if (OutputFormat.xlsMeta.equals(f)) {
+                report.exportXlsMeta();
             } else if (OutputFormat.xlsx.equals(f)) {
                 report.exportXlsx();
             } else if (OutputFormat.csv.equals(f)) {
@@ -376,7 +378,7 @@ public class App {
         ArgumentGroup groupOptions = parser.addArgumentGroup("options");
         groupOptions.addArgument("-f").metavar("<fmt>").dest(Dest.OUTPUT_FORMATS).
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
-                help("view, print, pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint");
+                help("view, print, pdf, rtf, xls, xlsMeta, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint");
         groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
         groupOptions.addArgument("-o").metavar("<output>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
         //groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
