@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright 2012, 2013, 2014 Cenote GmbH.
+Copyright 2012-2015 Cenote GmbH.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -192,7 +192,16 @@ limitations under the License.
                             -->
                             <classpathPrefix>../lib/</classpathPrefix>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
+                        <manifestEntries>
+                            <X-Git-Commit-Id>${git.commit.id}</X-Git-Commit-Id>
+                            <X-Git-Commit-Id-Abbrev>${git.commit.id.abbrev}</X-Git-Commit-Id-Abbrev>
+                            <X-Git-Commit-Id-Desc>${git.commit.id.describe}</X-Git-Commit-Id-Desc>
+                            <X-Git-Commit-Time>${git.commit.time}</X-Git-Commit-Time>
+                            <X-Git-Branch>${git.branch}</X-Git-Branch>
+                            <X-Revision>${git.commit.id.abbrev} (${git.commit.id.describe})</X-Revision>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
