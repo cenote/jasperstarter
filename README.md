@@ -18,7 +18,7 @@ It has the following features:
   * Optionally show printer dialog to choose printer
   * Optionally show printpreview
   * Export to file in the following formats:
-    * pdf, rtf, xls, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint
+    * pdf, rtf, xls, xlsMeta, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint
   * Export multiple formats in one commanding call
   * Compile, Print and export in one commanding call
   * View, print or export previously filled reports (use jrprint file as input)

@@ -190,28 +190,29 @@ options:
   printing or exporting. <pr> is an alias for <process>.
 
 +---
-$ jasperstarter pr -h
-usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
-                     [-a [<filter>]] [-P <param> [<param> ...]]
-                     [-r [<resource>]] [-t <dstype>] [-H <dbhost>]
-                     [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
-                     [--db-sid <sid>] [--db-port <port>]
-                     [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [--data-file <file>]
-                     [--csv-first-row] [--csv-columns <list>]
-                     [--csv-record-del <delimiter>]
-                     [--csv-field-del <delimiter>]
-                     [--csv-charset <charset>] [--xml-xpath <xpath>]
-                     [-N <printername>] [-d] [-s <reportname>]
-                     [-c <copies>] [--out-field-del <delimiter>]
-                     [--out-charset <charset>] <input>
+$ jasperstarter_bin pr -h
+Benutzung: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>]
+                         [-w] [-a [<filter>]] [-P <param> [<param> ...]]
+                         [-r [<resource>]] [-t <dstype>] [-H <dbhost>]
+                         [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
+                         [--db-sid <sid>] [--db-port <port>]
+                         [--db-driver <name>] [--db-url <jdbcUrl>]
+                         [--jdbc-dir <dir>] [--data-file <file>]
+                         [--csv-first-row] [--csv-columns <list>]
+                         [--csv-record-del <delimiter>]
+                         [--csv-field-del <delimiter>]
+                         [--csv-charset <charset>] [--xml-xpath <xpath>]
+                         [-N <printername>] [-d] [-s <reportname>]
+                         [-c <copies>] [--out-field-del <delimiter>]
+                         [--out-charset <charset>] <input>
 
-optional arguments:
-  -h, --help             show this help message and exit
+Optionale Argumente:
+  -h, --help             zeigt diese Hilfe und beendet sich.
 
 options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
-                         pptx, csv, csvMeta, html, xhtml, xml, jrprint
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf,  xls,  xlsMeta, xlsx, docx,
+                         odt, ods, pptx,  csv,  csvMeta,  html, xhtml, xml,
+                         jrprint
   <input>                input file (.jrxml|.jasper|.jrprint)
   -o <output>            directory or basename of outputfile(s)
 
@@ -353,12 +354,12 @@ $ jasperstarter pr myreport -f view @db.conf
         * <<view>> and <<print>> are mutually exclusive thus print is ignored
           if view is given.
 
-    * <<<-t>>> a database type if your report needs a database connection.
+    * <<<-t>>> a datasource type if your report needs one.
       Defaults to <<none>>.
 
-        * if database type is not <<none>> you must specify the needed
+        * if datasource type is not <<none>> you must specify other options depending
 
-          connection information.
+          on the type of the datasource.
 
   All other options are optional.
 
@@ -387,7 +388,7 @@ $ jasperstarter -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
   place <<<\<input\>>>> at the first position right behind the command as shown in
   the following examples.
 
-** The minimum non database report
+** The minimum non datasource report
 
   The minimum options needed, to process a report with an empty datasource:
 
@@ -616,15 +617,19 @@ $ jasperstarter pr myreport.jasper -f view -r myresources.jar
 ** Exporting Reports using Metadata
 
   The standard export to csv (xls, xlsx, ods) depends on layout and
-  produces unexpected results most time. The solution to this is using
-  metadata which clearly define which data is exported and how.
+  produces unexpected results most time. The solution to this is, at
+  least for csv and xls, using metadata which clearly define which
+  data is exported and how.
   This metadata must be added to the report definition <jrxml>.
 
-  See {{http://jasperreports.sourceforge.net/sample.reference/jasper/#csvmetadataexport}}
+  See
+  {{http://jasperreports.sourceforge.net/sample.reference/jasper/#csvmetadataexport}}
+  and
+  {{http://jasperreports.sourceforge.net/sample.reference/jasper/#xlsmetadataexport}}
 
-  Additionaly use the format <-f csvMeta> instead of <-f csv> with
-  JasperStarter. Have a look at the example section at the end of this
-  file.
+  Additionaly use the format <-f csvMeta> instead of <-f csv> or <-f
+  xlsMeta> instead of <-f xls> with JasperStarter. Have a look at the
+  example section at the end of this file.
 
 
 * File Handling
@@ -753,16 +758,24 @@ jasperstarter pr csv.jrxml -f view -t csv --data-file csvExampleHeaders.csv --cs
 jasperstarter pr csv.jrxml -f csv -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
 +---
 
-  The result is not what you probably expect. The data depends on the
-  layout of the report. See <csv.csv>.
+  To export the report to xls type:
+
++---
+jasperstarter pr csv.jrxml -f xsl -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
++---
+
+  The results are probably not what you expect. The csv data depends on the
+  layout of the report and may be not row by row. See <csv.csv>. The
+  xls export tries to mimic the print layout which is not useful if
+  you want to post process the data in Excel.
 
 
 ** csvMeta.jrxml
 
-  This is an example report for exporting csv with the help of
+  This is an example report for exporting csv or xls with the help of
   metadata. Don't get confused by the fact that the report uses a csv
   file as datasource. The output of the export should result in a file
-  named csvMeta.csv.
+  named csvMeta.csv or csvMeta.xls depending on <-f>.
 
   To just view the report type:
 
@@ -770,7 +783,7 @@ jasperstarter pr csv.jrxml -f csv -t csv --data-file csvExampleHeaders.csv --csv
 jasperstarter pr csvMeta.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" 
 +---
 
-  To make the metadata export type:
+  To make the csv metadata export type:
 
 +---
 jasperstarter pr csvMeta.jrxml -f csvMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
@@ -783,10 +796,16 @@ jasperstarter pr csvMeta.jrxml -f csvMeta -t csv --data-file csvExampleHeaders.c
 diff -yW140 --ignore-all-space csvExampleHeaders.csv csvMeta.csv
 +---
 
+  To make the xls metadata export type:
+
++---
+jasperstarter pr csvMeta.jrxml -f xlsMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
++---
+
   To have an idea on how to add metadata to your report just take a
   look on <csv.jrxml> and <csvMeta.jrxml>. They mainly differ in the
   added metadata, the order of the fields and a fixed string.
-
+  
 
 ** CancelAck.jrxml
 
