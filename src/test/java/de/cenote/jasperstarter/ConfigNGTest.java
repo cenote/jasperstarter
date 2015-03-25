@@ -49,13 +49,8 @@ public class ConfigNGTest {
     @org.testng.annotations.Test
     public void testConfig() {
         System.out.println("Config()");
-        Config instance = null;
-        try {
-            // @todo: Config() cannot get JasperReports version while testing
-            instance = new Config();
-        } catch (IOException ex) {
-            fail(ex.getMessage());
-        }
+        Config instance = new Config();
+        // @todo: Config() cannot get JasperReports version while testing
         assertNotNull(instance);
     }
 
@@ -65,12 +60,7 @@ public class ConfigNGTest {
     @org.testng.annotations.Test(dependsOnMethods = {"testConfig"})
     public void testGetVersionString() {
         System.out.println("getVersionString");
-        Config instance = null;
-        try {
-            instance = new Config();
-        } catch (IOException ex) {
-            fail(ex.getMessage());
-        }
+        Config instance = new Config();
         String result = instance.getVersionString();
         assertNotNull(result);
 

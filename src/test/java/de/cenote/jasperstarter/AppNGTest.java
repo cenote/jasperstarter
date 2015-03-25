@@ -60,12 +60,7 @@ public class AppNGTest {
             IllegalAccessException, IllegalArgumentException {
         System.out.println("createArgumentParser");
         App app = new App();
-        Config config = null;
-        try {
-            config = new Config();
-        } catch (IOException ex) {
-            fail(ex.getMessage(), ex);
-        }
+        Config config = new Config();
         Method method = app.getClass().getDeclaredMethod(
                 "createArgumentParser", Config.class);
         method.setAccessible(true);
@@ -86,12 +81,7 @@ public class AppNGTest {
         System.out.println("parseArgumentParser");
         App app = new App();
         String[] args = {};
-        Config config = null;
-        try {
-            config = new Config();
-        } catch (IOException ex) {
-            fail(ex.getMessage(), ex);
-        }
+        Config config = new Config();
         Method methodCreateArgumentParser = app.getClass().getDeclaredMethod(
                 "createArgumentParser", Config.class);
         methodCreateArgumentParser.setAccessible(true);
@@ -135,12 +125,7 @@ public class AppNGTest {
         System.out.println("parseArgumentParserCommandProcess");
         App app = new App();
         String[] args = {};
-        Config config = null;
-        try {
-            config = new Config();
-        } catch (IOException ex) {
-            fail(ex.getMessage(), ex);
-        }
+        Config config = new Config();
         Method methodCreateArgumentParser = app.getClass().getDeclaredMethod(
                 "createArgumentParser", Config.class);
         methodCreateArgumentParser.setAccessible(true);
