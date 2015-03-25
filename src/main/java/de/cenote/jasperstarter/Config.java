@@ -109,29 +109,26 @@ public class Config {
     // end of argparse4j arguments
     /**
      *
-     * @throws IOException
+     * 
      */
-    Config() throws IOException {
-        this.applicationProperties = new Properties();
+    Config() {
+        String jasperStarterVersion = "";
+        String jasperStarterRevision = "";
+        jasperStarterVersion = this.getClass().getPackage().getSpecificationVersion();
+        jasperStarterRevision = this.getClass().getPackage().getImplementationVersion();
+
+        String jasperReportsVersion = "";
         try {
-            this.applicationProperties.load(this.getClass().
-                    getResourceAsStream("application.properties"));
-        } catch (IOException ex) {
-            throw new IOException("Unable to load application.properties!", ex);
-        }
-        String jasperversion = "";
-        try {
-            jasperversion = Package.getPackage("net.sf.jasperreports.engine").
+        	jasperReportsVersion = Package.getPackage("net.sf.jasperreports.engine").
                     getImplementationVersion();
         } catch (NullPointerException e) {
             // ignore NullPointerException while running TestNG
             // @todo: solve problem in test
         }
-        StringBuffer sb = new StringBuffer("JasperStarter ")
-                .append(applicationProperties.getProperty("application.version"))
-                .append(" Rev ").append(applicationProperties.getProperty("application.revision"))
-                .append(" ").append(applicationProperties.getProperty("application.revision.date"))
-                .append("\n").append(" - JasperReports: ").append(jasperversion);
+
+        StringBuffer sb = new StringBuffer("JasperStarter ").append(jasperStarterVersion)
+        		.append(" Rev ").append(jasperStarterRevision).append("\n")
+        		.append(" - JasperReports: ").append(jasperReportsVersion);
         versionString = sb.toString();
     }
 

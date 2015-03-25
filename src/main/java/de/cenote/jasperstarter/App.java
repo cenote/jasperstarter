@@ -60,13 +60,7 @@ public class App {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Config config = null;
-        try {
-            config = new Config();
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(1);
-        }
+        Config config = new Config();
         App app = new App();
         // create the command line parser
         ArgumentParser parser = app.createArgumentParser(config);

@@ -195,12 +195,11 @@ limitations under the License.
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
+                            <Implementation-Version>${git.commit.id.abbrev} (${git.commit.id.describe})</Implementation-Version>
                             <X-Git-Commit-Id>${git.commit.id}</X-Git-Commit-Id>
-                            <X-Git-Commit-Id-Abbrev>${git.commit.id.abbrev}</X-Git-Commit-Id-Abbrev>
                             <X-Git-Commit-Id-Desc>${git.commit.id.describe}</X-Git-Commit-Id-Desc>
                             <X-Git-Commit-Time>${git.commit.time}</X-Git-Commit-Time>
                             <X-Git-Branch>${git.branch}</X-Git-Branch>
-                            <X-Revision>${git.commit.id.abbrev} (${git.commit.id.describe})</X-Revision>
                         </manifestEntries>
                     </archive>
                 </configuration>
