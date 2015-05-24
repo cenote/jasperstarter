@@ -92,7 +92,21 @@ If you like the software you can write a [review][] :-)
 The sourcecode is available at [bitbucket.org/cenote/jasperstarter][], the
 project website is hosted at [Sourceforge][].
 
-JasperStarter is build with [Maven][]. To get a distribution package run:
+JasperStarter is build with [Maven][]. 
+
+Unfortunately one dependency (jasperreports-functions) is not provided
+in a public maven repository so you must add it to your local maven
+repo:
+
+    # Download jasperreports-functions-6.0.4.jar from
+    # [https://sourceforge.net/projects/jasperreports/files/jasperreports/]
+    $ jar xvf jasperreports-functions-6.0.4.jar META-INF/maven/net.sf.jasperreports/jasperreports-functions/pom.xml
+    $ mvn install:install-file -Dfile=jasperreports-functions-6.0.4.jar -DpomFile=META-INF/maven/net.sf.jasperreports/jasperreports-functions/pom.xml
+
+It is possible to compile JasperStarter without this dependency but users
+will run into errors if they use specific functions in their reports.
+
+To get a distribution package run:
 
     $ mvn package -P release
 
