@@ -79,7 +79,46 @@ public class ReportNGTest {
         instance.compileToFile();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.jasper")).exists(), true);
     }
+    
+    /**
+     * Test of compileToFile method, of class Report.
+     * This report uses funktions with dependency to jasperreports-functions 
+     */
+    @Test
+    public void testCompileToFileJasperreportsFunctions() throws Exception {
+        System.out.println("compileToFileJasperreportsFunctions");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jrxml";
+        config.output = "target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.compileToFile();
+        assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jasper")).exists(), true);
+    }    
 
+    /**
+     * Test of fill method, of class Report.
+     * This report uses funktions with dependency to jasperreports-functions 
+     */
+    @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions"})
+    public void testFillJasperreportsFunctions() throws Exception {
+        System.out.println("fillJasperreportsFunctions");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jasper";
+        //config.dbType = DbType.none;
+        config.dbType = DsType.csv;
+        config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
+        config.csvCharset = "utf8";
+        config.csvFieldDel = "|";
+        config.csvRecordDel = "\r\n";
+        config.csvFirstRow = true;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jrprint")).exists(), true);
+    }    
+    
     /**
      * Test of fill method, of class Report.
      */

@@ -99,12 +99,15 @@ in a public maven repository so you must add it to your local maven
 repo:
 
     # Download jasperreports-functions-6.0.4.jar from
-    # [https://sourceforge.net/projects/jasperreports/files/jasperreports/]
+    # https://sourceforge.net/projects/jasperreports/files/jasperreports/
     $ jar xvf jasperreports-functions-6.0.4.jar META-INF/maven/net.sf.jasperreports/jasperreports-functions/pom.xml
     $ mvn install:install-file -Dfile=jasperreports-functions-6.0.4.jar -DpomFile=META-INF/maven/net.sf.jasperreports/jasperreports-functions/pom.xml
 
+See https://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
+
 It is possible to compile JasperStarter without this dependency but users
 will run into errors if they use specific functions in their reports.
+So there is a test that fails if jasperreports-functions is not available.
 
 To get a distribution package run:
 
