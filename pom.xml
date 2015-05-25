@@ -21,7 +21,7 @@ limitations under the License.
     <groupId>de.cenote</groupId>
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
 
     <prerequisites>
         <maven>2.2.1</maven>
@@ -138,7 +138,7 @@ limitations under the License.
                         <configuration>
                             <target>
                                 <!-- use the project README file as site index -->
-                                <copy file="README.md" tofile="src/site/markdown/index.md"/>
+                                <copy file="README.md" tofile="src/site/markdown/index.md" />
                             </target>
                         </configuration>
                     </execution>
@@ -151,10 +151,10 @@ limitations under the License.
                         <configuration>
                             <target>
                                 <!--  use the files.md as README of the distribution (download) folder -->
-                                <copy file="src/site/markdown/files.md" tofile="target/README.md"/>
+                                <copy file="src/site/markdown/files.md" tofile="target/README.md" />
                                 <!-- phase pre-site is not executed if package is called so copy is needed here again-->
                                 <!-- use the project README file as site index -->
-                                <copy file="README.md" tofile="src/site/markdown/index.md"/>
+                                <copy file="README.md" tofile="src/site/markdown/index.md" />
                             </target>
                         </configuration>
                     </execution>
