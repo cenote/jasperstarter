@@ -117,7 +117,41 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jrprint")).exists(), true);
+    }
+    
+    /**
+     * Test of compileToFile method, of class Report.
+     * This report uses functions with dependency to jasperreports-functions 
+     */
+    @Test
+    public void testCompileToFileJasperreportsFunctions2() throws Exception {
+        System.out.println("compileToFileJasperreportsFunctions2");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/Blank_A4_1.jrxml";
+        config.output = "target/test-classes/reports/Blank_A4_1";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.compileToFile();
+        assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jasper")).exists(), true);
     }    
+
+    /**
+     * Test of fill method, of class Report.
+     * This report uses functions with dependency to jasperreports-functions 
+     */
+    @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions2"})
+    public void testFillJasperreportsFunctions2() throws Exception {
+        System.out.println("fillJasperreportsFunctions2");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/Blank_A4_1.jasper";
+        //config.dbType = DbType.none;
+        config.dbType = DsType.none;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/Blank_A4_1.jrprint")).exists(), true);
+    }  
     
     /**
      * Test of fill method, of class Report.
