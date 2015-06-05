@@ -9,6 +9,7 @@ It has the following features:
 
   * Run any JasperReport that needs a jdbc, csv, xml or empty datasource
   * Use with any database for which a jdbc driver is available
+  * Run reports with subreports
   * Execute reports that need runtime parameters. Any parameter whose class has
     a string constructor is accepted. Additionally the following types are
     supported or have special handlers:

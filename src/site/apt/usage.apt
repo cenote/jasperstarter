@@ -58,6 +58,12 @@ C:\App\jasperstarter\bin
 +---
 
   to your user or system path.
+  
+  
+*** ArchLinux
+  
+  For ArchLinux an AUR Package is available here: {{https://aur.archlinux.org/packages/jasperstarter}}
+  
 
 
 * Invoking JasperStarter
@@ -591,7 +597,7 @@ $ jasperstarter pr myreport.jasper -f view -P MyDate=2013-01-30 -a pe
 
 ** Reports with resources
 
-  Reports can use several resources like i18n resource bundles, icons or images.
+  Reports can use several resources like i18n resource bundles, icons, images or (compiled) subreports.
 
   If a resource exists in the same directory as the report file just specify
   <<-r>> without any arguments:
@@ -630,6 +636,37 @@ $ jasperstarter pr myreport.jasper -f view -r myresources.jar
   Additionaly use the format <-f csvMeta> instead of <-f csv> or <-f
   xlsMeta> instead of <-f xls> with JasperStarter. Have a look at the
   example section at the end of this file.
+
+
+** Reports with Subreports
+
+  Using subreports with JasperStarter can be a bit tricky and has some limitations.
+  You have to use the datasource form the main report in the subreport which can be referenced
+  with <<<$P\{REPORT_DATA_SOURCE\}>>>. It could be also a good idea to clone the datasource.
+  
+  The subreport must be compiled before you can use it. It must be referenced with file ending <<<.jasper>>>.
+  The path to the subreport must be provided as a resource with option <<<-r>>>.
+  
+--- 
+<subreportExpression><![CDATA["mysubreport.jasper"]]></subreportExpression>
+---  
+
+  This is a complete example subreport element using clone and a relative path to the subreport.
+  Keep in mind to replace the data source class with the one you are using.
+  
+---  
+<subreport isUsingCache="false">
+<reportElement x="0" y="0" width="500" height="800"/>
+<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRBeanCollectionDataSource) $P{REPORT_DATA_SOURCE}).cloneDataSource()]]></dataSourceExpression>
+<subreportExpression><![CDATA["subdir/mysubreport.jasper"]]></subreportExpression>
+</subreport>  
+---  
+
+  A user of JasperStarter has written a nice tutorial for a subreport with XML datasource here:
+  {{http://nblock.org/2015/06/02/processing-jasper-subreports-with-jasperstarter/}}
+  
+  The example report from this tutorial is included in the JasperStarter example directory. See {{main.jrxml_header.jrxml_details.jrxml}}
+
 
 
 * File Handling
@@ -711,15 +748,25 @@ month01/journal.xyz.pdf
   List of example files:
 
 +---
+Blank_A4_1.jasper
+Blank_A4_1.jrxml
 CancelAck.jrxml
 CancelAck.xml
+charactersetTest.jasper
 charactersetTest.jrxml
+charactersetTestWithStudioBuiltinFunctions.jrxml
+contacts.xml
 csvExampleHeaders.csv
 csv.jrxml
 csvMeta.jrxml
+details.jasper
+details.jrxml
+header.jasper
+header.jrxml
 i18n-bundle_de.properties
 i18n-bundle.properties
 i18n-bundle_ru.properties
+main.jrxml
 noDB-i18n.jrxml
 noDB-params.jrxml
 +---
@@ -897,3 +944,15 @@ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a
 jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a pe
 +---
 
+
+** main.jrxml, header.jrxml, details.jrxml
+
+  The main report references two subreports. The subreports must be compiled, the main report not:
+  
+---
+jasperstarter cp examples/header.jrxml
+jasperstarter cp examples/details.jrxml
+jasperstarter pr examples/main.jrxml -f view -t xml --xml-xpath=/ --data-file examples/contacts.xml -r examples
+---
+  
+  See {{http://nblock.org/2015/06/02/processing-jasper-subreports-with-jasperstarter/}}
