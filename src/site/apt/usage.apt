@@ -950,9 +950,9 @@ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a p
   The main report references two subreports. The subreports must be compiled, the main report not:
   
 ---
-jasperstarter cp examples/header.jrxml
-jasperstarter cp examples/details.jrxml
-jasperstarter pr examples/main.jrxml -f view -t xml --xml-xpath=/ --data-file examples/contacts.xml -r examples
+jasperstarter cp header.jrxml
+jasperstarter cp details.jrxml
+jasperstarter pr main.jrxml -f view -t xml --xml-xpath=/ --data-file contacts.xml -r .
 ---
   
   See {{http://nblock.org/2015/06/02/processing-jasper-subreports-with-jasperstarter/}}
