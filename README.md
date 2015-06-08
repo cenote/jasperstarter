@@ -38,7 +38,7 @@ Requirements
 
   * Download JasperStarter from [Sourceforge][]
   * Extract the distribution archive to any directory on your system.
-  * Add the _./bin_ directoy of your installation to your searchpath.
+  * Add the _./bin_ directory of your installation to your searchpath.
 
   * or just invoke _setup.exe_ on Windows
 
@@ -149,11 +149,11 @@ or
 During development you might want not to be annoyed by tests. So the following
 options are useful:
 
-    $ package -P dev -D skipTests
+    $ mvn package -P dev -D skipTests
 
 or
 
-    $ package -P dev -D maven.test.failure.ignore=true
+    $ mvn package -P dev -D maven.test.failure.ignore=true
 
 To run JasperStarter from within your IDE add _\--jdbc-dir jdbc_ to the argument
 list of your run configuration. Otherwise you will get an error:

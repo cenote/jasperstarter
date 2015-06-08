@@ -379,7 +379,7 @@ public class App {
 
         ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");
         groupCompileOptions.addArgument("-w", "--write-jasper").
-                dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is prcessed");
+                dest(Dest.WRITE_JASPER).action(Arguments.storeTrue()).help("write .jasper file to imput dir if jrxml is processed");
 
         ArgumentGroup groupFillOptions = parser.addArgumentGroup("fill options");
         groupFillOptions.addArgument("-a").metavar("<filter>").dest(Dest.ASK)

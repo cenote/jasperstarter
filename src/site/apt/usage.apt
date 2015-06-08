@@ -224,7 +224,7 @@ options:
 
 compile options:
   -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
-                         prcessed
+                         processed
 
 fill options:
   -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
