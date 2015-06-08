@@ -22,9 +22,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.data.JsonDataSource;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.AfterClass;
@@ -120,5 +120,21 @@ public class DbNGTest {
     	// ToDo: don't know jet how to get any value out of it here. 
     	// So just checking if object exists:
     	assertEquals(jRXmlDataSource.getClass().getCanonicalName(), "net.sf.jasperreports.engine.data.JRXmlDataSource");
+    }
+
+    /**
+     * Test of getJsonDataSource method, of class Db.
+     */
+    @Test
+    public void testGetJsonDataSource() throws Exception {
+      System.out.println("getJsonDataSource");
+      Config config = new Config();
+      config.dbType = DsType.json;
+      config.dataFile = new File("target/test-classes/contacts.json");
+      config.jsonQuery = "contacts.person";
+      Db instance = new Db();
+      JsonDataSource jsonDataSource = instance.getJsonDataSource(config);
+      assertTrue(jsonDataSource.next());
+      assertEquals(jsonDataSource.getClass().getCanonicalName(), "net.sf.jasperreports.engine.data.JsonDataSource");
     }
 }

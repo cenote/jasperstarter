@@ -81,6 +81,8 @@ public class Config {
     String csvCharset;
     @Arg(dest = Dest.XML_XPATH)
     String xmlXpath;
+    @Arg(dest = Dest.JSON_QUERY)
+    String jsonQuery;
     @Arg(dest = Dest.LOCALE)
     String locale;
     @Arg(dest = Dest.OUTPUT)

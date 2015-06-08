@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.data.JsonDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -81,6 +82,17 @@ public class Db {
 		if (config.isVerbose()) {
 			System.out.println("Data file: " + config.getDataFile());
 			System.out.println("XML xpath: " + config.xmlXpath);
+		}
+		return ds;
+	}
+
+  public JsonDataSource getJsonDataSource(Config config) throws JRException {
+		JsonDataSource ds;
+		ds = new JsonDataSource(JRLoader.getInputStream(config.getDataFile()),
+				config.jsonQuery);
+		if (config.isVerbose()) {
+			System.out.println("Data file: " + config.getDataFile());
+			System.out.println("JSON query : " + config.jsonQuery);
 		}
 		return ds;
 	}

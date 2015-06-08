@@ -398,7 +398,7 @@ public class App {
         ArgumentGroup groupDatasourceOptions = parser.addArgumentGroup("datasource options");
         groupDatasourceOptions.addArgument("-t").metavar("<dstype>").dest(Dest.DS_TYPE).
                 required(false).type(Arguments.enumType(DsType.class)).setDefault(DsType.none).
-                help("datasource type: none, csv, xml, mysql, postgres, oracle, generic (jdbc)");
+                help("datasource type: none, csv, xml, json, mysql, postgres, oracle, generic (jdbc)");
         Argument argDbHost = groupDatasourceOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDatasourceOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
         Argument argDbPasswd = groupDatasourceOptions.addArgument("-p").metavar("<dbpasswd>").dest(Dest.DB_PASSWD).setDefault("").help("database password");
@@ -415,6 +415,7 @@ public class App {
         groupDatasourceOptions.addArgument("--csv-field-del").metavar("<delimiter>").dest(Dest.CSV_FIELD_DEL).setDefault(",").help("CSV Field Delimiter - defaults to \",\"");
         groupDatasourceOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to \"utf-8\"");
         Argument argXmlXpath = groupDatasourceOptions.addArgument("--xml-xpath").metavar("<xpath>").dest(Dest.XML_XPATH).help("XPath for XML Datasource");
+        Argument argJsonQuery = groupDatasourceOptions.addArgument("--json-query").metavar("<jsonquery>").dest(Dest.JSON_QUERY).help("JSON query string for JSON Datasource");
 
         ArgumentGroup groupOutputOptions = parser.addArgumentGroup("output options");
         groupOutputOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
@@ -437,6 +438,7 @@ public class App {
         allArguments.put(argDataFile.getDest(), argDataFile);
         allArguments.put(argCsvColumns.getDest(), argCsvColumns);
         allArguments.put(argXmlXpath.getDest(), argXmlXpath);
+        allArguments.put(argJsonQuery.getDest(), argJsonQuery);
     }
 
     private void parseArgumentParser(String[] args, ArgumentParser parser, Config config) throws ArgumentParserException {
@@ -470,8 +472,11 @@ public class App {
                     allArguments.get(Dest.CSV_COLUMNS).required(true);
                 }
             } else if (DsType.xml.equals(config.getDbType())) {
-            	allArguments.get(Dest.DATA_FILE).required(true);
-            	allArguments.get(Dest.XML_XPATH).required(true);
+              allArguments.get(Dest.DATA_FILE).required(true);
+              allArguments.get(Dest.XML_XPATH).required(true);
+            } else if (DsType.json.equals(config.getDbType())) {
+              allArguments.get(Dest.DATA_FILE).required(true);
+              allArguments.get(Dest.JSON_QUERY).required(true);
             }
         }
         // parse again so changed arguments become effectiv

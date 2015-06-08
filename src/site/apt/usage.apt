@@ -208,8 +208,9 @@ Benutzung: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>]
                          [--csv-record-del <delimiter>]
                          [--csv-field-del <delimiter>]
                          [--csv-charset <charset>] [--xml-xpath <xpath>]
-                         [-N <printername>] [-d] [-s <reportname>]
-                         [-c <copies>] [--out-field-del <delimiter>]
+                         [--json-query <jsonquery>] [-N <printername>] [-d]
+                         [-s <reportname>] [-c <copies>]
+                         [--out-field-del <delimiter>]
                          [--out-charset <charset>] <input>
 
 Optionale Argumente:
@@ -236,7 +237,7 @@ fill options:
                          used.
 
 datasource options:
-  -t <dstype>            datasource type: none, csv,  xml, mysql, postgres,
+  -t <dstype>            datasource type: none, csv, xml, json, mysql, postgres,
                          oracle, generic (jdbc)
   -H <dbhost>            database host
   -u <dbuser>            database user
@@ -258,6 +259,8 @@ datasource options:
   --csv-charset <charset>
                          CSV charset - defaults to "utf-8"
   --xml-xpath <xpath>    XPath for XML Datasource
+  --json-query <jsonquery>
+                         JSON query string for JSON Datasource
 
 output options:
   -N <printername>       name of printer
@@ -755,17 +758,19 @@ CancelAck.xml
 charactersetTest.jasper
 charactersetTest.jrxml
 charactersetTestWithStudioBuiltinFunctions.jrxml
+contacts.json
 contacts.xml
-csvExampleHeaders.csv
 csv.jrxml
+csvExampleHeaders.csv
 csvMeta.jrxml
 details.jasper
 details.jrxml
 header.jasper
 header.jrxml
-i18n-bundle_de.properties
 i18n-bundle.properties
+i18n-bundle_de.properties
 i18n-bundle_ru.properties
+json.jrxml
 main.jrxml
 noDB-i18n.jrxml
 noDB-params.jrxml
@@ -860,6 +865,15 @@ jasperstarter pr csvMeta.jrxml -f xlsMeta -t csv --data-file csvExampleHeaders.c
 
 +---
 jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/CancelResult/ID --data-file CancelAck.xml
++---
+
+
+** json.jrxml
+
+  This is a report with a json datasource. To view it type:
+
++---
+jasperstarter pr json.jrxml -f view -t json --json-query contacts.person --data-file contacts.json
 +---
 
 

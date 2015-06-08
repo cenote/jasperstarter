@@ -492,4 +492,21 @@ public class ReportNGTest {
         assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
     }
     
+    /**
+     * Test of fill method with json datasource, of class Report.
+     */
+    @Test
+    public void testFillFromJsonDatasource() throws Exception {
+        System.out.println("fill from jsondatasource");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/json.jrxml";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
+    }
 }

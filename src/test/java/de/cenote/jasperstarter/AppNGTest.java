@@ -201,7 +201,7 @@ public class AppNGTest {
         } catch (InvocationTargetException ex) {
             StringBuilder sb = new StringBuilder();
             sb.append("argument -t: could not convert '''' (choose from ");
-            sb.append("{none,csv,xml,mysql,postgres,oracle,generic})");
+            sb.append("{none,csv,xml,json,mysql,postgres,oracle,generic})");
             assertEquals(ex.getCause().getMessage(), sb.toString());
         }
         // this one shoud be complete (no db report):

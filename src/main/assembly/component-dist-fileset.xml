@@ -64,6 +64,7 @@ limitations under the License.
             <outputDirectory>/examples</outputDirectory>
             <includes>
                 <include>*.csv</include>
+                <include>*.json</include>
                 <include>*.xml</include>
             </includes>
         </fileSet>

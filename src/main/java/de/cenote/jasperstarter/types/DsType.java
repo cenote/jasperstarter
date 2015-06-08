@@ -26,6 +26,7 @@ public enum DsType {
     none,
     csv,
     xml,
+    json,
     mysql("com.mysql.jdbc.Driver", 3306),
     postgres("org.postgresql.Driver", 5432),
     oracle("oracle.jdbc.OracleDriver", 1521),
