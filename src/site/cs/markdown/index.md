@@ -72,9 +72,7 @@ na stránce Použití. [Usage][]
 
 ### Release Notes
 
-Poznámky k vydání naleznete v anglické verzi této stránky: [original][]
-
-
+See the english version for the history of [changes].
 
 
 ### Feedback
@@ -171,4 +169,4 @@ limitations under the License.
 [Issuetrackeru]:https://cenote-issues.atlassian.net/browse/JAS
 [Usage]:http://jasperstarter.sourceforge.net/usage.html
 [Issues]:https://cenote-issues.atlassian.net/browse/JAS
-[original]:../index.html
+[changes]:changes.html

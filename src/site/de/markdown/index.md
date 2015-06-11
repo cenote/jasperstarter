@@ -78,8 +78,8 @@ Distributionsarchives oder lesen Sie die Seite Verwendung online. [Usage][]
 
 ### Release Notes
 
-Bitte sehen Sie in der englischen Version dieser übersetzten Datei nach:
-[original][]
+Die Änderungen im Projekt können in der englischen Version der
+[Änderungsdatei][Changes] eingesehen werden.
 
 ### Feedback
 
@@ -183,4 +183,4 @@ limitations under the License.
 [Issuetracker]:https://cenote-issues.atlassian.net/browse/JAS
 [Usage]:http://jasperstarter.sourceforge.net/usage.html
 [Issues]:https://cenote-issues.atlassian.net/browse/JAS
-[original]:../index.html
+[Changes]:changes.html

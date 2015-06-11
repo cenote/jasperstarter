@@ -68,7 +68,7 @@ archive or read the [Usage][] page online.
 
 ### Release Notes
 
-See CHANGES file for a history of changes.
+See [Changes] for a history of changes.
 
 
 #### Known Bugs
@@ -187,3 +187,4 @@ limitations under the License.
 [Issuetracker]:https://cenote-issues.atlassian.net/browse/JAS
 [Usage]:http://jasperstarter.sourceforge.net/usage.html
 [Issues]:https://cenote-issues.atlassian.net/browse/JAS
+[Changes]:changes.html
