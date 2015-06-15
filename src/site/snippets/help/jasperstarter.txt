@@ -1,0 +1,18 @@
+$ jasperstarter -h
+usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --locale <lang>        set locale  with  two-letter  ISO-639  code  or  a
+                         combination of ISO-639 and ISO-3166 like de_DE
+  -v, --verbose          display additional messages
+  -V, --version          display version information and exit
+
+commands:
+  <cmd>                  type <cmd> -h to get help on command
+    compile (cp)         compile reports
+    process (pr)         view, print or export an existing report
+    list_printers (printers,lpr)
+                         lists available printers
+    list_parameters (params,lpa)
+                         list parameters from a given report

@@ -1,0 +1,77 @@
+$ jasperstarter pr -h
+usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
+                     [-a [<filter>]] [-P <param> [<param> ...]]
+                     [-r [<resource>]] [-t <dstype>] [-H <dbhost>]
+                     [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
+                     [--db-sid <sid>] [--db-port <port>]
+                     [--db-driver <name>] [--db-url <jdbcUrl>]
+                     [--jdbc-dir <dir>] [--data-file <file>]
+                     [--csv-first-row] [--csv-columns <list>]
+                     [--csv-record-del <delimiter>]
+                     [--csv-field-del <delimiter>]
+                     [--csv-charset <charset>] [--xml-xpath <xpath>]
+                     [--json-query <jsonquery>] [-N <printername>] [-d]
+                     [-s <reportname>] [-c <copies>]
+                     [--out-field-del <delimiter>]
+                     [--out-charset <charset>] <input>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  -f <fmt> [<fmt> ...]   view, print, pdf, rtf,  xls,  xlsMeta, xlsx, docx,
+                         odt, ods, pptx,  csv,  csvMeta,  html, xhtml, xml,
+                         jrprint
+  <input>                input file (.jrxml|.jasper|.jrprint)
+  -o <output>            directory or basename of outputfile(s)
+
+compile options:
+  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
+                         processed
+
+fill options:
+  -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
+                         p, pe (see usage)
+  -P <param> [<param> ...]
+                         report parameter: name=value [...]
+  -r [<resource>]        path to  report  resource  dir  or  jar  file.  If
+                         <resource> is not  given  the  input  directory is
+                         used.
+
+datasource options:
+  -t <dstype>            datasource type:  none,  csv,  xml,  json,  mysql,
+                         postgres, oracle, generic (jdbc)
+  -H <dbhost>            database host
+  -u <dbuser>            database user
+  -p <dbpasswd>          database password
+  -n <dbname>            database name
+  --db-sid <sid>         oracle sid
+  --db-port <port>       database port
+  --db-driver <name>     jdbc driver class name for use with type: generic
+  --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
+  --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
+                         Defaults to ./jdbc
+  --data-file <file>     input file for file based datasource
+  --csv-first-row        first row contains column headers
+  --csv-columns <list>   Comma separated list of column names
+  --csv-record-del <delimiter>
+                         CSV Record Delimiter - defaults to line.separator
+  --csv-field-del <delimiter>
+                         CSV Field Delimiter - defaults to ","
+  --csv-charset <charset>
+                         CSV charset - defaults to "utf-8"
+  --xml-xpath <xpath>    XPath for XML Datasource
+  --json-query <jsonquery>
+                         JSON query string for JSON Datasource
+
+output options:
+  -N <printername>       name of printer
+  -d                     show print dialog when printing
+  -s <reportname>        set internal report/document name when printing
+  -c <copies>            number of copies. Defaults to 1
+  --out-field-del <delimiter>
+                         Export CSV (Metadata)  Field  Delimiter - defaults
+                         to ","
+  --out-charset <charset>
+                         Export CSV (Metadata) Charset  - defaults to "utf-
+                         8"

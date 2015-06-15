@@ -1,0 +1,8 @@
+$ jasperstarter params -h
+usage: jasperstarter list_parameters [-h] <input>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  <input>                input file (.jrxml) or (.jasper)

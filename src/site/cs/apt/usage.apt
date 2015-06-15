@@ -141,26 +141,7 @@ $ java -cp /opt/jasperstarter/lib/jasperstarter.jar de.cenote.jasperstarter.App
   Přehled získáte vyvoláním jasperstarter s <-h>, které vám ukáže všechny
    globální volby a příkazy, které máte k dispozici.
 
-+---
-$ jasperstarter -h
-usage: jasperstarter [-h] [--locale <lang>] [-v] [-V] <cmd> ...
-
-optional arguments:
-  -h, --help             show this help message and exit
-  --locale <lang>        set locale with two-letter ISO-639 code or a
-                         combination of ISO-639 and ISO-3166 like de_DE
-  -v, --verbose          display additional messages
-  -V, --version          display version information and exit
-
-commands:
-  <cmd>                  type <cmd> -h to get help on command
-    compile (cp)         compile reports
-    process (pr)         view, print or export an existing report
-    list_printers (printers, lpr)
-                   list available printers
-    list_parameters (params, lpa)
-                         list parameters from a given report
-+---
+%{snippet|file=src/site/snippets/help/jasperstarter.txt}
 
   Každý příkaz má také vlastní nápovědu, kterou lze vyvolat pomocí
    <\<command\> -h>.
@@ -171,17 +152,7 @@ commands:
   Příkaz <compile> slouží ke kompilování jednoho nebo všech reportů v 
   adresáři.  <cp> je alias pro <compile>.
 
-+---
-$ jasperstarter cp -h
-usage: jasperstarter compile [-h] [-o <output>] <input>
-
-optional arguments:
-  -h, --help             show this help message and exit
-
-options:
-  <input>                input file (.jrxml) or directory
-  -o <output>            directory or basename of outputfile(s)
-+---
+%{snippet|file=src/site/snippets/help/jasperstarter_compile.txt}
 
 
 ** Příkaz <process> (<pr>)
@@ -189,74 +160,7 @@ options:
   Příkaz <process> slouží ke zpracování jednoho reportu. Může to být
   náhled, tisk nebo export.  <pr> je alias pro <process>.
 
-+---
-$ jasperstarter pr -h
-usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
-                     [-a [<filter>]] [-P <param> [<param> ...]]
-                     [-r [<resource>]] [-t <dbtype>] [-H <dbhost>]
-                     [-u <dbuser>] [-p <dbpasswd>] [-n <dbname>]
-                     [--db-sid <sid>] [--db-port <port>]
-                     [--db-driver <name>] [--db-url <jdbcUrl>]
-                     [--jdbc-dir <dir>] [--data-file <file>]
-                     [--csv-first-row] [--csv-columns <list>]
-                     [--csv-record-del <delimiter>]
-                     [--csv-field-del <delimiter>]
-                     [--csv-charset <charset>] [--xml-xpath <xpath>]
-                     [-N <printername>] [-d] [-s <reportname>]
-                     [-c <copies>] <input>
-
-optional arguments:
-  -h, --help             show this help message and exit
-
-options:
-  -f <fmt> [<fmt> ...]   view, print, pdf, rtf, xls,  xlsx, docx, odt, ods,
-                         pptx, csv, html, xhtml, xml, jrprint
-  <input>                input file (.jrxml|.jasper|.jrprint)
-  -o <output>            directory or basename of outputfile(s)
-
-compile options:
-  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
-                         processed
-
-fill options:
-  -a [<filter>]          ask for report parameters.  Filter:  a, ae, u, ue,
-                         p, pe (see usage)
-  -P <param> [<param> ...]
-                         report parameter: name=value [...]
-  -r [<resource>]        path to  report  resource  dir  or  jar  file.  If
-                         <resource> is not  given  the  input  directory is
-                         used.
-
-db options:
-  -t <dbtype>            database type: none,  csv,  xml,  mysql, postgres,
-                         oracle, generic
-  -H <dbhost>            database host
-  -u <dbuser>            database user
-  -p <dbpasswd>          database password
-  -n <dbname>            database name
-  --db-sid <sid>         oracle sid
-  --db-port <port>       database port
-  --db-driver <name>     jdbc driver class name for use with type: generic
-  --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
-  --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
-                         Defaults to ./jdbc
-  --data-file <file>     input file for file based datasource
-  --csv-first-row        first row contains column headers
-  --csv-columns <list>   Comma separated list of column names
-  --csv-record-del <delimiter>
-                         CSV Record Delimiter - defaults to line.separator
-  --csv-field-del <delimiter>
-                         CSV Field Delimiter - defaults to ","
-  --csv-charset <charset>
-                         CSV charset - defaults to "utf-8"
-  --xml-xpath <xpath>    XPATH for xml Datasource
-
-print options:
-  -N <printername>       name of printer
-  -d                     show print dialog when printing
-  -s <reportname>        set internal report/document name when printing
-  -c <copies>            number of copies. Defaults to 1
-+---
+%{snippet|file=src/site/snippets/help/jasperstarter_process.txt}
 
 
 ** Příkaz <list_printers> (<printers>,<lpr>)
@@ -271,16 +175,7 @@ print options:
   uživatelem. <params>, <lpa> are aliases for <list_parameters>.
 
 
-+---
-$ jasperstarter params -h
-usage: jasperstarter list_parameters [-h] <input>
-
-optional arguments:
-  -h, --help             show this help message and exit
-
-options:
-  <input>                input file (.jrxml) or (.jasper)
-+---
+%{snippet|file=src/site/snippets/help/jasperstarter_list_parameters.txt}
 
   Sloupce mají následující význam:
 

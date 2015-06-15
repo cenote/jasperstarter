@@ -1,0 +1,9 @@
+$ jasperstarter cp -h
+usage: jasperstarter compile [-h] [-o <output>] <input>
+
+optional arguments:
+  -h, --help             show this help message and exit
+
+options:
+  <input>                input file (.jrxml) or directory
+  -o <output>            directory or basename of outputfile(s)
