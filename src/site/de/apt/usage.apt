@@ -68,7 +68,7 @@ C:\App\jasperstarter\bin
   einfach folgendes ein
 
 +---
-jasperstarter
+$ jasperstarter
 +---
 
   um das Programm aufzurufen.
@@ -92,7 +92,7 @@ C:\App\jasperstarter\bin\jasperstarter.exe
   auch direkt starten:
 
 +---
-$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar
 +---
 
   oder
@@ -273,14 +273,14 @@ $ jasperstarter pr myreport -f view @db.conf
   Der folgende Aufruf wird <<nicht>> funktionieren:
 
 +---
-$ jasperstarter -f view myreport.jasper
+$ jasperstarter pr -f view myreport.jasper
 +---
 
   Aber diese werden:
 
 +---
-$ jasperstarter -f print pdf -d myreport.jasper
-$ jasperstarter -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
+$ jasperstarter pr -f print pdf -d myreport.jasper
+$ jasperstarter pr -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
 +---
 
   Der einfachste Weg, Problemen mit Argumenten aus dem Weg zu gehen ist,

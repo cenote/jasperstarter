@@ -71,7 +71,7 @@ C:\App\jasperstarter\bin
   If you put the bin dir on the seach path, just type
 
 +---
-jasperstarter
+$ jasperstarter
 +---
 
   to invoke the program.
@@ -94,7 +94,7 @@ C:\App\jasperstarter\bin\jasperstarter.exe
   some extra options to your java vm, you can invoke the program directly:
 
 +---
-$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar
 +---
 
   or
@@ -267,14 +267,14 @@ $ jasperstarter pr myreport -f view @db.conf
   So the following statement will <<not>> work:
 
 +---
-$ jasperstarter -f view myreport.jasper
+$ jasperstarter pr -f view myreport.jasper
 +---
 
   But these will:
 
 +---
-$ jasperstarter -f print pdf -d myreport.jasper
-$ jasperstarter -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
+$ jasperstarter pr -f print pdf -d myreport.jasper
+$ jasperstarter pr -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
 +---
 
   The easiest way to circumvent any problems regarding arguments is to always
@@ -666,13 +666,13 @@ noDB-params.jrxml
   different character sets. To view this report type:
 
 +---
-jasperstarter pr charactersetTest.jrxml -f view
+$ jasperstarter pr charactersetTest.jrxml -f view
 +---
 
   To get a pdf from this report type:
 
 +---
-jasperstarter pr charactersetTest.jrxml -f pdf
+$ jasperstarter pr charactersetTest.jrxml -f pdf
 +---
 
   Viewing the pdf you will miss the foreign characters as long as you
@@ -685,19 +685,19 @@ jasperstarter pr charactersetTest.jrxml -f pdf
   To view the report type:
 
 +---
-jasperstarter pr csv.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" 
+$ jasperstarter pr csv.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
 +---
 
   To export the report to csv type:
 
 +---
-jasperstarter pr csv.jrxml -f csv -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
+$ jasperstarter pr csv.jrxml -f csv -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
 +---
 
   To export the report to xls type:
 
 +---
-jasperstarter pr csv.jrxml -f xsl -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
+$ jasperstarter pr csv.jrxml -f xsl -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
 +---
 
   The results are probably not what you expect. The csv data depends on the
@@ -716,26 +716,26 @@ jasperstarter pr csv.jrxml -f xsl -t csv --data-file csvExampleHeaders.csv --csv
   To just view the report type:
 
 +---
-jasperstarter pr csvMeta.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" 
+$ jasperstarter pr csvMeta.jrxml -f view -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
 +---
 
   To make the csv metadata export type:
 
 +---
-jasperstarter pr csvMeta.jrxml -f csvMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
+$ jasperstarter pr csvMeta.jrxml -f csvMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|" --out-field-del "|"
 +---
 
   The input and output files should only differ in line ending depending
   on your operating system.
 
 +---
-diff -yW140 --ignore-all-space csvExampleHeaders.csv csvMeta.csv
+$ diff -yW140 --ignore-all-space csvExampleHeaders.csv csvMeta.csv
 +---
 
   To make the xls metadata export type:
 
 +---
-jasperstarter pr csvMeta.jrxml -f xlsMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
+$ jasperstarter pr csvMeta.jrxml -f xlsMeta -t csv --data-file csvExampleHeaders.csv --csv-first-row --csv-field-del "|"
 +---
 
   To have an idea on how to add metadata to your report just take a
@@ -748,7 +748,7 @@ jasperstarter pr csvMeta.jrxml -f xlsMeta -t csv --data-file csvExampleHeaders.c
   This is a report with a xml datasource. To view it type:
 
 +---
-jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/CancelResult/ID --data-file CancelAck.xml
+$ jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/CancelResult/ID --data-file CancelAck.xml
 +---
 
 
@@ -757,16 +757,16 @@ jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/Canc
   This is a report with a json datasource. To view it type:
 
 +---
-jasperstarter pr json.jrxml -f view -t json --json-query contacts.person --data-file contacts.json
+$ jasperstarter pr json.jrxml -f view -t json --json-query contacts.person --data-file contacts.json
 +---
 
 
-** noDB-i18n.jrxm
+** noDB-i18n.jrxml
 
   This is a localized report. To start with the defaults just type:
 
 +---
-jasperstarter pr noDB-i18n.jrxml -f view
+$ jasperstarter pr noDB-i18n.jrxml -f view
 +---
 
   To start explicit with german localisation you have three
@@ -776,13 +776,13 @@ jasperstarter pr noDB-i18n.jrxml -f view
   Change the locale of the environment (Unix)
 
 +---
-LANG=de_DE.UTF-8 jasperstarter pr noDB-i18n.jrxml -f view
+$ LANG=de_DE.UTF-8 jasperstarter pr noDB-i18n.jrxml -f view
 +---
 
   Provide the locale parameter:
 
 +---
-jasperstarter --locale de_DE pr noDB-i18n.jrxml -f view
+$ jasperstarter --locale de_DE pr noDB-i18n.jrxml -f view
 +---
 
   Provide the build in report parameter <REPORT_LOCALE>. This changes
@@ -790,13 +790,13 @@ jasperstarter --locale de_DE pr noDB-i18n.jrxml -f view
   locale (your systems locale):
 
 +---
-jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=de_DE
+$ jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=de_DE
 +---
 
   Same with russian localisation:
 
 +---
-jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=ru
+$ jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=ru
 +---
 
 
@@ -806,40 +806,40 @@ jasperstarter pr noDB-i18n.jrxml -f view -P REPORT_LOCALE=ru
   report can be shown but the values are empty:
 
 +---
-jasperstarter pr noDB-params.jrxml -f view
+$ jasperstarter pr noDB-params.jrxml -f view
 +---
 
   To get a list of possible parameters type:
 
 +---
-jasperstarter lpa noDB-params.jrxml
+$ jasperstarter lpa noDB-params.jrxml
 +---
 
   Let JasperStarter ask you for the Parameters:
 
 +---
-jasperstarter pr noDB-params.jrxml -f view -a
+$ jasperstarter pr noDB-params.jrxml -f view -a
 +---
 
   Provide one or more parameters on command line (Parameter names are
   case sensitive):
 
 +---
-jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" myInt=5
+$ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" myInt=5
 +---
 
   Provide a parameter on command line as a default but ask the user
   for all parameters:
 
 +---
-jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a
+$ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a
 +---
 
   Provide a parameter on the command line and ask the user only for
   the remaining empty ones:
 
 +---
-jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a pe
+$ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a pe
 +---
 
 
@@ -847,10 +847,10 @@ jasperstarter pr noDB-params.jrxml -f view -P myString="My first Parameter" -a p
 
   The main report references two subreports. The subreports must be compiled, the main report not:
   
----
-jasperstarter cp header.jrxml
-jasperstarter cp details.jrxml
-jasperstarter pr main.jrxml -f view -t xml --xml-xpath=/ --data-file contacts.xml -r .
----
++---
+$ jasperstarter cp header.jrxml
+$ jasperstarter cp details.jrxml
+$ jasperstarter pr main.jrxml -f view -t xml --xml-xpath=/ --data-file contacts.xml -r .
++---
   
   See {{http://nblock.org/2015/06/02/processing-jasper-subreports-with-jasperstarter/}}
