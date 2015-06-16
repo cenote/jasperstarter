@@ -21,27 +21,25 @@ It has the following features:
   * Export to file in the following formats:
     * pdf, rtf, xls, xlsMeta, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint
   * Export multiple formats in one commanding call
-  * Compile, Print and export in one commanding call
+  * Compile, print and export in one commanding call
   * View, print or export previously filled reports (use jrprint file as input)
   * Can compile a whole directory of .jrxml files.
   * Integrate in non Java applications (for example PHP, Python)
   * Binary executable on Windows
   * Includes JasperReports so this is the only tool you need to install
 
-Requirements
+Requirements:
 
-  * Java 1.6 or higher.
+  * Java 1.6 or higher
   * A JDBC 2.1 driver for your database
 
 
 ### Quickstart
 
-  * Download JasperStarter from [Sourceforge][]
+  * Download JasperStarter from [Sourceforge][].
   * Extract the distribution archive to any directory on your system.
-  * Add the _./bin_ directory of your installation to your searchpath.
-
-  * or just invoke _setup.exe_ on Windows
-
+  * Add the _./bin_ directory of your installation to your searchpath (on
+    Windows: invoke setup.exe).
   * Put your jdbc drivers in the _./jdbc_ directory of your installation or
     use _\--jdbc-dir_ to point to a different directory.
 

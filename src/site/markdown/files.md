@@ -16,7 +16,7 @@ some testing from YOU ;-) :
 
 Version number for testing releases - not for production use:
 
-    <major>.<minor>-SNAPSHOT-<Mercurial-Revision>
+    <major>.<minor>-SNAPSHOT-<git-short-commit-id>
 
 Types:
 

@@ -16,7 +16,7 @@ ještě je musíte otestovat ;-) :
 
 Číslování testovacích verzí - nevhodných pro produktivní použití:
 
-    <major>.<minor>-SNAPSHOT-<Mercurial-Revision>
+    <major>.<minor>-SNAPSHOT-<git-short-commit-id>
 
 Typy:
 

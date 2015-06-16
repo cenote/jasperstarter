@@ -16,7 +16,7 @@ benötigen aber noch einige Test durch Sie ;-) :
 
 Versionsnummer für Testreleases - nicht für den produktiven Einsatz:
 
-    <major>.<minor>-SNAPSHOT-<Mercurial-Revision>
+    <major>.<minor>-SNAPSHOT-<git-short-commit-id>
 
 Typen:
 

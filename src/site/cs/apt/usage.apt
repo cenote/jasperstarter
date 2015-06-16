@@ -66,7 +66,7 @@ C:\App\jasperstarter\bin
    zadat
 
 +---
-jasperstarter
+$ jasperstarter
 +---
 
     Pokud ne, můžete zadat absolutní cestu. V Linuxu:
@@ -87,7 +87,7 @@ C:\App\jasperstarter\bin\jasperstarter.exe
   potřebujete pro java VM specifikovat jiné volby, vyvolejte program přímo:
 
 +---
-$ java -jar /opt/jasperstarter/lib/jasperstarter.jar´
+$ java -jar /opt/jasperstarter/lib/jasperstarter.jar
 +---
 
   nebo
@@ -261,14 +261,14 @@ $ jasperstarter pr myreport -f view @db.conf
   Následující případ tedy fungovat <<nebude>>:
 
 +---
-$ jasperstarter -f view myreport.jasper
+$ jasperstarter pr -f view myreport.jasper
 +---
 
   Ale tento bude:
 
 +---
-$ jasperstarter -f print pdf -d myreport.jasper
-$ jasperstarter -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
+$ jasperstarter pr -f print pdf -d myreport.jasper
+$ jasperstarter pr -f view -t mysql myreport.jasper -H localhost -u myuser -n mydb
 +---
 
   The easiest way to circumvent any problems regarding arguments is to always
