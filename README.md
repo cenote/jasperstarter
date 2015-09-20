@@ -110,6 +110,17 @@ It is possible to compile JasperStarter without this dependency but users
 will run into errors if they use specific functions in their reports.
 So there is a test that fails if jasperreports-functions is not available.
 
+On Linux 64 bit the launch4j-maven-plugin may fail. You need the folloing libs in a 32 bit version:
+
+  * z1
+  * ncurses5
+  * bz2-1.0
+
+On Ubuntu 14.04 for example use this command:
+
+    $ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
+
+
 To get a distribution package run:
 
     $ mvn package -P release
