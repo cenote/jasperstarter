@@ -94,7 +94,23 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.compileToFile();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jasper")).exists(), true);
-    }    
+    }
+
+    /**
+     * Test of compileToFile method, of class Report.
+     * This report uses funktions with dependency to jasperreports-functions
+     */
+    @Test
+    public void testCompileToFileJavaScript() throws Exception {
+        System.out.println("compileToFileJavaScript");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/charactersetTestWithJavaScript.jrxml";
+        config.output = "target/test-classes/reports/charactersetTestWithJavaScript";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.compileToFile();
+        assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithJavaScript.jasper")).exists(), true);
+    }
 
     /**
      * Test of fill method, of class Report.
