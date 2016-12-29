@@ -111,6 +111,23 @@ public class ReportNGTest {
         instance.compileToFile();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithJavaScript.jasper")).exists(), true);
     }
+    /**
+     * Test of fill method, of class Report.
+     * This report uses functions with dependency to Rhino
+     */
+    @Test(dependsOnMethods = {"testCompileToFileJavaScript"})
+    public void testFillJavascript() throws Exception {
+        System.out.println("fillJavascript");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/charactersetTestWithJavaScript.jasper";
+        //config.dbType = DbType.none;
+        config.dbType = DsType.none;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithJavaScript.jrprint")).exists(), true);
+    }
 
     /**
      * Test of fill method, of class Report.
