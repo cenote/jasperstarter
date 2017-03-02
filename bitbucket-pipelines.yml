@@ -9,6 +9,7 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
+          - echo "http://httpredir.debian.org jessie contrib non-free" >> /etc/apt/sources.list
           - echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
           - apt-get update && apt-get install -y ttf-mscorefonts-installer
           - mvn clean package
