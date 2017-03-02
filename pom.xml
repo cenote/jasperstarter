@@ -79,7 +79,14 @@ limitations under the License.
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
- 
+
+    <repositories>
+      <repository>
+        <id>jaspersoft.artifactoryonline.com</id>
+	<name>jaspersoft.artifactoryonline.com</name>
+	<url>https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/</url>
+      </repository>
+    </repositories>
     <build>
         <!--
         <finalName>${project.artifactId}-${project.version}</finalName>
@@ -380,7 +387,7 @@ limitations under the License.
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-fonts</artifactId>
-            <version>6.4.0</version>
+            <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
