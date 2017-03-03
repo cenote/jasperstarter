@@ -14,3 +14,6 @@ pipelines:
           - echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
           - apt-get update && apt-get install -y ttf-mscorefonts-installer lib32z1 lib32ncurses5
           - mvn clean package
+          # upload build artifact (only zip)
+          - ARTIFACT=$(ls -1 target/*.zip|head -n1)
+          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
