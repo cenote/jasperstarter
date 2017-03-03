@@ -12,5 +12,5 @@ pipelines:
           #- echo "deb http://httpredir.debian.org jessie contrib non-free" >> /etc/apt/sources.list
           - echo "deb http://ftp.us.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
           - echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-          - apt-get update && apt-get install -y ttf-mscorefonts-installer
+          - apt-get update && apt-get install -y ttf-mscorefonts-installer lib32z1 lib32ncurses5
           - mvn clean package
