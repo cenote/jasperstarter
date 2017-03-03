@@ -16,8 +16,9 @@ pipelines:
           - mvn clean package
           # upload build artifact (only zip)
           - ARTIFACT=$(ls -1 target/*.zip|head -n1)
+          - echo "${ARTIFACT}"
           - ARTIFACT_BASENAME=$(basename $ARTIFACT)
           # try to delete existing file with same name
           - curl -X DELETE --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads/${ARTIFACT_BASENAME}"
           # upload new artifact
-          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
+          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"$(ls -1 target/*.zip|head -n1)"
