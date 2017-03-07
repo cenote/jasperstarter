@@ -9,3 +9,16 @@ pipelines:
           - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
           - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
           - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
+
+  branches:
+    java9:
+      - step:
+          image: cenote/xenial-java9
+          script:
+            - mvn -version
+            - mvn clean package -P snapshot,windows-setup -Dmaven.test.skip=true
+            - mvn test
+            # upload new artifact to sourceforge downloads
+            - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
+            - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
+            - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
