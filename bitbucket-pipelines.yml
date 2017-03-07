@@ -1,24 +1,11 @@
-# This is a sample build configuration for Java – Maven.
-# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: maven:3.3.3
+image: cenote/jasperstarter-env
 
 pipelines:
   default:
     - step:
-        script: # Modify the commands below to build your repository.
-          #- echo "deb http://httpredir.debian.org jessie contrib non-free" >> /etc/apt/sources.list
-          - echo "deb http://ftp.us.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
-          - echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-          - apt-get update && apt-get install -y ttf-mscorefonts-installer lib32z1 lib32ncurses5
-          - mvn clean package
-          # upload build artifact (only zip)
-          - ARTIFACT=$(ls -1 target/*.zip|head -n1)
-          - echo "${ARTIFACT}"
-          - ARTIFACT_BASENAME=$(basename $ARTIFACT)
-          # try to delete existing file with same name
-          - curl -X DELETE --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads/${ARTIFACT_BASENAME}"
-          # upload new artifact
-          - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"$(ls -1 target/*.zip|head -n1)"
+        script:
+          - mvn clean package -P snapshot,windows-setup
+          # upload new artifact to sourceforge downloads
+          - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
+          - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
+          - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
