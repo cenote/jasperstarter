@@ -748,13 +748,13 @@ limitations under the License.
         <profile>
             <id>snapshot</id>
             <!--
-            adding revision number to final name
+            adding branch and revision number to final name
             -->
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}</finalName>
+                <finalName>${project.artifactId}-${project.version}-${git.branch}-${git.commit.id.abbrev}</finalName>
             </build>
 
         </profile>
