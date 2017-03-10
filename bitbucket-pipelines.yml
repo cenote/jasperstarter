@@ -9,9 +9,14 @@ pipelines:
           - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
           - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
           - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
+          # upload new artifact to bitbucket downloads
+          - ARTIFACT=$(ls -1 target/*.zip|head -n1)
+          - ARTIFACT_BASENAME=$(basename $ARTIFACT)
+          - curl -X POST -v --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
+
 
   branches:
-    java9:
+    java9*:
       - step:
           image: cenote/xenial-java9
           script:
@@ -22,3 +27,7 @@ pipelines:
             - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
             - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
             - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
+            # upload new artifact to bitbucket downloads
+            - ARTIFACT=$(ls -1 target/*.zip|head -n1)
+            - ARTIFACT_BASENAME=$(basename $ARTIFACT)
+            - curl -X POST -v --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
