@@ -542,4 +542,36 @@ public class ReportNGTest {
         instance.fill();
         assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
     }
+
+    /**
+     * Test of fill method with xml datasource with barcode4j, of class Report.
+     */
+    @Test
+    public void testFillFromXmlBarcode4j() throws Exception {
+        System.out.println("fill from xml barcode4j");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/barcode4j.jrxml";
+        config.dbType = DsType.xml;
+        config.dataFile = new File("target/test-classes/barcode4j.xml");
+        config.xmlXpath = "/nalepka/ident";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/barcode4j.jrprint")).exists(), true);
+    }
+
+    /**
+     * Test of exportPdf method with barcode4j, of class Report.
+     */
+    @Test(dependsOnMethods = {"testFillFromXmlBarcode4j"})
+    public void testExportPdfBarcode4j() throws Exception {
+        System.out.println("exportPdf barcode4j");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/barcode4j.jrprint";
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.exportPdf();
+        assertEquals(((File) new File("target/test-classes/reports/barcode4j.pdf")).exists(), true);
+    }
 }
