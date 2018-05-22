@@ -9,7 +9,7 @@ The official homepage is [jasperstater.cenote.de][].
 
 It has the following features:
 
-  * Run any JasperReport that needs a jdbc, csv, xml, json or empty datasource
+  * Run any JasperReport that needs a jdbc, csv, xml, json, jsonql or empty datasource
   * Use with any database for which a jdbc driver is available
   * Run reports with subreports
   * Execute reports that need runtime parameters. Any parameter whose class has

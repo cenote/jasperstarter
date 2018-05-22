@@ -655,6 +655,7 @@ i18n-bundle.properties
 i18n-bundle_de.properties
 i18n-bundle_ru.properties
 json.jrxml
+jsonql.jrxml
 main.jrxml
 noDB-i18n.jrxml
 noDB-params.jrxml
@@ -758,6 +759,15 @@ $ jasperstarter pr CancelAck.jrxml -f view -t xml --xml-xpath /CancelResponse/Ca
 
 +---
 $ jasperstarter pr json.jrxml -f view -t json --json-query contacts.person --data-file contacts.json
++---
+
+
+** jsonql.jrxml
+
+  This is a report with a jsonql datasource. To view it type:
+
++---
+$ jasperstarter pr jsonql.jrxml -f view -t jsonql --jsonql-query contacts.person --data-file contacts.json
 +---
 
 

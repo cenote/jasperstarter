@@ -83,6 +83,8 @@ public class Config {
     String xmlXpath;
     @Arg(dest = Dest.JSON_QUERY)
     String jsonQuery;
+    @Arg(dest = Dest.JSONQL_QUERY)
+    String jsonQLQuery;
     @Arg(dest = Dest.LOCALE)
     String locale;
     @Arg(dest = Dest.OUTPUT)

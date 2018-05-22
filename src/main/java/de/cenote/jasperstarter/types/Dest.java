@@ -49,6 +49,7 @@ public interface Dest {
     public static String CSV_CHARSET = "csv-charset";       // --csv-charset
     public static String XML_XPATH = "xml-xpath";           // --xml-xpath
     public static String JSON_QUERY = "json-query";         // --json-query
+    public static String JSONQL_QUERY = "jsonql-query";     // --jsonql-query
     public static String OUT_FIELD_DEL = "out-field-del";   // --out-field-del
     public static String OUT_CHARSET = "out-charset";       // --out-charset
     public static String PRINTER_NAME = "printer-name";     // -N

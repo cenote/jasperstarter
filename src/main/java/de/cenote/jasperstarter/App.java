@@ -398,7 +398,7 @@ public class App {
         ArgumentGroup groupDatasourceOptions = parser.addArgumentGroup("datasource options");
         groupDatasourceOptions.addArgument("-t").metavar("<dstype>").dest(Dest.DS_TYPE).
                 required(false).type(Arguments.enumType(DsType.class)).setDefault(DsType.none).
-                help("datasource type: none, csv, xml, json, mysql, postgres, oracle, generic (jdbc)");
+                help("datasource type: none, csv, xml, json, jsonql, mysql, postgres, oracle, generic (jdbc)");
         Argument argDbHost = groupDatasourceOptions.addArgument("-H").metavar("<dbhost>").dest(Dest.DB_HOST).help("database host");
         Argument argDbUser = groupDatasourceOptions.addArgument("-u").metavar("<dbuser>").dest(Dest.DB_USER).help("database user");
         Argument argDbPasswd = groupDatasourceOptions.addArgument("-p").metavar("<dbpasswd>").dest(Dest.DB_PASSWD).setDefault("").help("database password");
@@ -416,6 +416,7 @@ public class App {
         groupDatasourceOptions.addArgument("--csv-charset").metavar("<charset>").dest(Dest.CSV_CHARSET).setDefault("utf-8").help("CSV charset - defaults to \"utf-8\"");
         Argument argXmlXpath = groupDatasourceOptions.addArgument("--xml-xpath").metavar("<xpath>").dest(Dest.XML_XPATH).help("XPath for XML Datasource");
         Argument argJsonQuery = groupDatasourceOptions.addArgument("--json-query").metavar("<jsonquery>").dest(Dest.JSON_QUERY).help("JSON query string for JSON Datasource");
+        Argument argJsonQLQuery = groupDatasourceOptions.addArgument("--jsonql-query").metavar("<jsonqlquery>").dest(Dest.JSONQL_QUERY).help("JSONQL query string for JSONQL Datasource");
 
         ArgumentGroup groupOutputOptions = parser.addArgumentGroup("output options");
         groupOutputOptions.addArgument("-N").metavar("<printername>").dest(Dest.PRINTER_NAME).help("name of printer");
@@ -439,6 +440,7 @@ public class App {
         allArguments.put(argCsvColumns.getDest(), argCsvColumns);
         allArguments.put(argXmlXpath.getDest(), argXmlXpath);
         allArguments.put(argJsonQuery.getDest(), argJsonQuery);
+        allArguments.put(argJsonQLQuery.getDest(), argJsonQLQuery);
     }
 
     private void parseArgumentParser(String[] args, ArgumentParser parser, Config config) throws ArgumentParserException {
@@ -477,6 +479,9 @@ public class App {
             } else if (DsType.json.equals(config.getDbType())) {
               allArguments.get(Dest.DATA_FILE).required(true);
               allArguments.get(Dest.JSON_QUERY).required(true);
+            } else if (DsType.jsonql.equals(config.getDbType())) {
+              allArguments.get(Dest.DATA_FILE).required(true);
+              allArguments.get(Dest.JSONQL_QUERY).required(true);
             }
         }
         // parse again so changed arguments become effectiv

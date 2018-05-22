@@ -544,6 +544,24 @@ public class ReportNGTest {
     }
 
     /**
+     * Test of fill method with jsonql datasource, of class Report.
+     */
+    @Test
+    public void testFillFromJsonQLDatasource() throws Exception {
+        System.out.println("fill from jsonqldatasource");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/jsonql.jrxml";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        assertEquals(((File) new File("target/test-classes/reports/jsonql.jrprint")).exists(), true);
+    }
+
+    /**
      * Test of fill method with xml datasource with barcode4j, of class Report.
      */
     @Test

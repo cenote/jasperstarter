@@ -25,6 +25,7 @@ import java.util.Map;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.data.JsonDataSource;
+import net.sf.jasperreports.engine.data.JsonQLDataSource;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.AfterClass;
@@ -136,5 +137,21 @@ public class DbNGTest {
       JsonDataSource jsonDataSource = instance.getJsonDataSource(config);
       assertTrue(jsonDataSource.next());
       assertEquals(jsonDataSource.getClass().getCanonicalName(), "net.sf.jasperreports.engine.data.JsonDataSource");
+    }
+
+    /**
+     * Test of getJsonQLDataSource method, of class Db.
+     */
+    @Test
+    public void testGetJsonQLDataSource() throws Exception {
+      System.out.println("getJsonQLDataSource");
+      Config config = new Config();
+      config.dbType = DsType.json;
+      config.dataFile = new File("target/test-classes/contacts.json");
+      config.jsonQuery = "contacts.person";
+      Db instance = new Db();
+      JsonQLDataSource jsonDataSource = instance.getJsonQLDataSource(config);
+      assertTrue(jsonDataSource.next());
+      assertEquals(jsonDataSource.getClass().getCanonicalName(), "net.sf.jasperreports.engine.data.JsonQLDataSource");
     }
 }

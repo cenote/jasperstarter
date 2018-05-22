@@ -61,6 +61,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.data.JsonDataSource;
+import net.sf.jasperreports.engine.data.JsonQLDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
@@ -246,6 +247,10 @@ public class Report {
                 } else if (DsType.json.equals(config.getDbType())) {
                     Db db = new Db();
                     JsonDataSource ds = db.getJsonDataSource(config);
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
+                } else if (DsType.jsonql.equals(config.getDbType())) {
+                    Db db = new Db();
+                    JsonQLDataSource ds = db.getJsonQLDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else {
                     Db db = new Db();
