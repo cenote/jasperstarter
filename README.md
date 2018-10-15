@@ -88,7 +88,7 @@ and create a bug or feature request.
 If you like the software you can write a [review][] :-)
 
 
-### Developement
+### Development
 
 The sourcecode is available at [bitbucket.org/cenote/jasperstarter][], the
 project website is hosted at [Sourceforge][].
