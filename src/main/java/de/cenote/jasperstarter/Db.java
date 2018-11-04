@@ -17,6 +17,7 @@ package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DsType;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;

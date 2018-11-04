@@ -562,6 +562,34 @@ public class ReportNGTest {
     }
 
     /**
+     * Test of fill method with stdin, of class Report.
+     */
+    @Test
+    public void testFillFromStdin() throws Exception {
+        System.out.println("fill from stdin");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/jsonql.jrxml";
+        config.dbType = DsType.json;
+        config.output = "target/test-classes/reports/jsonql_stdin";
+        //
+        // Use stdin as the source of data.
+        //
+        InputStream saved = System.in;
+        try {
+            System.setIn(new FileInputStream("target/test-classes/contacts.json"));
+            config.dataFile = new File("-");
+            config.jsonQuery = "contacts.person";
+            config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(),true);
+        } finally {
+            System.setIn(saved);
+        }
+    }
+
+    /**
      * Test of fill method with xml datasource with barcode4j, of class Report.
      */
     @Test
