@@ -118,7 +118,7 @@ public class Db {
             driver = DsType.mysql.getDriver();
             port = config.getDbPort().toString();
             dbname = config.getDbName();
-            connectString = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
+            connectString = "jdbc:mysql://" + host + ":" + port + "/" + dbname + "?useSSL=false";
         } else if (DsType.postgres.equals(dbtype)) {
             driver = DsType.postgres.getDriver();
             port = config.getDbPort().toString();

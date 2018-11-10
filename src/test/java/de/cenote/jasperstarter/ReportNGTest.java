@@ -501,9 +501,14 @@ public class ReportNGTest {
         config.input = "target/test-classes/reports/noDB-params.jrxml";
         Report instance = new Report(config, new File(config.getInput()));
         JRParameter[] result = instance.getReportParameters();
-        // there are 20 system parameters and 4 user parameters
-        // take the first user parameter        
-        assertEquals(result[20].getName(), "myString");
+        // The result includes N system parameters and 4 user parameters. In
+        // some earlier releases, N=20, while the docs suggest N=19 (at
+        // https://community.jaspersoft.com/documentation/tibco-jaspersoft-studio-user-guide/v60/default-parameters).
+        // Therefore, we verify the 4 user parameters by counting from the end.
+        assertEquals(result[result.length - 4].getName(), "myString");
+        assertEquals(result[result.length - 3].getName(), "myInt");
+        assertEquals(result[result.length - 2].getName(), "myDate");
+        assertEquals(result[result.length - 1].getName(), "myImage");
     }
     
     /**

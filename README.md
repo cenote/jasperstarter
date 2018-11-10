@@ -88,23 +88,26 @@ and create a bug or feature request.
 If you like the software you can write a [review][] :-)
 
 
-### Developement
+### Development
 
 The sourcecode is available at [bitbucket.org/cenote/jasperstarter][], the
 project website is hosted at [Sourceforge][].
 
 JasperStarter is build with [Maven][]. 
 
-On Linux 64 bit the launch4j-maven-plugin may fail. You need the folloing libs in a 32 bit version:
+On Linux 64 bit the launch4j-maven-plugin may fail. In this case, may you need the following libs in a 32 bit version:
 
   * z1
   * ncurses5
   * bz2-1.0
 
-On Ubuntu 14.04 for example use this command:
+Install on Ubuntu 14.04 or above:
 
     $ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
 
+Install on Fedora 27 or above:
+
+    $sudo dnf install ncurses-compat-libs.i686
 
 To get a distribution package run:
 
