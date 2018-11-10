@@ -408,7 +408,11 @@ public class App {
         Argument argDbDriver = groupDatasourceOptions.addArgument("--db-driver").metavar("<name>").dest(Dest.DB_DRIVER).help("jdbc driver class name for use with type: generic");
         Argument argDbUrl = groupDatasourceOptions.addArgument("--db-url").metavar("<jdbcUrl>").dest(Dest.DB_URL).help("jdbc url without user, passwd with type:generic");
         groupDatasourceOptions.addArgument("--jdbc-dir").metavar("<dir>").dest(Dest.JDBC_DIR).type(File.class).help("directory where jdbc driver jars are located. Defaults to ./jdbc");
-        Argument argDataFile = groupDatasourceOptions.addArgument("--data-file").metavar("<file>").dest(Dest.DATA_FILE).type(File.class).help("input file for file based datasource");
+        Argument argDataFile = groupDatasourceOptions.addArgument("--data-file").
+            metavar("<file>").
+            dest(Dest.DATA_FILE).
+            type(Arguments.fileType().acceptSystemIn().verifyCanRead()).
+            help("input file for file based datasource, use '-' for stdin");
         groupDatasourceOptions.addArgument("--csv-first-row").metavar("true", "false").dest(Dest.CSV_FIRST_ROW).action(Arguments.storeTrue()).help("first row contains column headers");
         Argument argCsvColumns = groupDatasourceOptions.addArgument("--csv-columns").metavar("<list>").dest(Dest.CSV_COLUMNS).help("Comma separated list of column names");
         groupDatasourceOptions.addArgument("--csv-record-del").metavar("<delimiter>").dest(Dest.CSV_RECORD_DEL).setDefault(System.getProperty("line.separator")).help("CSV Record Delimiter - defaults to line.separator");

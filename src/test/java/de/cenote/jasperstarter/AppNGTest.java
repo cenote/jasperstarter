@@ -383,15 +383,22 @@ public class AppNGTest {
         } catch (InvocationTargetException ex) {
             assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required", "-t csv");
         }
-        // try and error - follow the help message for next input
-        args = "pr fakefile -f pdf -t csv --data-file fakedatafile".split(" ");
+        // try and error - specify a non-existent file
+        args = "pr fakefile -f pdf --data-file fakedatafile".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
-            assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required", "-t csv --data-file fakedatafile");
+            assertEquals(ex.getCause().getMessage(), "argument --data-file: Insufficient permissions to read file: 'fakedatafile'", "--data-file fakedatafile");
         }
         // try and error - follow the help message for next input
-        args = "pr fakefile -f pdf -t csv --data-file fakedatafile --csv-columns a,b,c,d".split(" ");
+        args = "pr fakefile -f pdf -t csv --data-file -".split(" ");
+        try {
+            method.invoke(app, args, parser, config);
+        } catch (InvocationTargetException ex) {
+            assertEquals(ex.getCause().getMessage(), "argument --csv-columns is required", "-t csv --data-file -");
+        }
+        // try and error - follow the help message for next input
+        args = "pr fakefile -f pdf -t csv --data-file - --csv-columns a,b,c,d".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {
@@ -405,7 +412,7 @@ public class AppNGTest {
             fail(ex.getCause().getMessage(), ex.getCause());
         }
         // --csv-columns only required unless --csv-use-1row is given
-        args = "pr fakefile -f pdf -t csv --data-file fakedatafile --csv-first-row".split(" ");
+        args = "pr fakefile -f pdf -t csv --data-file - --csv-first-row".split(" ");
         try {
             method.invoke(app, args, parser, config);
         } catch (InvocationTargetException ex) {

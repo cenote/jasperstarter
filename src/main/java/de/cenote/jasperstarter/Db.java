@@ -17,6 +17,7 @@ package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DsType;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +28,6 @@ import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.engine.data.JsonDataSource;
 import net.sf.jasperreports.engine.data.JsonQLDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -37,13 +37,10 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public class Db {
-
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
         JRCsvDataSource ds;
         try {
-            ds = new JRCsvDataSource(
-                    JRLoader.getInputStream(
-                    config.getDataFile()), config.csvCharset);
+            ds = new JRCsvDataSource(config.getDataStream(), config.csvCharset);
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalArgumentException("Unknown CSV charset: "
                     + config.csvCharset
@@ -78,10 +75,9 @@ public class Db {
     
 	public JRXmlDataSource getXmlDataSource(Config config) throws JRException {
 		JRXmlDataSource ds;
-		ds = new JRXmlDataSource(JRLoader.getInputStream(config.getDataFile()),
-				config.xmlXpath);
+		ds = new JRXmlDataSource(config.getDataStream(), config.xmlXpath);
 		if (config.isVerbose()) {
-			System.out.println("Data file: " + config.getDataFile());
+			System.out.println("Data file: " + config.getDataName());
 			System.out.println("XML xpath: " + config.xmlXpath);
 		}
 		return ds;
@@ -89,10 +85,9 @@ public class Db {
 
     public JsonDataSource getJsonDataSource(Config config) throws JRException {
 		JsonDataSource ds;
-		ds = new JsonDataSource(JRLoader.getInputStream(config.getDataFile()),
-				config.jsonQuery);
+		ds = new JsonDataSource(config.getDataStream(), config.jsonQuery);
 		if (config.isVerbose()) {
-			System.out.println("Data file: " + config.getDataFile());
+			System.out.println("Data file: " + config.getDataName());
 			System.out.println("JSON query : " + config.jsonQuery);
 		}
 		return ds;
@@ -100,10 +95,9 @@ public class Db {
 
     public JsonQLDataSource getJsonQLDataSource(Config config) throws JRException {
 		JsonQLDataSource ds;
-		ds = new JsonQLDataSource(JRLoader.getInputStream(config.getDataFile()),
-				config.jsonQLQuery);
+		ds = new JsonQLDataSource(config.getDataStream(), config.jsonQLQuery);
 		if (config.isVerbose()) {
-			System.out.println("Data file: " + config.getDataFile());
+			System.out.println("Data file: " + config.getDataName());
 			System.out.println("JSONQL query : " + config.jsonQLQuery);
 		}
 		return ds;

@@ -19,8 +19,10 @@ import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.Dest;
 import de.cenote.jasperstarter.types.OutputFormat;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.util.JRLoader;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -226,8 +228,25 @@ public class Config {
         }
     }
 
-    public File getDataFile() {
-        return dataFile;
+    /**
+     * Get InputStream corresponding to the configured dataFile.
+     */
+    public InputStream getDataStream() throws JRException {
+        //
+        // Are we using stdin?
+        //
+        if (getDataName().equals("-")) {
+            return System.in;
+        } else {
+            return JRLoader.getInputStream(dataFile);
+        }
+    }
+
+    /**
+     * Get name of the configured dataFile.
+     */
+    public String getDataName() {
+        return dataFile.getName();
     }
 
     public boolean getCsvFirstRow() {
