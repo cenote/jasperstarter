@@ -19,10 +19,12 @@ import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.OutputFormat;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -592,6 +594,53 @@ public class ReportNGTest {
         } finally {
             System.setIn(saved);
         }
+    }
+
+    /**
+     * Test of fill method usage of stdout. Testing a negative is always an
+     * exercise in incompleteness, but c'est la vie.
+     */
+    @Test
+    public void testStdoutIsNotUsed() throws Exception {
+        System.out.println("Check usage of stdout");
+        Config config = null;
+        config = new Config();
+        config.input  = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "target/test-classes/reports/jsonql_stdout";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        //
+        // Request verbose output.
+        //
+        config.verbose = true;
+        //
+        // Capture stdout and stderr.
+        //
+        System.out.flush();
+        System.err.flush();
+        PrintStream savedStdout = System.out;
+        PrintStream savedStderr = System.err;
+        ByteArrayOutputStream tmpStdout = new ByteArrayOutputStream();
+        ByteArrayOutputStream tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        //
+        // All output should be to stderr.
+        //
+        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStderr.size());
     }
 
     /**

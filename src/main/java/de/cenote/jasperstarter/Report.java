@@ -117,6 +117,13 @@ public class Report {
      * @throws IllegalArgumentException
      */
     Report(Config config, File inputFile) throws IllegalArgumentException {
+        //
+        // In normal usage, the static initialisation of configSink and
+        // debugSink is fine. However, when running tests, these are
+        // modified at run-time, so make sure we get the current version!
+        //
+        configSink = System.err;
+        debugSink = System.err;
         this.config = config;
         // store the given default to reset to it in fill()
         defaultLocale = Locale.getDefault();

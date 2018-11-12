@@ -40,6 +40,16 @@ public class Db {
     private static PrintStream configSink = System.err;
     private static PrintStream debugSink = System.err;
 
+    public Db() {
+        //
+        // In normal usage, the static initialisation of configSink and
+        // debugSink is fine. However, when running tests, these are
+        // modified at run-time, so make sure we get the current version!
+        //
+        configSink = System.err;
+        debugSink = System.err;
+    }
+
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
         JRCsvDataSource ds;
         try {
