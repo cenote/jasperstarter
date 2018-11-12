@@ -574,9 +574,9 @@ public class ReportNGTest {
         System.out.println("fill from stdin");
         Config config = null;
         config = new Config();
-        config.input  = "target/test-classes/reports/jsonql.jrxml";
-        config.output = "target/test-classes/reports/jsonql_stdin";
+        config.input = "target/test-classes/reports/jsonql.jrxml";
         config.dbType = DsType.json;
+        config.output = "target/test-classes/reports/jsonql_stdin";
         //
         // Use stdin as the source of data.
         //
@@ -588,7 +588,7 @@ public class ReportNGTest {
             config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
-            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(),true);
         } finally {
             System.setIn(saved);
         }
