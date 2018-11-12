@@ -227,7 +227,31 @@ public class Report {
         }
     }
 
+    /**
+     * Wrapper around @see fillInternal() that guards against embedded use of
+     * stdout.
+     */
     public void fill() throws InterruptedException {
+        PrintStream originalStdout = System.out;
+        try {
+            System.setOut(System.err);
+            fillInternal();
+        }
+        finally {
+            System.out.flush();
+            System.setOut(originalStdout);
+        }
+    }
+
+    /**
+     * Generate report output. Notice that if output is configured to point to
+     * stdout, any library output which goes to stdout will corrupt our output.
+     * "Library" here denotes not just code we are built against, but also
+     * anything the user has caused to be invoked as a resource. See @fill().
+     *
+     * @throws InterruptedException
+     */
+    private void fillInternal() throws InterruptedException {
         if (initialInputType != InputType.JASPER_PRINT) {
             // get commandLineReportParams
             Map<String, Object> parameters = getCmdLineReportParams();
