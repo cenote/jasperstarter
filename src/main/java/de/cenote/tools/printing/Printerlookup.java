@@ -17,6 +17,7 @@ package de.cenote.tools.printing;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import java.io.PrintStream;
 
 /**
  *
@@ -24,6 +25,8 @@ import javax.print.PrintServiceLookup;
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public class Printerlookup {
+    private static PrintStream configSink = System.err;
+    private static PrintStream debugSink = System.err;
 
     public static PrintService getPrintservice(String printername) {
         return getPrintservice(printername, false, false);
@@ -34,7 +37,7 @@ public class Printerlookup {
     }
 
     public static PrintService getPrintservice(String printername, Boolean startWithMatch, Boolean escapeSpace) {
-        //System.out.println("Printerlookup: search for: " + printername);
+        //debugSink.println("Printerlookup: search for: " + printername);
         PrintService returnval = null;
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         // first try a case sensitive match
@@ -44,7 +47,7 @@ public class Printerlookup {
             }
         }
         if (returnval == null) { // try a case insensitive match
-            //System.out.println("Printerlookup: try a case insensitive match");
+            //debugSink.println("Printerlookup: try a case insensitive match");
             for (PrintService service : services) {
                 if (service.getName().equalsIgnoreCase(printername)) {
                     if (returnval == null) {
@@ -56,7 +59,7 @@ public class Printerlookup {
             }
         }
         if (returnval == null && startWithMatch) { // try a case insensitive startWith match
-            //System.out.println("Printerlookup: try a case insensitive startWith match");
+            //debugSink.println("Printerlookup: try a case insensitive startWith match");
             for (PrintService service : services) {
                 if (service.getName().toLowerCase().startsWith(printername.toLowerCase())) {
                     if (returnval == null) {
@@ -68,7 +71,7 @@ public class Printerlookup {
             }
         }
         if (returnval == null && escapeSpace) { // try a case insensitive match with space excaped by underline
-            //System.out.println("Printerlookup: try a case insensitive match with space excaped by underline");
+            //debugSink.println("Printerlookup: try a case insensitive match with space excaped by underline");
             for (PrintService service : services) {
                 String excapedPrintername = printername.toLowerCase().replace(" ", "_");
                 String escapedServiceName = service.getName().toLowerCase().replace(" ", "_");
@@ -82,7 +85,7 @@ public class Printerlookup {
             }
         }
         if (returnval == null && startWithMatch && escapeSpace) { // try a case insensitive startWith match with space excaped by underline
-            //System.out.println("Printerlookup: try a case insensitive startWith match with space excaped by underline");
+            //debugSink.println("Printerlookup: try a case insensitive startWith match with space excaped by underline");
             for (PrintService service : services) {
                 String excapedPrintername = printername.toLowerCase().replace(" ", "_");
                 String escapedServiceName = service.getName().toLowerCase().replace(" ", "_");

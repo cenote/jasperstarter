@@ -24,6 +24,8 @@ import de.cenote.tools.classpath.ApplicationClasspath;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.PrintStream;
+
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,6 @@ import net.sourceforge.argparse4j.inf.Argument;
 import net.sourceforge.argparse4j.inf.ArgumentGroup;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.FeatureControl;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
@@ -55,6 +56,9 @@ public class App {
 
     private Namespace namespace = null;
     private Map<String, Argument> allArguments = null;
+    private static PrintStream configSink = System.err;
+    private static PrintStream debugSink = System.err;
+    private static PrintStream errSink = System.err;
 
     /**
      * @param args the command line arguments
@@ -76,13 +80,13 @@ public class App {
             System.exit(1);
         }
         if (config.isVerbose()) {
-            System.out.print("Command line:");
+            configSink.print("Command line:");
             for (String arg : args) {
-                System.out.print(" " + arg);
+                configSink.print(" " + arg);
             }
             // @todo: this makes sense only if Config.toString() is overwitten
-//            System.out.print("\n");
-//            System.out.println(config);
+//            configSink.print("\n");
+//            configSink.println(config);
         }
 
         // @todo: main() will not be executed in tests...
@@ -113,13 +117,13 @@ public class App {
                     break;
             }
         } catch (IllegalArgumentException ex) {
-            System.err.println(ex.getMessage());
+            errSink.println(ex.getMessage());
             System.exit(1);
         } catch (InterruptedException ex) {
-            System.err.println(ex.getMessage());
+            errSink.println(ex.getMessage());
             System.exit(1);
         } catch (JRException ex) {
-            System.err.println(ex.getMessage());
+            errSink.println(ex.getMessage());
             System.exit(1);
         }
     }
@@ -162,7 +166,7 @@ public class App {
             if (config.hasJdbcDir()) {
                 File jdbcDir = config.getJdbcDir();
                 if (config.isVerbose()) {
-                    System.out.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
+                    configSink.println("Using jdbc-dir: " + jdbcDir.getAbsolutePath());
                 }
                 ApplicationClasspath.addJars(jdbcDir.getAbsolutePath());
             } else {
@@ -183,7 +187,7 @@ public class App {
                     if (res.isDirectory()) {
                         ApplicationClasspath.add(res);
                         if (config.isVerbose()) {
-                            System.out.println(
+                            configSink.println(
                                     "Added resource \"" + res + "\" to classpath");
                         }
                     } else {
@@ -195,7 +199,7 @@ public class App {
                     File res = new File(config.getResource());
                     ApplicationClasspath.add(res);
                     if (config.isVerbose()) {
-                        System.out.println(
+                        configSink.println(
                                 "Added resource \"" + res + "\" to classpath");
                     }
                 }
@@ -206,11 +210,11 @@ public class App {
         }
         File inputFile = new File(config.getInput()).getAbsoluteFile();
         if (config.isVerbose()) {
-            System.out.println("Original input file: " + inputFile.getAbsolutePath());
+            configSink.println("Original input file: " + inputFile.getAbsolutePath());
         }
         inputFile = locateInputFile(inputFile);
         if (config.isVerbose()) {
-            System.out.println("Using input file: " + inputFile.getAbsolutePath());
+            configSink.println("Using input file: " + inputFile.getAbsolutePath());
         }
         Report report = new Report(config, inputFile);
 

@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -67,6 +68,8 @@ public class ParameterPanel extends JPanel {
     private AtomicBoolean valid;
     private int textFieldHeight;
     UIDefaults uiDefaults = javax.swing.UIManager.getDefaults();
+    private static PrintStream configSink = System.err;
+    private static PrintStream debugSink = System.err;
 
     public ParameterPanel(final JRParameter jrParameter, final Map<String, Object> params,
             AtomicBoolean valid) {
@@ -183,13 +186,13 @@ public class ParameterPanel extends JPanel {
                     ((JTextField) input).setText(DateFormat.getDateInstance()
                             .format((Date) o));
                 }
-                //System.out.println("DateInputVerifier: ok");
+                //debugSink.println("DateInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
                 input.setBackground(uiDefaults.getColor("TextField.background"));
                 valid.set(true);
                 return true;
             } catch (ParseException e) {
-                //System.err.println("DateInputVerifier: exception");
+                //debugSink.println("DateInputVerifier: exception");
                 input.setBackground(Color.RED);
                 ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();
@@ -238,7 +241,7 @@ public class ParameterPanel extends JPanel {
 
                     ((JTextField) input).setText(imageFile.getAbsolutePath());
                 }
-                //System.out.println("ImageInputVerifier: OK");
+                //debugSink.println("ImageInputVerifier: OK");
                 if (!text.equals(imageName)) {
                     // don't overwrite a given image
                     params.put(jrParameter.getName(), o);
@@ -247,7 +250,7 @@ public class ParameterPanel extends JPanel {
                 valid.set(true);
                 return true;
             } catch (Exception e) {
-                //System.err.println("ImageInputVerifier: exception");
+                //debugSink.println("ImageInputVerifier: exception");
                 input.setBackground(Color.RED);
                 ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();
@@ -273,13 +276,13 @@ public class ParameterPanel extends JPanel {
                             .newInstance(text);
                     ((JTextField) input).setText(o.toString());
                 }
-                //System.out.println("GenericInputVerifier: ok");
+                //debugSink.println("GenericInputVerifier: ok");
                 params.put(jrParameter.getName(), o);
                 input.setBackground(uiDefaults.getColor("TextField.background"));
                 valid.set(true);
                 return true;
             } catch (Exception e) {
-                //System.err.println("GenericInputVerifier: exception");
+                //debugSink.println("GenericInputVerifier: exception");
                 input.setBackground(Color.RED);
                 ((JTextField) input).selectAll();
                 Toolkit.getDefaultToolkit().beep();

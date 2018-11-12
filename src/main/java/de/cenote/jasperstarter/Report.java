@@ -27,6 +27,7 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -81,12 +82,10 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.export.SimpleCsvExporterConfiguration;
 import net.sf.jasperreports.export.SimpleCsvMetadataExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleHtmlExporterConfiguration;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
-import net.sf.jasperreports.export.SimpleXlsExporterConfiguration;
 import net.sf.jasperreports.export.SimpleXlsMetadataReportConfiguration;
 import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
@@ -109,6 +108,8 @@ public class Report {
     private JasperPrint jasperPrint;
     private File output;
     private Locale defaultLocale;
+    private static PrintStream configSink = System.err;
+    private static PrintStream debugSink = System.err;
 
     /**
      *
@@ -175,21 +176,21 @@ public class Report {
             this.output = new File(this.output, inputBasename);
         }
         if (config.isVerbose()) {
-            System.out.println("Input absolute :  " + inputFile.getAbsolutePath());
+            configSink.println("Input absolute :  " + inputFile.getAbsolutePath());
             try {
-                System.out.println("Input canonical:  " + inputFile.getCanonicalPath());
+                configSink.println("Input canonical:  " + inputFile.getCanonicalPath());
             } catch (IOException ex) {
                 Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("Input:            " + inputFile.getName());
-            System.out.println("Input basename:   " + inputBasename);
+            configSink.println("Input:            " + inputFile.getName());
+            configSink.println("Input basename:   " + inputBasename);
             if (config.hasOutput()) {
                 File outputParam = new File(config.getOutput()).getAbsoluteFile();
-                System.out.println("OutputParam:      " + outputParam.getAbsolutePath());
+                configSink.println("OutputParam:      " + outputParam.getAbsolutePath());
             }
-            System.out.println("Output:           " + output.getAbsolutePath());
+            configSink.println("Output:           " + output.getAbsolutePath());
             try {
-                System.out.println("Output canonical: " + output.getCanonicalPath());
+                configSink.println("Output canonical: " + output.getCanonicalPath());
             } catch (IOException ex) {
                 Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -300,7 +301,7 @@ public class Report {
             PrintService service = Printerlookup.getPrintservice(printerName, Boolean.TRUE, Boolean.TRUE);
             expConfig.setPrintService(service);
             if (config.isVerbose()) {
-                System.out.println(
+                configSink.println(
                         "printer-name: " + ((service == null)
                         ? "No printer found with name \""
                         + printerName + "\"! Using default." : "found: "
@@ -479,7 +480,7 @@ public class Report {
                     paramName = p.split("=")[0];
                     paramValue = p.split("=", 2)[1];
                     if (config.isVerbose()) {
-                        System.out.println("Using report parameter: "
+                        configSink.println("Using report parameter: "
                                 + paramName + " = " + paramValue);
                     }
                 } catch (Exception e) {
@@ -609,12 +610,12 @@ public class Report {
             throw new InterruptedException("User aborted at parameter promt!");
         }
         if (config.isVerbose()) {
-            System.out.println("----------------------------");
-            System.out.println("Parameter prompt:");
+            configSink.println("----------------------------");
+            configSink.println("Parameter prompt:");
             for (Object key : params.keySet()) {
-                System.out.println(key + " = " + params.get(key));
+                configSink.println(key + " = " + params.get(key));
             }
-            System.out.println("----------------------------");
+            configSink.println("----------------------------");
         }
         return params;
     }
