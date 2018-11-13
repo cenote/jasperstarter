@@ -53,7 +53,7 @@ public class Db {
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
         JRCsvDataSource ds;
         try {
-            ds = new JRCsvDataSource(config.getDataStream(), config.csvCharset);
+            ds = new JRCsvDataSource(config.getDataFileInputStream(), config.csvCharset);
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalArgumentException("Unknown CSV charset: "
                     + config.csvCharset
@@ -88,30 +88,30 @@ public class Db {
     
 	public JRXmlDataSource getXmlDataSource(Config config) throws JRException {
 		JRXmlDataSource ds;
-		ds = new JRXmlDataSource(config.getDataStream(), config.xmlXpath);
+		ds = new JRXmlDataSource(config.getDataFileInputStream(), config.xmlXpath);
 		if (config.isVerbose()) {
-			configSink.println("Data file: " + config.getDataName());
-			configSink.println("XML xpath: " + config.xmlXpath);
+			System.out.println("Data file: " + config.getDataFileName());
+			System.out.println("XML xpath: " + config.xmlXpath);
 		}
 		return ds;
 	}
 
     public JsonDataSource getJsonDataSource(Config config) throws JRException {
 		JsonDataSource ds;
-		ds = new JsonDataSource(config.getDataStream(), config.jsonQuery);
+		ds = new JsonDataSource(config.getDataFileInputStream(), config.jsonQuery);
 		if (config.isVerbose()) {
-			configSink.println("Data file: " + config.getDataName());
-			configSink.println("JSON query : " + config.jsonQuery);
+			System.out.println("Data file: " + config.getDataFileName());
+			System.out.println("JSON query : " + config.jsonQuery);
 		}
 		return ds;
 	}
 
     public JsonQLDataSource getJsonQLDataSource(Config config) throws JRException {
 		JsonQLDataSource ds;
-		ds = new JsonQLDataSource(config.getDataStream(), config.jsonQLQuery);
+		ds = new JsonQLDataSource(config.getDataFileInputStream(), config.jsonQLQuery);
 		if (config.isVerbose()) {
-			configSink.println("Data file: " + config.getDataName());
-			configSink.println("JSONQL query : " + config.jsonQLQuery);
+			System.out.println("Data file: " + config.getDataFileName());
+			System.out.println("JSONQL query : " + config.jsonQLQuery);
 		}
 		return ds;
 	}
