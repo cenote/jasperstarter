@@ -228,14 +228,16 @@ public class Config {
         }
     }
 
+    public File getDataFile() { return dataFile; }
+
     /**
      * Get InputStream corresponding to the configured dataFile.
      */
-    public InputStream getDataStream() throws JRException {
+    public InputStream getDataFileInputStream() throws JRException {
         //
         // Are we using stdin?
         //
-        if (getDataName().equals("-")) {
+        if (getDataFileName().equals("-")) {
             return System.in;
         } else {
             return JRLoader.getInputStream(dataFile);
@@ -245,7 +247,7 @@ public class Config {
     /**
      * Get name of the configured dataFile.
      */
-    public String getDataName() {
+    public String getDataFileName() {
         return dataFile.getName();
     }
 
