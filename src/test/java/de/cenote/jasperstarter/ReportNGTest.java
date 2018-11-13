@@ -597,12 +597,15 @@ public class ReportNGTest {
     }
 
     /**
-     * Test of fill method usage of stdout. Testing a negative is always an
+     * Test of fill method usage of stdout by default. Testing a negative is always an
      * exercise in incompleteness, but c'est la vie.
+     *
+     * This test is complicated because in the test environment, stdout and stderr
+     * point to the same place.
      */
     @Test
-    public void testStdoutIsNotUsed() throws Exception {
-        System.out.println("Check usage of stdout");
+    public int testStdoutIsNotUsed() throws Exception {
+        System.out.println("Check stdout is not used by default");
         Config config = null;
         config = new Config();
         config.input  = "target/test-classes/reports/jsonql.jrxml";
@@ -612,9 +615,9 @@ public class ReportNGTest {
         config.jsonQuery = "contacts.person";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         //
-        // Request verbose output.
+        // Do not request verbose output.
         //
-        config.verbose = true;
+        config.verbose = false;
         //
         // Capture stdout and stderr.
         //
@@ -640,7 +643,35 @@ public class ReportNGTest {
         // All output should be to stderr.
         //
         assertEquals(0, tmpStdout.size());
+        assertEquals(0, tmpStderr.size());
+        int defaultOutputSize = tmpStderr.size();
+        //
+        // Now try again, using verbose mode.
+        //
+        config.verbose = true;
+        System.out.flush();
+        System.err.flush();
+        savedStdout = System.out;
+        savedStderr = System.err;
+        tmpStdout = new ByteArrayOutputStream();
+        tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        assertEquals(0, tmpStdout.size());
         assertTrue(0 < tmpStderr.size());
+        int verboseOutputSize = tmpStderr.size();
+        assert verboseOutputSize > defaultOutputSize;
+        return verboseOutputSize;
     }
 
     /**
