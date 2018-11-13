@@ -378,7 +378,10 @@ public class App {
                 required(true).nargs("+").type(Arguments.enumType(OutputFormat.class)).
                 help("view, print, pdf, rtf, xls, xlsMeta, xlsx, docx, odt, ods, pptx, csv, csvMeta, html, xhtml, xml, jrprint");
         groupOptions.addArgument("input").metavar("<input>").dest(Dest.INPUT).required(true).help("input file (.jrxml|.jasper|.jrprint)");
-        groupOptions.addArgument("-o").metavar("<output>").dest(Dest.OUTPUT).help("directory or basename of outputfile(s)");
+        groupOptions.addArgument("-o").
+                metavar("<output>").
+                dest(Dest.OUTPUT).
+                help("directory or basename of outputfile(s), use '-' for stdout");
         //groupOptions.addArgument("-h", "--help").action(Arguments.help()).help("show this help message and exit");
 
         ArgumentGroup groupCompileOptions = parser.addArgumentGroup("compile options");

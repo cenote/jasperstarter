@@ -675,6 +675,58 @@ public class ReportNGTest {
     }
 
     /**
+     * Test of fill method usage of stdout when "-" is specified as the output.
+     */
+    @Test
+    public void testStdoutIsUsed() throws Exception {
+        System.out.println("Check output to stdout");
+        Config config = null;
+        config = new Config();
+        config.input  = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "-";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        //
+        // Request verbose output.
+        //
+        config.verbose = true;
+        //
+        // Capture stdout and stderr.
+        //
+        System.out.flush();
+        System.err.flush();
+        PrintStream savedStdout = System.out;
+        PrintStream savedStderr = System.err;
+        ByteArrayOutputStream tmpStdout = new ByteArrayOutputStream();
+        ByteArrayOutputStream tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        //
+        // In the test environment, stdout and stderr are the same, so all output should be to stderr.
+        //
+        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStderr.size());
+        int filePlusVerboseOutputSize = tmpStderr.size();
+        //
+        // Run it again without redirected output, and check the output sizes are about 12187 vs 548.
+        //
+        int verboseOutputSize = testStdoutIsNotUsed();
+        //System.out.println("sizes="+filePlusVerboseOutputSize +" vs "+ verboseOutputSize);
+        assertTrue(filePlusVerboseOutputSize > verboseOutputSize + 10000);
+    }
+
+    /**
      * Test of fill method with xml datasource with barcode4j, of class Report.
      */
     @Test
