@@ -2,6 +2,21 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release notes - JasperStarter - Version 3.4.0
+---------------------------------------------
+
+Known bugs:
+
+** Bug
+
+** New Feature
+    * "Diskless" operation using stdin and stdout for input data and output ([JAS-97] and [JAS-89]).
+
+** Task
+
+** Improvement
+    * [JAS-97] - Accept stdout for output file
+
 Release notes - JasperStarter - Version 3.3.0
 ---------------------------------------------
 
