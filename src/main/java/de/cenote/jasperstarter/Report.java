@@ -121,7 +121,7 @@ public class Report {
      * @param inputFile
      * @throws IllegalArgumentException
      */
-    Report(Config config, File inputFile) throws IllegalArgumentException {
+    public Report(Config config, File inputFile) throws IllegalArgumentException {
         //
         // In normal usage, the static initialisation of configSink and
         // debugSink is fine. However, when running tests, these are

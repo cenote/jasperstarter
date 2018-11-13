@@ -15,6 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
+import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.OutputFormat;
 
@@ -27,6 +28,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import net.sf.jasperreports.engine.JRParameter;
 import static org.testng.Assert.*;
@@ -756,5 +759,164 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.exportPdf();
         assertEquals(((File) new File("target/test-classes/reports/barcode4j.pdf")).exists(), true);
+    }
+    
+    /**
+     * Test of public API.
+     */
+    @Test
+    public void testPublicApi() {
+        System.out.println("public API");
+        Config config = null;
+        config = new Config();
+        config.dbType = DsType.csv;
+        config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
+        config.csvCharset = "utf8";
+        config.csvFieldDel = "|";
+        config.csvRecordDel = "\r\n";
+        config.csvFirstRow = true;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        config.locale = "en";
+        config.csvColumns = "a";
+
+        AskFilter savedAskFilter = config.getAskFilter();
+        config.setAskFilter(savedAskFilter);
+        assertEquals(savedAskFilter, config.getAskFilter());
+
+        String savedCommand = config.getCommand();
+        config.setCommand(savedCommand);
+        assertEquals(savedCommand, config.getCommand());
+
+        String savedDbDriver = config.getDbDriver();
+        config.setDbDriver(savedDbDriver);
+        assertEquals(savedDbDriver, config.getDbDriver());
+
+        String savedDbHost = config.getDbHost();
+        config.setDbHost(savedDbHost);
+        assertEquals(savedDbHost, config.getDbHost());
+
+        String savedDbName = config.getDbName();
+        config.setDbName(savedDbName);
+        assertEquals(savedDbName, config.getDbName());
+
+        String savedDbPasswd = config.getDbPasswd();
+        config.setDbPasswd(savedDbPasswd);
+        assertEquals(savedDbPasswd, config.getDbPasswd());
+
+        Integer savedDbPort = config.getDbPort();
+        config.setDbPort(savedDbPort);
+        assertEquals(savedDbPort, config.getDbPort());
+
+        String savedDbSid = config.getDbSid();
+        config.setDbSid(savedDbSid);
+        assertEquals(savedDbSid, config.getDbSid());
+
+        DsType savedDbType = config.getDbType();
+        config.setDbType(savedDbType);
+        assertEquals(savedDbType, config.getDbType());
+
+        String savedDbUrl = config.getDbUrl();
+        config.setDbUrl(savedDbUrl);
+        assertEquals(savedDbUrl, config.getDbUrl());
+
+        String savedDbUser = config.getDbUser();
+        config.setDbUser(savedDbUser);
+        assertEquals(savedDbUser, config.getDbUser());
+
+        boolean savedVerbose = config.isVerbose();
+        config.setVerbose(savedVerbose);
+        assertEquals(savedVerbose, config.isVerbose());
+
+        String savedInput = config.getInput();
+        config.setInput(savedInput);
+        assertEquals(savedInput, config.getInput());
+
+        File savedJdbcDir = config.getJdbcDir();
+        config.setJdbcDir(savedJdbcDir);
+        assertEquals(savedJdbcDir, config.getJdbcDir());
+
+        File savedDataFile = config.getDataFile();
+        config.setDataFile(savedDataFile);
+        assertEquals(savedDataFile, config.getDataFile());
+
+        boolean savedCsvFirstRow = config.getCsvFirstRow();
+        config.setCsvFirstRow(savedCsvFirstRow);
+        assertEquals(savedCsvFirstRow, config.getCsvFirstRow());
+
+        String[] savedCsvColumns = config.getCsvColumns();
+        config.setCsvColumns(savedCsvColumns[0]);
+        assertEquals(savedCsvColumns, config.getCsvColumns());
+
+        String savedCsvRecordDel = config.getCsvRecordDel();
+        config.setCsvRecordDel(savedCsvRecordDel);
+        assertEquals(savedCsvRecordDel, config.getCsvRecordDel());
+
+        char savedCsvFieldDel = config.getCsvFieldDel();
+        config.setCsvFieldDel(savedCsvFieldDel + "");
+        assertEquals(savedCsvFieldDel, config.getCsvFieldDel());
+
+        String savedCsvCharset = config.getCsvCharset();
+        config.setCsvCharset(savedCsvCharset);
+        assertEquals(savedCsvCharset, config.getCsvCharset());
+
+        String savedXmlXpath = config.getXmlXpath();
+        config.setXmlXpath(savedXmlXpath);
+        assertEquals(savedXmlXpath, config.getXmlXpath());
+
+        String savedJsonQuery = config.getJsonQuery();
+        config.setJsonQuery(savedJsonQuery);
+        assertEquals(savedJsonQuery, config.getJsonQuery());
+
+        String savedJsonQLQuery = config.getJsonQLQuery();
+        config.setJsonQLQuery(savedJsonQLQuery);
+        assertEquals(savedJsonQLQuery, config.getJsonQLQuery());
+
+        Locale savedLocale = config.getLocale();
+        config.setLocale(savedLocale.toString());
+        assertEquals(savedLocale, config.getLocale());
+
+        String savedOutput = config.getOutput();
+        config.setOutput(savedOutput);
+        assertEquals(savedOutput, config.getOutput());
+
+        List<OutputFormat> savedOutputFormats = config.getOutputFormats();
+        config.setOutputFormats(savedOutputFormats);
+        assertEquals(savedOutputFormats, config.getOutputFormats());
+
+        List<String> savedParams = config.getParams();
+        config.setParams(savedParams);
+        assertEquals(savedParams, config.getParams());
+
+        String savedPrinterName = config.getPrinterName();
+        config.setPrinterName(savedPrinterName);
+        assertEquals(savedPrinterName, config.getPrinterName());
+
+        String savedReportName = config.getReportName();
+        config.setReportName(savedReportName);
+        assertEquals(savedReportName, config.getReportName());
+
+        String savedResource = config.getResource();
+        config.setResource(savedResource);
+        assertEquals(savedResource, config.getResource());
+
+        boolean savedWithPrintDialog = config.isWithPrintDialog();
+        config.setWithPrintDialog(savedWithPrintDialog);
+        assertEquals(savedWithPrintDialog, config.isWithPrintDialog());
+
+        boolean savedWriteJasper = config.isWriteJasper();
+        config.setWriteJasper(savedWriteJasper);
+        assertEquals(savedWriteJasper, config.isWriteJasper());
+
+        Integer savedCopies = config.getCopies();
+        config.setCopies(savedCopies);
+        assertEquals(savedCopies, config.getCopies());
+
+        String savedOutFieldDel = config.getOutFieldDel();
+        config.setOutFieldDel(savedOutFieldDel);
+        assertEquals(savedOutFieldDel, config.getOutFieldDel());
+
+        String savedOutCharset = config.getOutCharset();
+        config.setOutCharset(savedOutCharset);
+        assertEquals(savedOutCharset, config.getOutCharset());
     }
 }
