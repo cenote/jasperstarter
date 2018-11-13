@@ -19,10 +19,12 @@ import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.OutputFormat;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -592,6 +594,136 @@ public class ReportNGTest {
         } finally {
             System.setIn(saved);
         }
+    }
+
+    /**
+     * Test of fill method usage of stdout by default. Testing a negative is always an
+     * exercise in incompleteness, but c'est la vie.
+     *
+     * This test is complicated because in the test environment, stdout and stderr
+     * point to the same place.
+     */
+    @Test
+    public int testStdoutIsNotUsed() throws Exception {
+        System.out.println("Check stdout is not used by default");
+        Config config = null;
+        config = new Config();
+        config.input  = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "target/test-classes/reports/jsonql_stdout";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        //
+        // Do not request verbose output.
+        //
+        config.verbose = false;
+        //
+        // Capture stdout and stderr.
+        //
+        System.out.flush();
+        System.err.flush();
+        PrintStream savedStdout = System.out;
+        PrintStream savedStderr = System.err;
+        ByteArrayOutputStream tmpStdout = new ByteArrayOutputStream();
+        ByteArrayOutputStream tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        //
+        // All output should be to stderr.
+        //
+        assertEquals(0, tmpStdout.size());
+        assertEquals(0, tmpStderr.size());
+        int defaultOutputSize = tmpStderr.size();
+        //
+        // Now try again, using verbose mode.
+        //
+        config.verbose = true;
+        System.out.flush();
+        System.err.flush();
+        savedStdout = System.out;
+        savedStderr = System.err;
+        tmpStdout = new ByteArrayOutputStream();
+        tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+            assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStderr.size());
+        int verboseOutputSize = tmpStderr.size();
+        assert verboseOutputSize > defaultOutputSize;
+        return verboseOutputSize;
+    }
+
+    /**
+     * Test of fill method usage of stdout when "-" is specified as the output.
+     */
+    @Test
+    public void testStdoutIsUsed() throws Exception {
+        System.out.println("Check output to stdout");
+        Config config = null;
+        config = new Config();
+        config.input  = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "-";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.jsonQuery = "contacts.person";
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        //
+        // Request verbose output.
+        //
+        config.verbose = true;
+        //
+        // Capture stdout and stderr.
+        //
+        System.out.flush();
+        System.err.flush();
+        PrintStream savedStdout = System.out;
+        PrintStream savedStderr = System.err;
+        ByteArrayOutputStream tmpStdout = new ByteArrayOutputStream();
+        ByteArrayOutputStream tmpStderr = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(tmpStdout));
+            System.setErr(new PrintStream(tmpStderr));
+            Report instance = new Report(config, new File(config.getInput()));
+            instance.fill();
+        } finally {
+            System.out.flush();
+            System.err.flush();
+            System.setOut(savedStdout);
+            System.setErr(savedStderr);
+        }
+        //
+        // In the test environment, stdout and stderr are the same, so all output should be to stderr.
+        //
+        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStderr.size());
+        int filePlusVerboseOutputSize = tmpStderr.size();
+        //
+        // Run it again without redirected output, and check the output sizes are about 12187 vs 548.
+        //
+        int verboseOutputSize = testStdoutIsNotUsed();
+        //System.out.println("sizes="+filePlusVerboseOutputSize +" vs "+ verboseOutputSize);
+        assertTrue(filePlusVerboseOutputSize > verboseOutputSize + 10000);
     }
 
     /**

@@ -17,7 +17,7 @@ package de.cenote.jasperstarter;
 
 import de.cenote.jasperstarter.types.DsType;
 
-import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,6 +37,19 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public class Db {
+    private static PrintStream configSink = System.err;
+    private static PrintStream debugSink = System.err;
+
+    public Db() {
+        //
+        // In normal usage, the static initialisation of configSink and
+        // debugSink is fine. However, when running tests, these are
+        // modified at run-time, so make sure we get the current version!
+        //
+        configSink = System.err;
+        debugSink = System.err;
+    }
+
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
         JRCsvDataSource ds;
         try {
@@ -57,17 +70,17 @@ public class Db {
         ds.setFieldDelimiter(config.getCsvFieldDel());
 
         if (config.isVerbose()) {
-            System.out.println("Use first row: " + config.getCsvFirstRow());
-            System.out.print("CSV Columns:");
+            configSink.println("Use first row: " + config.getCsvFirstRow());
+            configSink.print("CSV Columns:");
             for (String name : config.getCsvColumns()) {
-                System.out.print(" " + name);
+                configSink.print(" " + name);
             }
-            System.out.println("");
-            System.out.println("-----------------------");
-            System.out.println("Record delimiter literal: " + config.getCsvRecordDel());
-            System.out.println("Record delimiter: " + ds.getRecordDelimiter());
-            System.out.println("Field delimiter: " + ds.getFieldDelimiter());
-            System.out.println("-----------------------");
+            configSink.println("");
+            configSink.println("-----------------------");
+            configSink.println("Record delimiter literal: " + config.getCsvRecordDel());
+            configSink.println("Record delimiter: " + ds.getRecordDelimiter());
+            configSink.println("Field delimiter: " + ds.getFieldDelimiter());
+            configSink.println("-----------------------");
         }
 
         return ds;
@@ -134,11 +147,11 @@ public class Db {
             connectString = config.getDbUrl();
         }
         if (config.isVerbose()) {
-            System.out.println("JDBC driver: " + driver);
-            System.out.println("Connectstring: " + connectString);
-            System.out.println("db-user: " + user);
+            configSink.println("JDBC driver: " + driver);
+            configSink.println("Connectstring: " + connectString);
+            configSink.println("db-user: " + user);
             if (passwd.isEmpty()) {
-                System.out.println("db-password is empty");
+                configSink.println("db-password is empty");
             }
         }
 

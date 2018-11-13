@@ -29,6 +29,7 @@ It has the following features:
   * Integrate in non Java applications (for example PHP, Python)
   * Binary executable on Windows
   * Includes JasperReports so this is the only tool you need to install
+  * "Diskless" operation using stdin and stdout for input data and output.
 
 Requirements:
 
