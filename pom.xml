@@ -127,8 +127,8 @@ limitations under the License.
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArgument>${compilerArgument}</compilerArgument>
                 </configuration>
             </plugin>
@@ -233,7 +233,7 @@ limitations under the License.
                             </classPath>
                             <!-- <icon>src/main/resources/icons/exeIcon.ico</icon> -->
                             <jre>
-                                <minVersion>1.6.0</minVersion>
+                                <minVersion>1.8.0</minVersion>
                                 <!-- <maxVersion>1.6.0</maxVersion> -->
                                 <!-- <initialHeapSize>128</initialHeapSize> -->
                                 <!-- <maxHeapSize>1024</maxHeapSize> -->
