@@ -20,7 +20,7 @@ import static org.testng.Assert.*;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  */
 public class ConfigNGTest {
 

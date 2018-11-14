@@ -40,7 +40,7 @@ import net.sf.jasperreports.engine.JRParameter;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision$
  */
 public class ParameterPrompt {
