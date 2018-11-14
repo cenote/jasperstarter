@@ -104,6 +104,7 @@ provide direct access from Python:
     instance.fill()
     instance.exportPdf()
 
+See the examples/python directory for a fuller example.
 
 ### Release Notes
 
