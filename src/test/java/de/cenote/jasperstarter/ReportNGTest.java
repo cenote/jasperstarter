@@ -131,6 +131,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithJavaScript.jrprint")).exists(), true);
     }
 
@@ -154,6 +155,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jrprint")).exists(), true);
     }
     
@@ -188,6 +190,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/Blank_A4_1.jrprint")).exists(), true);
     }  
     
@@ -210,6 +213,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.jrprint")).exists(), true);
     }
 
@@ -231,6 +235,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.jrprint")).exists(), true);
     }
 
@@ -266,6 +271,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportPdf();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.pdf")).exists(), true);
     }
@@ -280,6 +286,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportRtf();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.rtf")).exists(), true);
     }
@@ -294,6 +301,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportDocx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.docx")).exists(), true);
     }
@@ -308,6 +316,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportOdt();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.odt")).exists(), true);
     }
@@ -322,6 +331,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportHtml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.html")).exists(), true);
     }
@@ -336,6 +346,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xml")).exists(), true);
     }
@@ -350,6 +361,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXls();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xls")).exists(), true);
         // Read the content of a cell:
@@ -372,6 +384,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/csvMeta.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXlsMeta();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.xls")).exists(), true);
         // Read the content of a cell:
@@ -394,6 +407,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXlsx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xlsx")).exists(), true);
     }
@@ -409,6 +423,7 @@ public class ReportNGTest {
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         config.outCharset = "utf-8";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportCsv();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.csv")).exists(), true);
         // now read the file - it could have 0 bytes if something goes wrong
@@ -432,6 +447,7 @@ public class ReportNGTest {
         config.outCharset = "utf-8";
         config.outFieldDel = "|";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportCsvMeta();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.csv")).exists(), true);
         // now read the file - it could have 0 bytes if something goes wrong
@@ -453,6 +469,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportOds();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.ods")).exists(), true);
     }
@@ -467,6 +484,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportPptx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.pptx")).exists(), true);
     }
@@ -481,6 +499,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXhtml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.x.html")).exists(), true);
     }
@@ -532,6 +551,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
     }
     
@@ -550,6 +570,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
     }
 
@@ -568,6 +589,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/jsonql.jrprint")).exists(), true);
     }
 
@@ -593,6 +615,7 @@ public class ReportNGTest {
             config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(),true);
         } finally {
             System.setIn(saved);
@@ -635,6 +658,7 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
         } finally {
             System.out.flush();
@@ -663,6 +687,7 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
         } finally {
             System.out.flush();
@@ -709,18 +734,16 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
         } finally {
             System.out.flush();
             System.err.flush();
             System.setOut(savedStdout);
             System.setErr(savedStderr);
         }
-        //
-        // In the test environment, stdout and stderr are the same, so all output should be to stderr.
-        //
-        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStdout.size());
         assertTrue(0 < tmpStderr.size());
-        int filePlusVerboseOutputSize = tmpStderr.size();
+        int filePlusVerboseOutputSize = tmpStdout.size();
         //
         // Run it again without redirected output, and check the output sizes are about 12187 vs 548.
         //
@@ -744,6 +767,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/barcode4j.jrprint")).exists(), true);
     }
 

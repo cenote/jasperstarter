@@ -18,7 +18,6 @@ package de.cenote.jasperstarter;
 import de.cenote.jasperstarter.gui.ParameterPrompt;
 import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.InputType;
-import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
 
 import java.awt.Image;
@@ -211,11 +210,6 @@ public class Report {
                 }
             }
         }
-        List<OutputFormat> formats = config.getOutputFormats();
-        if (formats != null && formats.size() > 1 && output.getName().equals(STDOUT)) {
-            throw new IllegalArgumentException(
-                    "output file \"" + STDOUT + "\" cannot be used with multiple output formats: " + formats);
-        }
     }
 
     private void compile() throws JRException {
@@ -316,14 +310,6 @@ public class Report {
                 // reset to default
                 Locale.setDefault(defaultLocale);
             }
-            List<OutputFormat> formats = config.getOutputFormats();
-            try {
-                if (formats.contains(OutputFormat.jrprint)) {
-                    JRSaver.saveObject(jasperPrint, getOutputStream(".jrprint"));
-                }
-            } catch (JRException e) {
-                throw new IllegalArgumentException("Unable to write to file", e);
-            }
         }
     }
 
@@ -390,6 +376,10 @@ public class Report {
             }
         }
         return outputStream;
+    }
+
+    public void exportJrprint() throws JRException {
+        JRSaver.saveObject(jasperPrint, getOutputStream(".jrprint"));
     }
 
     public void exportPdf() throws JRException {
