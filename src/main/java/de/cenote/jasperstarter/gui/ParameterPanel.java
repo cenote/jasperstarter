@@ -59,7 +59,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision$
  */
 public class ParameterPanel extends JPanel {

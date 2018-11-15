@@ -34,7 +34,7 @@ Es hat die folgenden Eigenschaften:
 
 Anforderungen
 
-  * Java 1.6 oder höher.
+  * Java 1.8 oder höher.
   * Ein JDBC 2.1 Treiber für Ihre Datenbank
 
 

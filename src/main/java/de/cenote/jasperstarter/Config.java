@@ -34,7 +34,7 @@ import org.apache.commons.lang.LocaleUtils;
  * This POJO is intended to contain all command line parameters and other
  * configuration values.
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision$
  */
 public class Config {

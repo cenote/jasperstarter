@@ -33,7 +33,7 @@ It has the following features:
 
 Requirements:
 
-  * Java 1.6 or higher
+  * Java 1.8 or higher
   * A JDBC 2.1 driver for your database
 
 
