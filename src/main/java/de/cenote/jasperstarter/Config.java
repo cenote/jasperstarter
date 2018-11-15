@@ -153,7 +153,9 @@ public class Config {
         return askFilter;
     }
 
-    public void setAskFilter(AskFilter value) { askFilter = value; }
+    public void setAskFilter(AskFilter value) {
+        askFilter = value;
+    }
 
     public boolean hasAskFilter() {
         if (askFilter != null) {
@@ -167,49 +169,65 @@ public class Config {
         return command;
     }
 
-    public void setCommand(String value) { command = value; }
+    public void setCommand(String value) {
+        command = value;
+    }
 
     public String getDbDriver() {
         return dbDriver;
     }
 
-    public void setDbDriver(String value) { dbDriver = value; }
+    public void setDbDriver(String value) {
+        dbDriver = value;
+    }
 
     public String getDbHost() {
         return dbHost;
     }
 
-    public void setDbHost(String value) { dbHost = value; }
+    public void setDbHost(String value) {
+        dbHost = value;
+    }
 
     public String getDbName() {
         return dbName;
     }
 
-    public void setDbName(String value) { dbName = value; }
+    public void setDbName(String value) {
+        dbName = value;
+    }
 
     public String getDbPasswd() {
         return dbPasswd;
     }
 
-    public void setDbPasswd(String value) { dbPasswd = value; }
+    public void setDbPasswd(String value) {
+        dbPasswd = value;
+    }
 
     public Integer getDbPort() {
         return dbPort;
     }
 
-    public void setDbPort(Integer value) { dbPort = value; }
+    public void setDbPort(Integer value) {
+        dbPort = value;
+    }
 
     public String getDbSid() {
         return dbSid;
     }
 
-    public void setDbSid(String value) { dbSid = value; }
+    public void setDbSid(String value) {
+        dbSid = value;
+    }
 
     public DsType getDbType() {
         return dbType;
     }
 
-    public void setDbType(DsType value) { dbType = value; }
+    public void setDbType(DsType value) {
+        dbType = value;
+    }
 
     public boolean hasDbType() {
         if (dbType != null) {
@@ -223,31 +241,41 @@ public class Config {
         return dbUrl;
     }
 
-    public void setDbUrl(String value) { dbUrl = value; }
+    public void setDbUrl(String value) {
+        dbUrl = value;
+    }
 
     public String getDbUser() {
         return dbUser;
     }
 
-    public void setDbUser(String value) { dbUser = value; }
+    public void setDbUser(String value) {
+        dbUser = value;
+    }
 
     public boolean isVerbose() {
         return verbose;
     }
 
-    public void setVerbose(boolean value) { verbose = value; }
+    public void setVerbose(boolean value) {
+        verbose = value;
+    }
 
     public String getInput() {
         return input;
     }
 
-    public void setInput(String value) { input = value; }
+    public void setInput(String value) {
+        input = value;
+    }
 
     public File getJdbcDir() {
         return jdbcDir;
     }
 
-    public void setJdbcDir(File value) { jdbcDir = value; }
+    public void setJdbcDir(File value) {
+        jdbcDir = value;
+    }
 
     public boolean hasJdbcDir() {
         if (jdbcDir != null && !jdbcDir.equals("")) {
@@ -257,9 +285,13 @@ public class Config {
         }
     }
 
-    public File getDataFile() { return dataFile; }
+    public File getDataFile() {
+        return dataFile;
+    }
 
-    public void setDataFile(File value) { dataFile = value; }
+    public void setDataFile(File value) {
+        dataFile = value;
+    }
 
     /**
      * Get InputStream corresponding to the configured dataFile.
@@ -286,7 +318,9 @@ public class Config {
         return csvFirstRow;
     }
 
-    public void setCsvFirstRow(boolean value) { csvFirstRow = value; }
+    public void setCsvFirstRow(boolean value) {
+        csvFirstRow = value;
+    }
 
     public String[] getCsvColumns() {
         if (csvColumns == null) {
@@ -297,43 +331,65 @@ public class Config {
         }
     }
 
-    public void setCsvColumns(String value) { csvColumns = value; }
+    public void setCsvColumns(String value) {
+        csvColumns = value;
+    }
 
     public String getCsvRecordDel() {
         return csvRecordDel;
     }
 
-    public void setCsvRecordDel(String value) { csvRecordDel = value; }
+    public void setCsvRecordDel(String value) {
+        csvRecordDel = value;
+    }
 
     public char getCsvFieldDel() {
         return csvFieldDel.charAt(0);
     }
 
-    public void setCsvFieldDel(String value) { csvFieldDel = value; }
+    public void setCsvFieldDel(String value) {
+        csvFieldDel = value;
+    }
 
     public String getCsvCharset() {
         return csvCharset;
     }
 
-    public void setCsvCharset(String value) { csvCharset = value; }
+    public void setCsvCharset(String value) {
+        csvCharset = value;
+    }
 
-    public String getXmlXpath() { return xmlXpath; }
+    public String getXmlXpath() {
+        return xmlXpath;
+    }
 
-    public void setXmlXpath(String value) { xmlXpath = value; }
+    public void setXmlXpath(String value) {
+        xmlXpath = value;
+    }
 
-    public String getJsonQuery() { return jsonQuery; }
+    public String getJsonQuery() {
+        return jsonQuery;
+    }
 
-    public void setJsonQuery(String value) { jsonQuery = value; }
+    public void setJsonQuery(String value) {
+        jsonQuery = value;
+    }
 
-    public String getJsonQLQuery() { return jsonQLQuery; }
+    public String getJsonQLQuery() {
+        return jsonQLQuery;
+    }
 
-    public void setJsonQLQuery(String value) { jsonQLQuery = value; }
+    public void setJsonQLQuery(String value) {
+        jsonQLQuery = value;
+    }
 
     public Locale getLocale() {
         return LocaleUtils.toLocale(locale);
     }
 
-    public void setLocale(String value) { locale = value; }
+    public void setLocale(String value) {
+        locale = value;
+    }
 
     public boolean hasLocale() {
         if (locale != null && !locale.equals("")) {
