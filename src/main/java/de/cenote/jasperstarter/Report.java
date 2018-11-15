@@ -18,7 +18,6 @@ package de.cenote.jasperstarter;
 import de.cenote.jasperstarter.gui.ParameterPrompt;
 import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.InputType;
-import de.cenote.jasperstarter.types.OutputFormat;
 import de.cenote.tools.printing.Printerlookup;
 
 import java.awt.Image;
@@ -99,7 +98,7 @@ import org.apache.commons.lang.LocaleUtils;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public class Report {
@@ -117,11 +116,16 @@ public class Report {
     private static PrintStream debugSink = System.err;
 
     /**
+     * Constructor. After construction, call either {@link #compileToFile()},
+     * {@link #getReportParameters()} or {@link #fill()}.
      *
-     * @param inputFile
+     * @param config        A configuration object. Note that the outputFormat
+     *                      and inputFile in the configuration are ignored.
+     * @param inputFile     The .jrxml report definition file to use.
+     *
      * @throws IllegalArgumentException
      */
-    Report(Config config, File inputFile) throws IllegalArgumentException {
+    public Report(Config config, File inputFile) throws IllegalArgumentException {
         //
         // In normal usage, the static initialisation of configSink and
         // debugSink is fine. However, when running tests, these are
@@ -211,11 +215,6 @@ public class Report {
                 }
             }
         }
-        List<OutputFormat> formats = config.getOutputFormats();
-        if (formats != null && formats.size() > 1 && output.getName().equals(STDOUT)) {
-            throw new IllegalArgumentException(
-                    "output file \"" + STDOUT + "\" cannot be used with multiple output formats: " + formats);
-        }
     }
 
     private void compile() throws JRException {
@@ -229,6 +228,9 @@ public class Report {
         }
     }
 
+    /**
+     * Emit a .jasper compiled version of the report definition .jrxml file.
+     */
     public void compileToFile() {
         if (initialInputType == InputType.JASPER_DESIGN) {
             try {
@@ -242,10 +244,28 @@ public class Report {
     }
 
     /**
-     * Wrapper around @see fillInternal() that guards against embedded use of
-     * stdout.
+     * Process report content into internal form. This must be called prior
+     * to using any of the report content output methods {@link #print()},
+     * {@link #view()}, {@link #exportCsv()}, {@link #exportCsvMeta()},
+     * {@link #exportDocx()}, {@link #exportHtml()}, {@link #exportJrprint()},
+     * {@link #exportOds()}, {@link #exportOdt()}, {@link #exportPdf()},
+     * {@link #exportPptx()}, {@link #exportRtf()}, {@link #exportXhtml()},
+     * {@link #exportXls()}, {@link #exportXlsMeta()}, {@link #exportXlsx()}
+     * or {@link #exportXml()}. Multiple calls to the content output methods
+     * are permitted.
+     *
+     * @throws InterruptedException
      */
     public void fill() throws InterruptedException {
+        //
+        // Notice that if output is configured to point to stdout, any
+        // library output which goes to stdout will corrupt our output.
+        // "Library" here denotes not just code we are built against, but
+        // also anything the user has caused to be invoked as a resource.
+        //
+        // So, this wraps around @see fillInternal() to guard against
+        // embedded use of stdout.
+        //
         PrintStream originalStdout = System.out;
         try {
             System.setOut(System.err);
@@ -257,14 +277,6 @@ public class Report {
         }
     }
 
-    /**
-     * Generate report output. Notice that if output is configured to point to
-     * stdout, any library output which goes to stdout will corrupt our output.
-     * "Library" here denotes not just code we are built against, but also
-     * anything the user has caused to be invoked as a resource. See @fill().
-     *
-     * @throws InterruptedException
-     */
     private void fillInternal() throws InterruptedException {
         if (initialInputType != InputType.JASPER_PRINT) {
             // get commandLineReportParams
@@ -315,14 +327,6 @@ public class Report {
             } finally {
                 // reset to default
                 Locale.setDefault(defaultLocale);
-            }
-            List<OutputFormat> formats = config.getOutputFormats();
-            try {
-                if (formats.contains(OutputFormat.jrprint)) {
-                    JRSaver.saveObject(jasperPrint, getOutputStream(".jrprint"));
-                }
-            } catch (JRException e) {
-                throw new IllegalArgumentException("Unable to write to file", e);
             }
         }
     }
@@ -390,6 +394,10 @@ public class Report {
             }
         }
         return outputStream;
+    }
+
+    public void exportJrprint() throws JRException {
+        JRSaver.saveObject(jasperPrint, getOutputStream(".jrprint"));
     }
 
     public void exportPdf() throws JRException {

@@ -11,11 +11,13 @@ Known bugs:
 
 ** New Feature
     * "Diskless" operation using stdin and stdout for input data and output ([JAS-97] and [JAS-89]).
+    * Public API allows direct integration with Python using jpy ([JAS-125]).
 
 ** Task
 
 ** Improvement
     * [JAS-97] - Accept stdout for output file
+    * [JAS-125] - Add public API access to report logic
 
 Release notes - JasperStarter - Version 3.3.0
 ---------------------------------------------

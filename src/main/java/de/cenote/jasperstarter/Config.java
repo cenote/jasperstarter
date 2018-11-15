@@ -23,6 +23,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.util.JRLoader;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -33,7 +34,7 @@ import org.apache.commons.lang.LocaleUtils;
  * This POJO is intended to contain all command line parameters and other
  * configuration values.
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision$
  */
 public class Config {
@@ -117,7 +118,7 @@ public class Config {
      *
      * 
      */
-    Config() {
+    public Config() {
         String jasperStarterVersion = "";
         String jasperStarterRevision = "";
         jasperStarterVersion = this.getClass().getPackage().getSpecificationVersion();
@@ -152,6 +153,10 @@ public class Config {
         return askFilter;
     }
 
+    public void setAskFilter(AskFilter value) {
+        askFilter = value;
+    }
+
     public boolean hasAskFilter() {
         if (askFilter != null) {
             return true;
@@ -164,34 +169,66 @@ public class Config {
         return command;
     }
 
+    public void setCommand(String value) {
+        command = value;
+    }
+
     public String getDbDriver() {
         return dbDriver;
+    }
+
+    public void setDbDriver(String value) {
+        dbDriver = value;
     }
 
     public String getDbHost() {
         return dbHost;
     }
 
+    public void setDbHost(String value) {
+        dbHost = value;
+    }
+
     public String getDbName() {
         return dbName;
+    }
+
+    public void setDbName(String value) {
+        dbName = value;
     }
 
     public String getDbPasswd() {
         return dbPasswd;
     }
 
+    public void setDbPasswd(String value) {
+        dbPasswd = value;
+    }
+
     public Integer getDbPort() {
         return dbPort;
+    }
+
+    public void setDbPort(Integer value) {
+        dbPort = value;
     }
 
     public String getDbSid() {
         return dbSid;
     }
 
+    public void setDbSid(String value) {
+        dbSid = value;
+    }
+
     public DsType getDbType() {
         return dbType;
     }
-    
+
+    public void setDbType(DsType value) {
+        dbType = value;
+    }
+
     public boolean hasDbType() {
         if (dbType != null) {
             return true;
@@ -204,20 +241,40 @@ public class Config {
         return dbUrl;
     }
 
+    public void setDbUrl(String value) {
+        dbUrl = value;
+    }
+
     public String getDbUser() {
         return dbUser;
+    }
+
+    public void setDbUser(String value) {
+        dbUser = value;
     }
 
     public boolean isVerbose() {
         return verbose;
     }
 
+    public void setVerbose(boolean value) {
+        verbose = value;
+    }
+
     public String getInput() {
         return input;
     }
 
+    public void setInput(String value) {
+        input = value;
+    }
+
     public File getJdbcDir() {
         return jdbcDir;
+    }
+
+    public void setJdbcDir(File value) {
+        jdbcDir = value;
     }
 
     public boolean hasJdbcDir() {
@@ -228,7 +285,13 @@ public class Config {
         }
     }
 
-    public File getDataFile() { return dataFile; }
+    public File getDataFile() {
+        return dataFile;
+    }
+
+    public void setDataFile(File value) {
+        dataFile = value;
+    }
 
     /**
      * Get InputStream corresponding to the configured dataFile.
@@ -255,6 +318,10 @@ public class Config {
         return csvFirstRow;
     }
 
+    public void setCsvFirstRow(boolean value) {
+        csvFirstRow = value;
+    }
+
     public String[] getCsvColumns() {
         if (csvColumns == null) {
             // return an empty array instead of null
@@ -264,20 +331,64 @@ public class Config {
         }
     }
 
+    public void setCsvColumns(String value) {
+        csvColumns = value;
+    }
+
     public String getCsvRecordDel() {
         return csvRecordDel;
+    }
+
+    public void setCsvRecordDel(String value) {
+        csvRecordDel = value;
     }
 
     public char getCsvFieldDel() {
         return csvFieldDel.charAt(0);
     }
 
+    public void setCsvFieldDel(String value) {
+        csvFieldDel = value;
+    }
+
     public String getCsvCharset() {
         return csvCharset;
     }
 
+    public void setCsvCharset(String value) {
+        csvCharset = value;
+    }
+
+    public String getXmlXpath() {
+        return xmlXpath;
+    }
+
+    public void setXmlXpath(String value) {
+        xmlXpath = value;
+    }
+
+    public String getJsonQuery() {
+        return jsonQuery;
+    }
+
+    public void setJsonQuery(String value) {
+        jsonQuery = value;
+    }
+
+    public String getJsonQLQuery() {
+        return jsonQLQuery;
+    }
+
+    public void setJsonQLQuery(String value) {
+        jsonQLQuery = value;
+    }
+
     public Locale getLocale() {
         return LocaleUtils.toLocale(locale);
+    }
+
+    public void setLocale(String value) {
+        locale = value;
     }
 
     public boolean hasLocale() {
@@ -292,6 +403,8 @@ public class Config {
         return output;
     }
 
+    public void setOutput(String value) { output = value; }
+
     public boolean hasOutput() {
         if (output != null && !output.equals("")) {
             return true;
@@ -304,9 +417,13 @@ public class Config {
         return outputFormats;
     }
 
+    public void setOutputFormats(List<OutputFormat> value) { outputFormats = value; }
+
     public List<String> getParams() {
         return params;
     }
+
+    public void setParams(List<String> value) { params = value; }
 
     public boolean hasParams() {
         if (params != null && !params.isEmpty()) {
@@ -320,6 +437,8 @@ public class Config {
         return printerName;
     }
 
+    public void setPrinterName(String value) { printerName = value; }
+
     public boolean hasPrinterName() {
         if (printerName != null && !printerName.equals("")) {
             return true;
@@ -332,6 +451,8 @@ public class Config {
         return reportName;
     }
 
+    public void setReportName(String value) { reportName = value; }
+
     public boolean hasReportName() {
         if (reportName != null && !reportName.equals("")) {
             return true;
@@ -343,6 +464,8 @@ public class Config {
     public String getResource() {
         return resource;
     }
+
+    public void setResource(String value) { resource = value; }
 
     public boolean hasResource() {
         // the resource default if set is "" .constant("")
@@ -357,13 +480,19 @@ public class Config {
         return withPrintDialog;
     }
 
+    public void setWithPrintDialog(boolean value) { withPrintDialog = value; }
+
     public boolean isWriteJasper() {
         return writeJasper;
     }
-    
+
+    public void setWriteJasper(boolean value) { writeJasper = value; }
+
     public Integer getCopies() {
         return copies;
     }
+
+    public void setCopies(Integer value) { copies = value; }
 
     public boolean hasCopies() {
         if (copies != null) {
@@ -372,12 +501,18 @@ public class Config {
             return false;
         }
     }
+
     public String getOutFieldDel() {
         return outFieldDel;
     }
+
+    public void setOutFieldDel(String value) { outFieldDel = value; }
+
     public String getOutCharset() {
         return outCharset;
     }
+
+    public void setOutCharset(String value) { outCharset = value; }
 
     // END argparse4j arguments
     // TODO: overwrite toString()

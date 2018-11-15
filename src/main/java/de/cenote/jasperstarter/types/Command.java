@@ -17,7 +17,7 @@ package de.cenote.jasperstarter.types;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  */
 public enum Command {
 

@@ -791,5 +791,31 @@ limitations under the License.
                 </plugins>
             </build>
         </profile>
+        <profile>
+          <id>javadoc</id>
+          <activation>
+            <activeByDefault>false</activeByDefault>
+          </activation>
+          <reporting>
+            <plugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                </configuration>
+                <reportSets>
+                  <reportSet>
+                    <id>default</id>
+                    <reports>
+                      <report>javadoc</report>
+                      <report>test-javadoc</report>
+                    </reports>
+                  </reportSet>
+                </reportSets>
+              </plugin>
+            </plugins>
+          </reporting>
+        </profile>
     </profiles>
 </project>
