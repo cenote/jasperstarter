@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  */
 public class ReportNGTest {
 

@@ -49,7 +49,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
  *
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision: 349bcea5768c:59 branch:default $
  */
 public class App {

@@ -32,7 +32,7 @@ Má následující vlastnosti:
 
 Požadavky
 
-  * Java 1.6 či vyšší
+  * Java 1.8 či vyšší
   * JDBC 2.1 driver pro vaši databázi
 
 

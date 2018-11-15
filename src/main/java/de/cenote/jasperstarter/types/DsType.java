@@ -18,7 +18,7 @@ package de.cenote.jasperstarter.types;
 /**
  * Types of Datasources
  * 
- * @author Volker Voßkämper <vvo at cenote.de>
+ * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
 public enum DsType {
