@@ -123,7 +123,7 @@ public class Report {
      * @param config        A configuration object. Note that the outputFormat
      *                      and inputFile in the configuration are ignored.
      * @param inputFile     The .jrxml report definition file to use.
-     * @throws java.lang.IllegalArgumentException
+     * @throws java.lang.IllegalArgumentException if any.
      */
     public Report(Config config, File inputFile) throws IllegalArgumentException {
         //
@@ -254,7 +254,7 @@ public class Report {
      * or {@link #exportXml()}. Multiple calls to the content output methods
      * are permitted.
      *
-     * @throws java.lang.InterruptedException
+     * @throws java.lang.InterruptedException if any.
      */
     public void fill() throws InterruptedException {
         //
