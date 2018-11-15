@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.data.JsonQLDataSource;
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
+ * <p>Db class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
@@ -40,6 +41,9 @@ public class Db {
     private static PrintStream configSink = System.err;
     private static PrintStream debugSink = System.err;
 
+    /**
+     * <p>Constructor for Db.</p>
+     */
     public Db() {
         //
         // In normal usage, the static initialisation of configSink and
@@ -50,6 +54,13 @@ public class Db {
         debugSink = System.err;
     }
 
+    /**
+     * <p>getCsvDataSource.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @return a {@link net.sf.jasperreports.engine.data.JRCsvDataSource} object.
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public JRCsvDataSource getCsvDataSource(Config config) throws JRException {
         JRCsvDataSource ds;
         try {
@@ -86,6 +97,13 @@ public class Db {
         return ds;
     }
     
+	/**
+	 * <p>getXmlDataSource.</p>
+	 *
+	 * @param config a {@link de.cenote.jasperstarter.Config} object.
+	 * @return a {@link net.sf.jasperreports.engine.data.JRXmlDataSource} object.
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public JRXmlDataSource getXmlDataSource(Config config) throws JRException {
 		JRXmlDataSource ds;
 		ds = new JRXmlDataSource(config.getDataFileInputStream(), config.xmlXpath);
@@ -96,6 +114,13 @@ public class Db {
 		return ds;
 	}
 
+    /**
+     * <p>getJsonDataSource.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @return a {@link net.sf.jasperreports.engine.data.JsonDataSource} object.
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public JsonDataSource getJsonDataSource(Config config) throws JRException {
 		JsonDataSource ds;
 		ds = new JsonDataSource(config.getDataFileInputStream(), config.jsonQuery);
@@ -106,6 +131,13 @@ public class Db {
 		return ds;
 	}
 
+    /**
+     * <p>getJsonQLDataSource.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @return a {@link net.sf.jasperreports.engine.data.JsonQLDataSource} object.
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public JsonQLDataSource getJsonQLDataSource(Config config) throws JRException {
 		JsonQLDataSource ds;
 		ds = new JsonQLDataSource(config.getDataFileInputStream(), config.jsonQLQuery);
@@ -116,6 +148,14 @@ public class Db {
 		return ds;
 	}
 
+    /**
+     * <p>getConnection.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @return a {@link java.sql.Connection} object.
+     * @throws java.lang.ClassNotFoundException if any.
+     * @throws java.sql.SQLException if any.
+     */
     public Connection getConnection(Config config) throws ClassNotFoundException, SQLException {
         Connection conn = null;
         DsType dbtype = config.getDbType();

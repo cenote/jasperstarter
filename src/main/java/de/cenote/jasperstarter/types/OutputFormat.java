@@ -16,6 +16,7 @@
 package de.cenote.jasperstarter.types;
 
 /**
+ * <p>OutputFormat class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $

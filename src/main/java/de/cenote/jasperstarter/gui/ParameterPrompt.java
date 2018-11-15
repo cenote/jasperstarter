@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import net.sf.jasperreports.engine.JRParameter;
 
 /**
+ * <p>ParameterPrompt class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision$
@@ -52,6 +53,17 @@ public class ParameterPrompt {
     String reportName;
     AtomicBoolean valid = new AtomicBoolean();
 
+    /**
+     * <p>Constructor for ParameterPrompt.</p>
+     *
+     * @param parent a {@link java.awt.Component} object.
+     * @param jrParameters an array of {@link net.sf.jasperreports.engine.JRParameter} objects.
+     * @param params a {@link java.util.Map} object.
+     * @param reportName a {@link java.lang.String} object.
+     * @param isForPromptingOnly a boolean.
+     * @param isUserDefinedOnly a boolean.
+     * @param emptyOnly a boolean.
+     */
     public ParameterPrompt(Component parent, JRParameter[] jrParameters,
             Map<String, Object> params, String reportName, boolean isForPromptingOnly,
             boolean isUserDefinedOnly, boolean emptyOnly) {
@@ -98,6 +110,11 @@ public class ParameterPrompt {
         });
     }
 
+    /**
+     * <p>show.</p>
+     *
+     * @return a int.
+     */
     public int show() {
 
         final JOptionPane optionPane = new JOptionPane(scrollPane,

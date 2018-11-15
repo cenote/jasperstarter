@@ -58,6 +58,7 @@ import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
+ * <p>ParameterPanel class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision$
@@ -71,6 +72,13 @@ public class ParameterPanel extends JPanel {
     private static PrintStream configSink = System.err;
     private static PrintStream debugSink = System.err;
 
+    /**
+     * <p>Constructor for ParameterPanel.</p>
+     *
+     * @param jrParameter a {@link net.sf.jasperreports.engine.JRParameter} object.
+     * @param params a {@link java.util.Map} object.
+     * @param valid a {@link java.util.concurrent.atomic.AtomicBoolean} object.
+     */
     public ParameterPanel(final JRParameter jrParameter, final Map<String, Object> params,
             AtomicBoolean valid) {
 

@@ -16,8 +16,10 @@
 package de.cenote.jasperstarter.types;
 
 /**
+ * <p>AskFilter class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
  */
 public enum AskFilter {
 

@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /**
+ * <p>ApplicationClasspath class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
@@ -37,7 +38,9 @@ public class ApplicationClasspath {
      * declared order.
      */
     private static final Class<?>[] parameterTypes = new Class[]{URL.class};
+    /** Constant <code>FIND_FROM_CLASSPATH=2</code> */
     public static final int FIND_FROM_CLASSPATH = 2;
+    /** Constant <code>FIND_FROM_THIS=1</code> */
     public static final int FIND_FROM_THIS = 1;
     private static int defaultBasedirMethod = FIND_FROM_THIS;
 
@@ -45,7 +48,7 @@ public class ApplicationClasspath {
      * Adds a filename (absolute path) to the classpath.
      *
      * @param filename name of absolute path to (jar)file or dir
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static void add(String filename) throws IOException {
         File file = new File(filename);
@@ -56,7 +59,7 @@ public class ApplicationClasspath {
      * Adds a file (absolute path) to the classpath.
      *
      * @param file absolute path to (jar)file or dir
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static void add(File file) throws IOException {
         add(file.toURI().toURL());
@@ -66,7 +69,7 @@ public class ApplicationClasspath {
      * Adds an URL (absolute path) to the classpath.
      *
      * @param url absolute path to (jar)file or dir as URL
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static void add(URL url) throws IOException {
         URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
@@ -85,7 +88,8 @@ public class ApplicationClasspath {
      *
      * @param relativeFilename name of (jar)file or dir relative to
      * getAppBaseDir()
-     * @throws IOException
+     * @throws java.io.IOException
+     * @throws java.net.URISyntaxException if any.
      */
     public static void addRelative(String relativeFilename) throws IOException, URISyntaxException {
         File file = new File(getAppBaseDir(), relativeFilename);
@@ -96,7 +100,8 @@ public class ApplicationClasspath {
      * Adds a relative file to the classpath.
      *
      * @param relativeFile (jar)file or dir relative to getAppBaseDir()
-     * @throws IOException
+     * @throws java.io.IOException
+     * @throws java.net.URISyntaxException if any.
      */
     public static void addRelative(File relativeFile) throws IOException, URISyntaxException {
         File file = new File(getAppBaseDir(), relativeFile.getPath());
@@ -107,7 +112,7 @@ public class ApplicationClasspath {
      * Adds all jar files in a directory (absolute path) to the classpath.
      *
      * @param dirName absolute path to directory
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static void addJars(String dirName) throws IOException {
         addJars(new File(dirName));
@@ -117,7 +122,9 @@ public class ApplicationClasspath {
      * Adds all jar files in a directory (absolute path) to the classpath.
      *
      * @param dir absolute path to directory
-     * @throws IOException, FileNotFoundException
+ if any.
+     * @throws java.io.IOException if any.
+     * @throws java.io.FileNotFoundException if any.
      */
     public static void addJars(File dir) throws IOException, FileNotFoundException {
         if (dir.isDirectory()) {
@@ -136,7 +143,9 @@ public class ApplicationClasspath {
      * Adds all jar files in a directory to the classpath.
      *
      * @param dirName path as string to directory relative to getAppBaseDir()
-     * @throws IOException, URISyntaxException
+ if any.
+     * @throws java.io.IOException if any.
+     * @throws java.net.URISyntaxException if any.
      */
     public static void addJarsRelative(String dirName) throws IOException, URISyntaxException {
         addJars(new File(getAppBaseDir(), dirName));
@@ -146,7 +155,9 @@ public class ApplicationClasspath {
      * Adds all jar files in a directory to the classpath.
      *
      * @param dir path to directory relative to getAppBaseDir()
-     * @throws IOException, URISyntaxException
+ if any.
+     * @throws java.io.IOException if any.
+     * @throws java.net.URISyntaxException if any.
      */
     public static void addJarsRelative(File dir) throws IOException, URISyntaxException {
         addJars(new File(getAppBaseDir(), dir.getPath()));
@@ -157,7 +168,10 @@ public class ApplicationClasspath {
      *
      * @see #getAppBaseDirFromThis()
      * @see #getAppBaseDirFromClasspath()
-     * @throws URISyntaxException
+     * @see #getAppBaseDirFromThis()
+     * @see #getAppBaseDirFromClasspath()
+     * @throws java.net.URISyntaxException
+     * @return a {@link java.io.File} object.
      */
     public static File getAppBaseDir() throws URISyntaxException {
         return getAppBaseDir(defaultBasedirMethod);
@@ -168,7 +182,11 @@ public class ApplicationClasspath {
      *
      * @see #getAppBaseDirFromThis()
      * @see #getAppBaseDirFromClasspath()
-     * @throws URISyntaxException
+     * @see #getAppBaseDirFromThis()
+     * @see #getAppBaseDirFromClasspath()
+     * @throws java.net.URISyntaxException
+     * @param basedirMethod a int.
+     * @return a {@link java.io.File} object.
      */
     public static File getAppBaseDir(int basedirMethod) throws URISyntaxException {
         File returnval = null;
@@ -197,7 +215,8 @@ public class ApplicationClasspath {
      * part of classpath for this class or containing directory of the jar file
      * this class is packed in.
      *
-     * @throws URISyntaxException
+     * @throws java.net.URISyntaxException
+     * @return a {@link java.io.File} object.
      */
     public static File getAppBaseDirFromThis() throws URISyntaxException {
         URL baseUrl = ApplicationClasspath.class.getProtectionDomain().getCodeSource().getLocation();
@@ -221,6 +240,9 @@ public class ApplicationClasspath {
      * is usually the directory containing the main jar file of the application.
      * If your application is not packed in a jar or you start your application
      * from an IDE, this may fail or returns a wrong dir!
+     *
+     * @return a {@link java.io.File} object.
+     * @throws java.net.URISyntaxException if any.
      */
     public static File getAppBaseDirFromClasspath() throws URISyntaxException {
         URL baseUrl = ((URLClassLoader) ApplicationClasspath.class.getClassLoader()).getURLs()[0];
