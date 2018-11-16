@@ -17,7 +17,7 @@ package de.cenote.jasperstarter.types;
 
 /**
  * Types of Datasources
- * 
+ *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
  */
@@ -45,10 +45,20 @@ public enum DsType {
         this.port = port;
     }
 
+    /**
+     * <p>Getter for the field <code>driver</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getDriver() {
         return this.driver;
     }
 
+    /**
+     * <p>Getter for the field <code>port</code>.</p>
+     *
+     * @return a {@link java.lang.Integer} object.
+     */
     public Integer getPort() {
         return this.port;
     }

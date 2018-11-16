@@ -97,6 +97,7 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.lang.LocaleUtils;
 
 /**
+ * <p>Report class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
@@ -122,8 +123,7 @@ public class Report {
      * @param config        A configuration object. Note that the outputFormat
      *                      and inputFile in the configuration are ignored.
      * @param inputFile     The .jrxml report definition file to use.
-     *
-     * @throws IllegalArgumentException
+     * @throws java.lang.IllegalArgumentException if any.
      */
     public Report(Config config, File inputFile) throws IllegalArgumentException {
         //
@@ -254,7 +254,7 @@ public class Report {
      * or {@link #exportXml()}. Multiple calls to the content output methods
      * are permitted.
      *
-     * @throws InterruptedException
+     * @throws java.lang.InterruptedException if any.
      */
     public void fill() throws InterruptedException {
         //
@@ -331,6 +331,11 @@ public class Report {
         }
     }
 
+    /**
+     * <p>print.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void print() throws JRException {
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         //printRequestAttributeSet.add(MediaSizeName.ISO_A4);
@@ -373,6 +378,11 @@ public class Report {
         exporter.exportReport();
     }
 
+    /**
+     * <p>view.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void view() throws JRException {
         setLookAndFeel();
         JasperViewer.viewReport(jasperPrint, false);
@@ -396,14 +406,29 @@ public class Report {
         return outputStream;
     }
 
+    /**
+     * <p>exportJrprint.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportJrprint() throws JRException {
         JRSaver.saveObject(jasperPrint, getOutputStream(".jrprint"));
     }
 
+    /**
+     * <p>exportPdf.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportPdf() throws JRException {
         JasperExportManager.exportReportToPdfStream(jasperPrint, getOutputStream(".pdf"));
     }
 
+	/**
+	 * <p>exportRtf.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportRtf() throws JRException {
 		JRRtfExporter exporter = new JRRtfExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -411,6 +436,11 @@ public class Report {
 		exporter.exportReport();
 	}
 
+	/**
+	 * <p>exportDocx.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportDocx() throws JRException {
 		JRDocxExporter exporter = new JRDocxExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -418,6 +448,11 @@ public class Report {
 		exporter.exportReport();
 	}
 
+	/**
+	 * <p>exportOdt.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportOdt() throws JRException {
 		JROdtExporter exporter = new JROdtExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -425,6 +460,11 @@ public class Report {
 		exporter.exportReport();
 	}
 
+    /**
+     * <p>exportHtml.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportHtml() throws JRException {
         HtmlExporter exporter = new HtmlExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -433,6 +473,11 @@ public class Report {
 
     }
 
+    /**
+     * <p>exportXml.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportXml() throws JRException {
         JRXmlExporter exporter = new JRXmlExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -442,6 +487,11 @@ public class Report {
         exporter.exportReport();
     }
 
+	/**
+	 * <p>exportXls.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportXls() throws JRException {
 		Map<String, String> dateFormats = new HashMap<String, String>();
 		dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
@@ -457,6 +507,11 @@ public class Report {
 	}
 
 	// the XLS Metadata Exporter
+	/**
+	 * <p>exportXlsMeta.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportXlsMeta() throws JRException {
 		Map<String, String> dateFormats = new HashMap<String, String>();
 		dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
@@ -471,6 +526,11 @@ public class Report {
 		exporter.exportReport();
 	}	
 
+    /**
+     * <p>exportXlsx.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportXlsx() throws JRException {
         Map<String, String> dateFormats = new HashMap<String, String>();
         dateFormats.put("EEE, MMM d, yyyy", "ddd, mmm d, yyyy");
@@ -485,6 +545,11 @@ public class Report {
         exporter.exportReport();
     }
 
+    /**
+     * <p>exportCsv.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportCsv() throws JRException {
         JRCsvExporter exporter = new JRCsvExporter();
         SimpleCsvExporterConfiguration configuration = new SimpleCsvExporterConfiguration();
@@ -496,6 +561,11 @@ public class Report {
     }
 
     // the CSV Metadata Exporter
+    /**
+     * <p>exportCsvMeta.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportCsvMeta() throws JRException {
     	JRCsvMetadataExporter exporter = new JRCsvMetadataExporter();
     	SimpleCsvMetadataExporterConfiguration configuration = new SimpleCsvMetadataExporterConfiguration();
@@ -506,6 +576,11 @@ public class Report {
         exporter.exportReport();
     }    
 
+    /**
+     * <p>exportOds.</p>
+     *
+     * @throws net.sf.jasperreports.engine.JRException if any.
+     */
     public void exportOds() throws JRException {
         JROdsExporter exporter = new JROdsExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -513,6 +588,11 @@ public class Report {
         exporter.exportReport();
     }
 
+	/**
+	 * <p>exportPptx.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportPptx() throws JRException {
 		JRPptxExporter exporter = new JRPptxExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -520,6 +600,11 @@ public class Report {
 		exporter.exportReport();
 	}
 
+	/**
+	 * <p>exportXhtml.</p>
+	 *
+	 * @throws net.sf.jasperreports.engine.JRException if any.
+	 */
 	public void exportXhtml() throws JRException {
 		HtmlExporter exporter = new HtmlExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -630,6 +715,9 @@ public class Report {
         return parameters;
     }
 
+    /**
+     * <p>setLookAndFeel.</p>
+     */
     public static void setLookAndFeel() {
         try {
             // Set System L&F
@@ -686,6 +774,12 @@ public class Report {
         return params;
     }
 
+    /**
+     * <p>getReportParameters.</p>
+     *
+     * @return an array of {@link net.sf.jasperreports.engine.JRParameter} objects.
+     * @throws java.lang.IllegalArgumentException if any.
+     */
     public JRParameter[] getReportParameters() throws IllegalArgumentException {
         JRParameter[] returnval = null;
         if (jasperReport != null) {

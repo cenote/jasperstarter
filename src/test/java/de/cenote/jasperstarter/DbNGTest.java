@@ -35,14 +35,25 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * <p>DbNGTest class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
+ * @since 3.4.0
  */
 public class DbNGTest {
 
+    /**
+     * <p>Constructor for DbNGTest.</p>
+     */
     public DbNGTest() {
     }
 
+    /**
+     * <p>setUpClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
         try {
@@ -54,22 +65,39 @@ public class DbNGTest {
                 "jdbc:hsqldb:mem:mymemdb", "SA", "");
     }
 
+    /**
+     * <p>tearDownClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
         Connection c = DriverManager.getConnection(
                 "jdbc:hsqldb:mem:mymemdb;shutdown=true", "SA", "");
     }
 
+    /**
+     * <p>setUpMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
     }
 
+    /**
+     * <p>tearDownMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
     /**
      * Test of getConnection method, of class Db.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetConnection() throws Exception {
@@ -87,6 +115,8 @@ public class DbNGTest {
 
     /**
      * Test of getCsvDataSource method, of class Db.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetCsvDataSource() throws Exception {
@@ -107,6 +137,8 @@ public class DbNGTest {
     
     /**
      * Test of getXmlDataSource method, of class Db.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetXmlDataSource() throws Exception {
@@ -125,6 +157,8 @@ public class DbNGTest {
 
     /**
      * Test of getJsonDataSource method, of class Db.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetJsonDataSource() throws Exception {
@@ -141,6 +175,8 @@ public class DbNGTest {
 
     /**
      * Test of getJsonQLDataSource method, of class Db.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetJsonQLDataSource() throws Exception {

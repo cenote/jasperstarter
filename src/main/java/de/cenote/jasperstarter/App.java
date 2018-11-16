@@ -48,6 +48,7 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
+ * <p>App class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 349bcea5768c:59 branch:default $
@@ -61,6 +62,8 @@ public class App {
     private static PrintStream errSink = System.err;
 
     /**
+     * <p>main.</p>
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -504,7 +507,11 @@ public class App {
     }
 
     /**
-     * @return the namespace
+     * <p>listReportParams.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @param input a {@link java.io.File} object.
+     * @throws java.lang.IllegalArgumentException if any.
      */
     public static void listReportParams(Config config, File input) throws IllegalArgumentException {
         boolean all;

@@ -45,32 +45,60 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * <p>ReportNGTest class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
+ * @since 3.4.0
  */
 public class ReportNGTest {
 
+    /**
+     * <p>Constructor for ReportNGTest.</p>
+     */
     public ReportNGTest() {
     }
 
+    /**
+     * <p>setUpClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     * <p>tearDownClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     * <p>setUpMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
     }
 
+    /**
+     * <p>tearDownMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
     /**
      * Test of compileToFile method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFile() throws Exception {
@@ -87,7 +115,9 @@ public class ReportNGTest {
     
     /**
      * Test of compileToFile method, of class Report.
-     * This report uses funktions with dependency to jasperreports-functions 
+     * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJasperreportsFunctions() throws Exception {
@@ -104,6 +134,8 @@ public class ReportNGTest {
     /**
      * Test of compileToFile method, of class Report.
      * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJavaScript() throws Exception {
@@ -119,6 +151,8 @@ public class ReportNGTest {
     /**
      * Test of fill method, of class Report.
      * This report uses functions with dependency to Rhino
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJavaScript"})
     public void testFillJavascript() throws Exception {
@@ -137,7 +171,9 @@ public class ReportNGTest {
 
     /**
      * Test of fill method, of class Report.
-     * This report uses funktions with dependency to jasperreports-functions 
+     * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions"})
     public void testFillJasperreportsFunctions() throws Exception {
@@ -161,7 +197,9 @@ public class ReportNGTest {
     
     /**
      * Test of compileToFile method, of class Report.
-     * This report uses functions with dependency to jasperreports-functions 
+     * This report uses functions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJasperreportsFunctions2() throws Exception {
@@ -177,7 +215,9 @@ public class ReportNGTest {
 
     /**
      * Test of fill method, of class Report.
-     * This report uses functions with dependency to jasperreports-functions 
+     * This report uses functions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions2"})
     public void testFillJasperreportsFunctions2() throws Exception {
@@ -196,6 +236,8 @@ public class ReportNGTest {
     
     /**
      * Test of fill method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFile"})
     public void testFill() throws Exception {
@@ -219,6 +261,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method for metadata export, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillMeta() throws Exception {
@@ -263,6 +307,8 @@ public class ReportNGTest {
 //    }
     /**
      * Test of exportPdf method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportPdf() throws Exception {
@@ -278,6 +324,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportRtf method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportRtf() throws Exception {
@@ -293,6 +341,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportDocx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportDocx() throws Exception {
@@ -308,6 +358,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportOdt method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportOdt() throws Exception {
@@ -323,6 +375,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportHtml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportHtml() throws Exception {
@@ -338,6 +392,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportXml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXml() throws Exception {
@@ -353,6 +409,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportXls method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXls() throws Exception {
@@ -376,6 +434,8 @@ public class ReportNGTest {
     
     /**
      * Test of exportXlsMeta method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillMeta"})
     public void testExportXlsMeta() throws Exception {
@@ -399,6 +459,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportXlsx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXlsx() throws Exception {
@@ -414,6 +476,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportCsv method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportCsv() throws Exception {
@@ -437,6 +501,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportCsvMeta method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillMeta"})
     public void testExportCsvMeta() throws Exception {
@@ -461,6 +527,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportOds method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportOds() throws Exception {
@@ -476,6 +544,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportPptx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportPptx() throws Exception {
@@ -491,6 +561,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportXhtml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXhtml() throws Exception {
@@ -516,6 +588,8 @@ public class ReportNGTest {
 //    }
     /**
      * Test of getReportParameters method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetReportParameters() throws Exception {
@@ -537,6 +611,8 @@ public class ReportNGTest {
     
     /**
      * Test of fill method with xml datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromXmlDatasource() throws Exception {
@@ -557,6 +633,8 @@ public class ReportNGTest {
     
     /**
      * Test of fill method with json datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromJsonDatasource() throws Exception {
@@ -576,6 +654,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method with jsonql datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromJsonQLDatasource() throws Exception {
@@ -595,6 +675,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method with stdin, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromStdin() throws Exception {
@@ -628,6 +710,9 @@ public class ReportNGTest {
      *
      * This test is complicated because in the test environment, stdout and stderr
      * point to the same place.
+     *
+     * @return a int.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public int testStdoutIsNotUsed() throws Exception {
@@ -704,6 +789,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method usage of stdout when "-" is specified as the output.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testStdoutIsUsed() throws Exception {
@@ -754,6 +841,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method with xml datasource with barcode4j, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromXmlBarcode4j() throws Exception {
@@ -773,6 +862,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportPdf method with barcode4j, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillFromXmlBarcode4j"})
     public void testExportPdfBarcode4j() throws Exception {

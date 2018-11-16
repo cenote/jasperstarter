@@ -16,6 +16,7 @@
 package de.cenote.jasperstarter.types;
 
 /**
+ * <p>InputType class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision$
