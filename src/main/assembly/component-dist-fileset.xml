@@ -76,6 +76,13 @@ limitations under the License.
                 <include>*.properties</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/test/resources/python</directory>
+            <outputDirectory>/examples/python</outputDirectory>
+            <includes>
+                <include>*.py</include>
+            </includes>
+        </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>

@@ -48,6 +48,7 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /**
+ * <p>App class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 349bcea5768c:59 branch:default $
@@ -61,6 +62,8 @@ public class App {
     private static PrintStream errSink = System.err;
 
     /**
+     * <p>main.</p>
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -218,14 +221,18 @@ public class App {
         }
         Report report = new Report(config, inputFile);
 
-        report.fill();  // produces visible output file if OutputFormat.jrprint is set
+        report.fill();
 
         List<OutputFormat> formats = config.getOutputFormats();
         Boolean viewIt = false;
         Boolean printIt = false;
 
+        if (formats.size() > 1 && config.getOutput().equals("-")) {
+            throw new IllegalArgumentException(
+                    "output file \"-\" cannot be used with multiple output formats: " + formats);
+        }
+
         for (OutputFormat f : formats) {
-            // OutputFormat.jrprint is handled in fill()
             if (OutputFormat.print.equals(f)) {
                 printIt = true;
             } else if (OutputFormat.view.equals(f)) {
@@ -259,7 +266,7 @@ public class App {
             } else if (OutputFormat.xhtml.equals(f)) {
                 report.exportXhtml();
             } else if (OutputFormat.jrprint.equals(f)) {
-            	// nothing to do. Option is used in Report.fill()
+                report.exportJrprint();
             } else {
             	throw new IllegalArgumentException("Error output format \"" + f +  "\" not implemented!");
             }
@@ -500,7 +507,11 @@ public class App {
     }
 
     /**
-     * @return the namespace
+     * <p>listReportParams.</p>
+     *
+     * @param config a {@link de.cenote.jasperstarter.Config} object.
+     * @param input a {@link java.io.File} object.
+     * @throws java.lang.IllegalArgumentException if any.
      */
     public static void listReportParams(Config config, File input) throws IllegalArgumentException {
         boolean all;

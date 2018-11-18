@@ -28,32 +28,62 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * <p>AppNGTest class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
+ * @since 3.4.0
  */
 public class AppNGTest {
 
+    /**
+     * <p>Constructor for AppNGTest.</p>
+     */
     public AppNGTest() {
     }
 
+    /**
+     * <p>setUpClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     * <p>tearDownClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     * <p>setUpMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
     }
 
+    /**
+     * <p>tearDownMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
     /**
      * Test of private createArgumentParser method, of class App
+     *
+     * @throws java.lang.NoSuchMethodException if any.
+     * @throws java.lang.IllegalAccessException if any.
+     * @throws java.lang.IllegalArgumentException if any.
      */
     @Test
     public void testCreateArgumentParser() throws NoSuchMethodException,
@@ -75,6 +105,9 @@ public class AppNGTest {
 
     /**
      * Test of private parseArgumentParser method, of class App
+     *
+     * @throws java.lang.NoSuchMethodException if any.
+     * @throws java.lang.IllegalAccessException if any.
      */
     @Test(dependsOnMethods = {"testCreateArgumentParser"})
     public void testParseArgumentParser() throws NoSuchMethodException, IllegalAccessException {
@@ -119,6 +152,9 @@ public class AppNGTest {
      * Test of private parseArgumentParser method, of class App
      *
      * detailed tests for command process
+     *
+     * @throws java.lang.NoSuchMethodException if any.
+     * @throws java.lang.IllegalAccessException if any.
      */
     @Test(dependsOnMethods = {"testCreateArgumentParser"})
     public void testParseArgumentParserCommandProcess() throws NoSuchMethodException, IllegalAccessException {
@@ -434,6 +470,10 @@ public class AppNGTest {
      * Test of private parseArgumentParser method, of class App
      *
      * detailed tests for command process
+     *
+     * @throws java.lang.NoSuchMethodException if any.
+     * @throws java.lang.IllegalAccessException if any.
+     * @throws java.io.IOException if any.
      */
     @Test
     public void testLocateInputFile() throws NoSuchMethodException,

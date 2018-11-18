@@ -16,8 +16,10 @@
 package de.cenote.jasperstarter.types;
 
 /**
+ * <p>Command class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
  */
 public enum Command {
 
@@ -32,6 +34,12 @@ public enum Command {
     PARAMS, // alias for LIST_PARAMS
     LPA; // alias for LIST_PARAMS
 
+    /**
+     * <p>getCommand.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     * @return a {@link de.cenote.jasperstarter.types.Command} object.
+     */
     public static Command getCommand(String name) {
         return valueOf(name.toUpperCase());
     }

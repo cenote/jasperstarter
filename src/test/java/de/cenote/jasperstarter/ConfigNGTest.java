@@ -19,26 +19,52 @@ import java.io.IOException;
 import static org.testng.Assert.*;
 
 /**
+ * <p>ConfigNGTest class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
+ * @since 3.4.0
  */
 public class ConfigNGTest {
 
+    /**
+     * <p>Constructor for ConfigNGTest.</p>
+     */
     public ConfigNGTest() {
     }
 
+    /**
+     * <p>setUpClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @org.testng.annotations.BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     * <p>tearDownClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @org.testng.annotations.AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     * <p>setUpMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @org.testng.annotations.BeforeMethod
     public void setUpMethod() throws Exception {
     }
 
+    /**
+     * <p>tearDownMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @org.testng.annotations.AfterMethod
     public void tearDownMethod() throws Exception {
     }

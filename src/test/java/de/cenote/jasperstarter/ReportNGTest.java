@@ -15,6 +15,7 @@
  */
 package de.cenote.jasperstarter;
 
+import de.cenote.jasperstarter.types.AskFilter;
 import de.cenote.jasperstarter.types.DsType;
 import de.cenote.jasperstarter.types.OutputFormat;
 
@@ -27,6 +28,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import net.sf.jasperreports.engine.JRParameter;
 import static org.testng.Assert.*;
@@ -42,32 +45,60 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * <p>ReportNGTest class.</p>
  *
  * @author Volker Voßkämper
+ * @version $Id: $Id
+ * @since 3.4.0
  */
 public class ReportNGTest {
 
+    /**
+     * <p>Constructor for ReportNGTest.</p>
+     */
     public ReportNGTest() {
     }
 
+    /**
+     * <p>setUpClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    /**
+     * <p>tearDownClass.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    /**
+     * <p>setUpMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @BeforeMethod
     public void setUpMethod() throws Exception {
     }
 
+    /**
+     * <p>tearDownMethod.</p>
+     *
+     * @throws java.lang.Exception if any.
+     */
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
 
     /**
      * Test of compileToFile method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFile() throws Exception {
@@ -84,7 +115,9 @@ public class ReportNGTest {
     
     /**
      * Test of compileToFile method, of class Report.
-     * This report uses funktions with dependency to jasperreports-functions 
+     * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJasperreportsFunctions() throws Exception {
@@ -101,6 +134,8 @@ public class ReportNGTest {
     /**
      * Test of compileToFile method, of class Report.
      * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJavaScript() throws Exception {
@@ -116,6 +151,8 @@ public class ReportNGTest {
     /**
      * Test of fill method, of class Report.
      * This report uses functions with dependency to Rhino
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJavaScript"})
     public void testFillJavascript() throws Exception {
@@ -128,12 +165,15 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithJavaScript.jrprint")).exists(), true);
     }
 
     /**
      * Test of fill method, of class Report.
-     * This report uses funktions with dependency to jasperreports-functions 
+     * This report uses funktions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions"})
     public void testFillJasperreportsFunctions() throws Exception {
@@ -151,12 +191,15 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/charactersetTestWithStudioBuiltinFunctions.jrprint")).exists(), true);
     }
     
     /**
      * Test of compileToFile method, of class Report.
-     * This report uses functions with dependency to jasperreports-functions 
+     * This report uses functions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testCompileToFileJasperreportsFunctions2() throws Exception {
@@ -172,7 +215,9 @@ public class ReportNGTest {
 
     /**
      * Test of fill method, of class Report.
-     * This report uses functions with dependency to jasperreports-functions 
+     * This report uses functions with dependency to jasperreports-functions
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFileJasperreportsFunctions2"})
     public void testFillJasperreportsFunctions2() throws Exception {
@@ -185,11 +230,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/Blank_A4_1.jrprint")).exists(), true);
     }  
     
     /**
      * Test of fill method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testCompileToFile"})
     public void testFill() throws Exception {
@@ -207,11 +255,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.jrprint")).exists(), true);
     }
 
     /**
      * Test of fill method for metadata export, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillMeta() throws Exception {
@@ -228,6 +279,7 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.jrprint")).exists(), true);
     }
 
@@ -255,6 +307,8 @@ public class ReportNGTest {
 //    }
     /**
      * Test of exportPdf method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportPdf() throws Exception {
@@ -263,12 +317,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportPdf();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.pdf")).exists(), true);
     }
 
     /**
      * Test of exportRtf method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportRtf() throws Exception {
@@ -277,12 +334,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportRtf();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.rtf")).exists(), true);
     }
 
     /**
      * Test of exportDocx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportDocx() throws Exception {
@@ -291,12 +351,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportDocx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.docx")).exists(), true);
     }
 
     /**
      * Test of exportOdt method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportOdt() throws Exception {
@@ -305,12 +368,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportOdt();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.odt")).exists(), true);
     }
 
     /**
      * Test of exportHtml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportHtml() throws Exception {
@@ -319,12 +385,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportHtml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.html")).exists(), true);
     }
 
     /**
      * Test of exportXml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXml() throws Exception {
@@ -333,12 +402,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xml")).exists(), true);
     }
 
     /**
      * Test of exportXls method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXls() throws Exception {
@@ -347,6 +419,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXls();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xls")).exists(), true);
         // Read the content of a cell:
@@ -361,6 +434,8 @@ public class ReportNGTest {
     
     /**
      * Test of exportXlsMeta method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillMeta"})
     public void testExportXlsMeta() throws Exception {
@@ -369,6 +444,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/csvMeta.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXlsMeta();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.xls")).exists(), true);
         // Read the content of a cell:
@@ -383,6 +459,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportXlsx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXlsx() throws Exception {
@@ -391,12 +469,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXlsx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.xlsx")).exists(), true);
     }
 
     /**
      * Test of exportCsv method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportCsv() throws Exception {
@@ -406,6 +487,7 @@ public class ReportNGTest {
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         config.outCharset = "utf-8";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportCsv();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.csv")).exists(), true);
         // now read the file - it could have 0 bytes if something goes wrong
@@ -419,6 +501,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportCsvMeta method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillMeta"})
     public void testExportCsvMeta() throws Exception {
@@ -429,6 +513,7 @@ public class ReportNGTest {
         config.outCharset = "utf-8";
         config.outFieldDel = "|";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportCsvMeta();
         assertEquals(((File) new File("target/test-classes/reports/csvMeta.csv")).exists(), true);
         // now read the file - it could have 0 bytes if something goes wrong
@@ -442,6 +527,8 @@ public class ReportNGTest {
 
     /**
      * Test of exportOds method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportOds() throws Exception {
@@ -450,12 +537,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportOds();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.ods")).exists(), true);
     }
 
     /**
      * Test of exportPptx method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportPptx() throws Exception {
@@ -464,12 +554,15 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportPptx();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.pptx")).exists(), true);
     }
 
     /**
      * Test of exportXhtml method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFill"})
     public void testExportXhtml() throws Exception {
@@ -478,6 +571,7 @@ public class ReportNGTest {
         config = new Config();
         config.input = "target/test-classes/reports/compileToFile.jrprint";
         Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
         instance.exportXhtml();
         assertEquals(((File) new File("target/test-classes/reports/compileToFile.x.html")).exists(), true);
     }
@@ -494,6 +588,8 @@ public class ReportNGTest {
 //    }
     /**
      * Test of getReportParameters method, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testGetReportParameters() throws Exception {
@@ -515,6 +611,8 @@ public class ReportNGTest {
     
     /**
      * Test of fill method with xml datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromXmlDatasource() throws Exception {
@@ -529,11 +627,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
     }
     
     /**
      * Test of fill method with json datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromJsonDatasource() throws Exception {
@@ -547,11 +648,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
     }
 
     /**
      * Test of fill method with jsonql datasource, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromJsonQLDatasource() throws Exception {
@@ -565,11 +669,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/jsonql.jrprint")).exists(), true);
     }
 
     /**
      * Test of fill method with stdin, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromStdin() throws Exception {
@@ -590,6 +697,7 @@ public class ReportNGTest {
             config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(),true);
         } finally {
             System.setIn(saved);
@@ -602,6 +710,9 @@ public class ReportNGTest {
      *
      * This test is complicated because in the test environment, stdout and stderr
      * point to the same place.
+     *
+     * @return a int.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public int testStdoutIsNotUsed() throws Exception {
@@ -632,6 +743,7 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
         } finally {
             System.out.flush();
@@ -660,6 +772,7 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
             assertEquals(((File) new File("target/test-classes/reports/jsonql_stdin.jrprint")).exists(), true);
         } finally {
             System.out.flush();
@@ -676,6 +789,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method usage of stdout when "-" is specified as the output.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testStdoutIsUsed() throws Exception {
@@ -706,18 +821,16 @@ public class ReportNGTest {
             System.setErr(new PrintStream(tmpStderr));
             Report instance = new Report(config, new File(config.getInput()));
             instance.fill();
+            instance.exportJrprint();
         } finally {
             System.out.flush();
             System.err.flush();
             System.setOut(savedStdout);
             System.setErr(savedStderr);
         }
-        //
-        // In the test environment, stdout and stderr are the same, so all output should be to stderr.
-        //
-        assertEquals(0, tmpStdout.size());
+        assertTrue(0 < tmpStdout.size());
         assertTrue(0 < tmpStderr.size());
-        int filePlusVerboseOutputSize = tmpStderr.size();
+        int filePlusVerboseOutputSize = tmpStdout.size();
         //
         // Run it again without redirected output, and check the output sizes are about 12187 vs 548.
         //
@@ -728,6 +841,8 @@ public class ReportNGTest {
 
     /**
      * Test of fill method with xml datasource with barcode4j, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testFillFromXmlBarcode4j() throws Exception {
@@ -741,11 +856,14 @@ public class ReportNGTest {
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
         instance.fill();
+        instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/barcode4j.jrprint")).exists(), true);
     }
 
     /**
      * Test of exportPdf method with barcode4j, of class Report.
+     *
+     * @throws java.lang.Exception if any.
      */
     @Test(dependsOnMethods = {"testFillFromXmlBarcode4j"})
     public void testExportPdfBarcode4j() throws Exception {
@@ -756,5 +874,164 @@ public class ReportNGTest {
         Report instance = new Report(config, new File(config.getInput()));
         instance.exportPdf();
         assertEquals(((File) new File("target/test-classes/reports/barcode4j.pdf")).exists(), true);
+    }
+    
+    /**
+     * Test of public API.
+     */
+    @Test
+    public void testPublicApi() {
+        System.out.println("public API");
+        Config config = null;
+        config = new Config();
+        config.dbType = DsType.csv;
+        config.dataFile = new File("target/test-classes/csvExampleHeaders.csv");
+        config.csvCharset = "utf8";
+        config.csvFieldDel = "|";
+        config.csvRecordDel = "\r\n";
+        config.csvFirstRow = true;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        config.locale = "en";
+        config.csvColumns = "a";
+
+        AskFilter savedAskFilter = config.getAskFilter();
+        config.setAskFilter(savedAskFilter);
+        assertEquals(savedAskFilter, config.getAskFilter());
+
+        String savedCommand = config.getCommand();
+        config.setCommand(savedCommand);
+        assertEquals(savedCommand, config.getCommand());
+
+        String savedDbDriver = config.getDbDriver();
+        config.setDbDriver(savedDbDriver);
+        assertEquals(savedDbDriver, config.getDbDriver());
+
+        String savedDbHost = config.getDbHost();
+        config.setDbHost(savedDbHost);
+        assertEquals(savedDbHost, config.getDbHost());
+
+        String savedDbName = config.getDbName();
+        config.setDbName(savedDbName);
+        assertEquals(savedDbName, config.getDbName());
+
+        String savedDbPasswd = config.getDbPasswd();
+        config.setDbPasswd(savedDbPasswd);
+        assertEquals(savedDbPasswd, config.getDbPasswd());
+
+        Integer savedDbPort = config.getDbPort();
+        config.setDbPort(savedDbPort);
+        assertEquals(savedDbPort, config.getDbPort());
+
+        String savedDbSid = config.getDbSid();
+        config.setDbSid(savedDbSid);
+        assertEquals(savedDbSid, config.getDbSid());
+
+        DsType savedDbType = config.getDbType();
+        config.setDbType(savedDbType);
+        assertEquals(savedDbType, config.getDbType());
+
+        String savedDbUrl = config.getDbUrl();
+        config.setDbUrl(savedDbUrl);
+        assertEquals(savedDbUrl, config.getDbUrl());
+
+        String savedDbUser = config.getDbUser();
+        config.setDbUser(savedDbUser);
+        assertEquals(savedDbUser, config.getDbUser());
+
+        boolean savedVerbose = config.isVerbose();
+        config.setVerbose(savedVerbose);
+        assertEquals(savedVerbose, config.isVerbose());
+
+        String savedInput = config.getInput();
+        config.setInput(savedInput);
+        assertEquals(savedInput, config.getInput());
+
+        File savedJdbcDir = config.getJdbcDir();
+        config.setJdbcDir(savedJdbcDir);
+        assertEquals(savedJdbcDir, config.getJdbcDir());
+
+        File savedDataFile = config.getDataFile();
+        config.setDataFile(savedDataFile);
+        assertEquals(savedDataFile, config.getDataFile());
+
+        boolean savedCsvFirstRow = config.getCsvFirstRow();
+        config.setCsvFirstRow(savedCsvFirstRow);
+        assertEquals(savedCsvFirstRow, config.getCsvFirstRow());
+
+        String[] savedCsvColumns = config.getCsvColumns();
+        config.setCsvColumns(savedCsvColumns[0]);
+        assertEquals(savedCsvColumns, config.getCsvColumns());
+
+        String savedCsvRecordDel = config.getCsvRecordDel();
+        config.setCsvRecordDel(savedCsvRecordDel);
+        assertEquals(savedCsvRecordDel, config.getCsvRecordDel());
+
+        char savedCsvFieldDel = config.getCsvFieldDel();
+        config.setCsvFieldDel(savedCsvFieldDel + "");
+        assertEquals(savedCsvFieldDel, config.getCsvFieldDel());
+
+        String savedCsvCharset = config.getCsvCharset();
+        config.setCsvCharset(savedCsvCharset);
+        assertEquals(savedCsvCharset, config.getCsvCharset());
+
+        String savedXmlXpath = config.getXmlXpath();
+        config.setXmlXpath(savedXmlXpath);
+        assertEquals(savedXmlXpath, config.getXmlXpath());
+
+        String savedJsonQuery = config.getJsonQuery();
+        config.setJsonQuery(savedJsonQuery);
+        assertEquals(savedJsonQuery, config.getJsonQuery());
+
+        String savedJsonQLQuery = config.getJsonQLQuery();
+        config.setJsonQLQuery(savedJsonQLQuery);
+        assertEquals(savedJsonQLQuery, config.getJsonQLQuery());
+
+        Locale savedLocale = config.getLocale();
+        config.setLocale(savedLocale.toString());
+        assertEquals(savedLocale, config.getLocale());
+
+        String savedOutput = config.getOutput();
+        config.setOutput(savedOutput);
+        assertEquals(savedOutput, config.getOutput());
+
+        List<OutputFormat> savedOutputFormats = config.getOutputFormats();
+        config.setOutputFormats(savedOutputFormats);
+        assertEquals(savedOutputFormats, config.getOutputFormats());
+
+        List<String> savedParams = config.getParams();
+        config.setParams(savedParams);
+        assertEquals(savedParams, config.getParams());
+
+        String savedPrinterName = config.getPrinterName();
+        config.setPrinterName(savedPrinterName);
+        assertEquals(savedPrinterName, config.getPrinterName());
+
+        String savedReportName = config.getReportName();
+        config.setReportName(savedReportName);
+        assertEquals(savedReportName, config.getReportName());
+
+        String savedResource = config.getResource();
+        config.setResource(savedResource);
+        assertEquals(savedResource, config.getResource());
+
+        boolean savedWithPrintDialog = config.isWithPrintDialog();
+        config.setWithPrintDialog(savedWithPrintDialog);
+        assertEquals(savedWithPrintDialog, config.isWithPrintDialog());
+
+        boolean savedWriteJasper = config.isWriteJasper();
+        config.setWriteJasper(savedWriteJasper);
+        assertEquals(savedWriteJasper, config.isWriteJasper());
+
+        Integer savedCopies = config.getCopies();
+        config.setCopies(savedCopies);
+        assertEquals(savedCopies, config.getCopies());
+
+        String savedOutFieldDel = config.getOutFieldDel();
+        config.setOutFieldDel(savedOutFieldDel);
+        assertEquals(savedOutFieldDel, config.getOutFieldDel());
+
+        String savedOutCharset = config.getOutCharset();
+        config.setOutCharset(savedOutCharset);
+        assertEquals(savedOutCharset, config.getOutCharset());
     }
 }

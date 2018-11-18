@@ -20,6 +20,7 @@ import javax.print.PrintServiceLookup;
 import java.io.PrintStream;
 
 /**
+ * <p>Printerlookup class.</p>
  *
  * @author Volker Voßkämper
  * @version $Revision: 5b92831f1a80:54 branch:default $
@@ -28,14 +29,35 @@ public class Printerlookup {
     private static PrintStream configSink = System.err;
     private static PrintStream debugSink = System.err;
 
+    /**
+     * <p>getPrintservice.</p>
+     *
+     * @param printername a {@link java.lang.String} object.
+     * @return a {@link javax.print.PrintService} object.
+     */
     public static PrintService getPrintservice(String printername) {
         return getPrintservice(printername, false, false);
     }
 
+    /**
+     * <p>getPrintservice.</p>
+     *
+     * @param printername a {@link java.lang.String} object.
+     * @param startWithMatch a {@link java.lang.Boolean} object.
+     * @return a {@link javax.print.PrintService} object.
+     */
     public static PrintService getPrintservice(String printername, Boolean startWithMatch) {
         return getPrintservice(printername, startWithMatch, false);
     }
 
+    /**
+     * <p>getPrintservice.</p>
+     *
+     * @param printername a {@link java.lang.String} object.
+     * @param startWithMatch a {@link java.lang.Boolean} object.
+     * @param escapeSpace a {@link java.lang.Boolean} object.
+     * @return a {@link javax.print.PrintService} object.
+     */
     public static PrintService getPrintservice(String printername, Boolean startWithMatch, Boolean escapeSpace) {
         //debugSink.println("Printerlookup: search for: " + printername);
         PrintService returnval = null;
