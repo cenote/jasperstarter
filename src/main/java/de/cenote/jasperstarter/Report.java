@@ -179,7 +179,7 @@ public class Report {
                 initialInputType = InputType.JASPER_DESIGN;
                 compile();
             } catch (JRException ex1) {
-                throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file", ex1);
+                throw new IllegalArgumentException("input file: \"" + inputFile + "\" is not a valid jrxml file: " + ex1.getMessage(), ex1);
             }
         }
 
