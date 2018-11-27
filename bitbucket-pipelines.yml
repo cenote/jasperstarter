@@ -7,11 +7,9 @@ pipelines:
         caches:
           - maven
         script:
-          - mvn clean package -P snapshot,windows-setup
+          - mvn clean package -P snapshot
         artifacts:
           - target/*.zip
-          - target/*.bz2
-          - target/*.exe
           - target/site/**
     - step:
         name: Upload artifact to sourceforge downloads
@@ -55,11 +53,9 @@ pipelines:
           caches:
             - maven
           script:
-            - mvn clean package -P snapshot,windows-setup
+            - mvn clean package -P snapshot
           artifacts:
             - target/*.zip
-            - target/*.bz2
-            - target/*.exe
             - target/site/**
     java9*:
       - step:
