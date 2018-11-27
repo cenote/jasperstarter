@@ -3,13 +3,25 @@ image: cenote/jasperstarter-env
 pipelines:
   default:
     - step:
+        name: Maven build
+        caches:
+          - maven
         script:
-          - mvn clean package -P snapshot,windows-setup
-          # upload new artifact to sourceforge downloads
+          - mvn clean package -P snapshot
+        artifacts:
+          - target/*.zip
+          - target/site/**
+    - step:
+        name: Upload artifact to sourceforge downloads
+        trigger: manual
+        script:
           - ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
           - (umask 077; echo $SF_SSH_BASE64 | base64 --decode > ~/.ssh/id_rsa)
           - scp target/*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/snapshots/
-          # upload new artifact to bitbucket downloads
+    - step:
+        name: Upload artifact to bitbucket downloads
+        trigger: manual
+        script:
           - ARTIFACT=$(ls -1 target/*.zip|head -n1)
           - ARTIFACT_BASENAME=$(basename $ARTIFACT)
           - curl -X POST -v --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
@@ -17,12 +29,34 @@ pipelines:
   tags:
     '*-*':
       - step:
+          name: Maven release build
+          caches:
+            - maven
           script:
             - mvn clean package -P release,windows-setup
-            # upload release artifacts to sourceforge 
+          artifacts:
+            - target/*.zip
+            - target/*.bz2
+            - target/*.exe
+            - target/site/**
+      - step:
+          name: Upload release artifacts to sourceforge
+          script:
             - bash bitbucket-release-to-sourceforge.bash
 
   branches:
+    java7*:
+      - step:
+          name: Java7 Maven build (Java7 image not yet available)
+          trigger: manual
+          #image: cenote/java7-not-yet-available
+          caches:
+            - maven
+          script:
+            - mvn clean package -P snapshot
+          artifacts:
+            - target/*.zip
+            - target/site/**
     java9*:
       - step:
           image: cenote/xenial-java9

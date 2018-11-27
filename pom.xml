@@ -806,10 +806,26 @@ limitations under the License.
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <finalName>${project.artifactId}-${project.version}-${git.branch}-${git.commit.id.abbrev}</finalName>
+              <finalName>${project.artifactId}-${project.version}-${git.branch}-${git.commit.id.abbrev}</finalName>
+                <plugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                      <execution>
+                        <id>make-assembly</id>
+                        <configuration>
+                          <descriptors>
+                            <descriptor>src/main/assembly/snapshot-bin.xml</descriptor>
+                          </descriptors>
+                        </configuration>
+                      </execution>
+                    </executions>
+                  </plugin>
+                </plugins>
             </build>
-
         </profile>
+
         <profile>
             <id>netbeans-private-testng</id>
             <activation>
