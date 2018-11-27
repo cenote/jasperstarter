@@ -117,12 +117,22 @@ public class Report {
     private static PrintStream debugSink = System.err;
 
     /**
-     * Constructor. After construction, call either {@link #compileToFile()},
-     * {@link #getReportParameters()} or {@link #fill()}.
+     * Constructor. Specifies the configuration and the report .jrxml to be used.
+     * Configuration notes:
      *
-     * @param config        A configuration object. Note that the outputFormat
-     *                      and inputFile in the configuration are ignored.
-     * @param inputFile     The .jrxml report definition file to use.
+     * <ul>
+     *  <li>The <code>outputFormat</code> and <code>inputFile</code> in the
+     *  configuration are ignored.</li>
+     *  <li>The <code>dbType</code> determines what other configuration options
+     *  may apply. See {@link Config#setDbType(DsType)}.
+     *  </li>
+     * </ul>
+     *
+     * <p>After construction, call either {@link #compileToFile()}, {@link #getReportParameters()}
+     * or {@link #fill()}.</p>
+     *
+     * @param config       A configuration object.
+     * @param inputFile    The .jrxml report definition file to use.
      * @throws java.lang.IllegalArgumentException if any.
      */
     public Report(Config config, File inputFile) throws IllegalArgumentException {

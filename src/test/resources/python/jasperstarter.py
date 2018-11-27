@@ -6,6 +6,8 @@
 # install jpy.
 #
 import os
+from typing import Dict
+
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 EXAMPLES_DIR = os.path.dirname(SCRIPT_DIR)
 #
@@ -31,20 +33,22 @@ File = jpy.get_type('java.io.File')
 Report = jpy.get_type('de.cenote.jasperstarter.Report')
 Config = jpy.get_type('de.cenote.jasperstarter.Config')
 DsType = jpy.get_type('de.cenote.jasperstarter.types.DsType')
-OutputFormat = jpy.get_type('de.cenote.jasperstarter.types.OutputFormat')
 System = jpy.get_type('java.lang.System')
 PrintStream = jpy.get_type('java.io.PrintStream')
 ByteArrayInputStream = jpy.get_type('java.io.ByteArrayInputStream')
 ByteArrayOutputStream = jpy.get_type('java.io.ByteArrayOutputStream')
 
 
-def generate_pdf(report: str, query: str, data: str) -> bytearray:
+def generate_pdf(report: str, query: str, data: str, parameters: Dict[str, str]) -> bytearray:
     """
     Generate PDF from a report file using JSON.
 
     :param report:          The name of the report .jrxml.
     :param query:           A JSON query, e.g. "contacts.person".
     :param data:            The data in the form of a JSONified dict.
+    :param parameters:      Settings for the report in the form of a dictionary
+                            where the values are the string representations (in
+                            Java format, so Python's True is 'true').
     :return: a bytearray.
     """
     #
@@ -54,9 +58,10 @@ def generate_pdf(report: str, query: str, data: str) -> bytearray:
     config.setInput(report)
     config.setOutput('-')
     config.setDbType(DsType.json)
-    config.setDataFile(File('-'))
     config.setJsonQuery(query)
+    config.setDataFile(File('-'))
     config.setOutputFormats(Arrays.asList([]))
+    config.setParams(Arrays.asList([k + '=' + v for k, v in parameters.items()]))
     #
     # Run the report. See Report.java for details.
     #

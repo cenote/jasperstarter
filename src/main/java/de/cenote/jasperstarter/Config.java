@@ -316,7 +316,10 @@ public class Config {
     }
 
     /**
-     * <p>Setter for the field <code>dbType</code>.</p>
+     * <p>Setter for the field <code>dbType</code>. This setting determines what
+     * other configuration options may apply. For example, if <code>dbType</code>
+     * is {@link DsType#jsonql}, then {@link Config#setJsonQLQuery(String)}
+     * may be used to set the query string.</p>
      *
      * @param value a {@link de.cenote.jasperstarter.types.DsType} object.
      */
@@ -719,7 +722,16 @@ public class Config {
     }
 
     /**
-     * <p>Setter for the field <code>params</code>.</p>
+     * <p>Setter for the field <code>params</code>. Each entry in the list is
+     * a {@link java.lang.String} of the form:</p>
+     *
+     * <pre>
+     *     name=value
+     * </pre>
+     *
+     * <p>where <i>name</i> is the name of a parameter defined in the .jrxml
+     * and <i>value</i> is the Java representation (e.g. boolean truth is
+     * "true" or "false").</p>
      *
      * @param value a {@link java.util.List} object.
      */
