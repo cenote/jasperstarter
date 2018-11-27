@@ -396,6 +396,31 @@ limitations under the License.
             <version>6.7.0</version>
         </dependency>
         <dependency>
+          <groupId>net.sf.jasperreports</groupId>
+          <artifactId>jasperreports-chart-customizers</artifactId>
+          <version>6.7.0</version>
+        </dependency>
+        <dependency>
+          <groupId>net.sf.jasperreports</groupId>
+          <artifactId>jasperreports-chart-themes</artifactId>
+          <version>6.7.0</version>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+          <version>3.2.18.RELEASE</version>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+          <version>3.2.18.RELEASE</version>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-expression</artifactId>
+          <version>3.2.18.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.17</version>
