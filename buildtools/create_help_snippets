@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# Copyright 2018 Cenote GmbH.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## detect home folder
+if(test -L "$0") then
+  auxlink=`ls -l "$0" | sed 's/^[^>]*-> //g'`
+  HOME_FOLDER=`dirname "$auxlink"`/..
+else 
+  HOME_FOLDER=`dirname "$0"`/..
+fi
+## Make HOME_FOLDER contain absolute path
+HOME_FOLDER=`(cd $HOME_FOLDER && pwd)`
+SCRIPTNAME=`basename "$0"`
+if [ ! -d "$HOME_FOLDER/buildtools" ]; then
+    echo "Error: $SCRIPTNAME should reside in the buildtools directory of the project!"
+    exit 1
+fi
+
+function print_help () {
+    cat <<EOF
+Usage: $SCRIPTNAME [OPTION]
+Create text snippets of JasperStarter's help output.
+
+    -c    Call JasperStarter and create/overwrite help scnippets
+
+    -h    Print this help message
+
+This tool creates text snippets to be included into the documentation.
+EOF
+}
+
+
+if [ "$#" -ne 1 ]; then
+    echo "Error: Illegal number of parameters"
+    print_help
+    exit 1
+fi
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    print_help
+    exit 0
+fi
+
+if [ "$1" = "-c" ]; then
+    cd $HOME_FOLDER
+    COMMAND="mvn -q exec:java -Dexec.mainClass=de.cenote.jasperstarter.App"
+
+    if [ ! -d "$HOME_FOLDER/target/classes" ]; then
+        echo Error: File
+        echo "$BINARY"
+        echo "does not exist!"
+        echo 'Build JasperStarter at least with "mvn compile"'
+        exit 1
+    fi
+
+    echo '$ jasperstarter -h'                          >  $HOME_FOLDER/src/site/snippets/help/jasperstarter.txt
+    COLUMNS=80 LANG=C $COMMAND -Dexec.args="-h"        >> $HOME_FOLDER/src/site/snippets/help/jasperstarter.txt
+
+    echo '$ jasperstarter cp -h'                       >  $HOME_FOLDER/src/site/snippets/help/jasperstarter_compile.txt
+    COLUMNS=80 LANG=C $COMMAND -Dexec.args="cp -h"     >> $HOME_FOLDER/src/site/snippets/help/jasperstarter_compile.txt
+    
+    echo '$ jasperstarter params -h'                   >  $HOME_FOLDER/src/site/snippets/help/jasperstarter_list_parameters.txt
+    COLUMNS=80 LANG=C $COMMAND -Dexec.args="params -h" >> $HOME_FOLDER/src/site/snippets/help/jasperstarter_list_parameters.txt
+    
+    echo '$ jasperstarter pr -h'                       >  $HOME_FOLDER/src/site/snippets/help/jasperstarter_process.txt
+    COLUMNS=80 LANG=C $COMMAND -Dexec.args="pr -h"     >> $HOME_FOLDER/src/site/snippets/help/jasperstarter_process.txt
+
+    echo '...finished creating snippets. Invoke "git status" to see if there is something to commit.'
+else
+    echo "Error: Invalid option"
+    print_help
+    exit 1
+fi
+
+
+

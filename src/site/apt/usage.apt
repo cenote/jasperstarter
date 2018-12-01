@@ -554,27 +554,19 @@ $ jasperstarter pr myreport.jasper -f view -r myresources.jar
   
   The example report from this tutorial is included in the JasperStarter example directory. See {{main.jrxml_header.jrxml_details.jrxml}}
 
-** Reports using extensions
+** Reports using extensions or custom components
 
   Not all extensions a delivered with JasperStarter by default. So if you want to use an extension you may have to put it's jar files
   into the classpath. This is an easy task. Just put the jar files into the jdbc directory under the JasperStarter installation directory. 
 
 *** Reports with chart customizers
 
-  for chart customizers you need the folowing files at a minimum:
+  The needed libraries are now distributed with JasperStarter.
 
-   * jasperreports-chart-customizers-x.y.z.jar
+*** Reports with custom fonts
 
-   * spring-beans-x.y.z.jar
-
-   * spring-core-x.y.z.jar
-
-  maybe further:
-
-   * jasperreports-chart-themes-x.y.z.jar
-
-   * spring-expression-x.y.z.jar
-
+  Jaspersoft Studio has an option to create a jar file of your fonts.
+  Just put this jar file into the jdbc folder of JasperStarter.
 
 
 * File Handling

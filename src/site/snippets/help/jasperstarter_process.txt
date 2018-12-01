@@ -10,7 +10,8 @@ usage: jasperstarter process [-h] -f <fmt> [<fmt> ...] [-o <output>] [-w]
                      [--csv-record-del <delimiter>]
                      [--csv-field-del <delimiter>]
                      [--csv-charset <charset>] [--xml-xpath <xpath>]
-                     [--json-query <jsonquery>] [-N <printername>] [-d]
+                     [--json-query <jsonquery>]
+                     [--jsonql-query <jsonqlquery>] [-N <printername>] [-d]
                      [-s <reportname>] [-c <copies>]
                      [--out-field-del <delimiter>]
                      [--out-charset <charset>] <input>
@@ -23,7 +24,8 @@ options:
                          odt, ods, pptx,  csv,  csvMeta,  html, xhtml, xml,
                          jrprint
   <input>                input file (.jrxml|.jasper|.jrprint)
-  -o <output>            directory or basename of outputfile(s)
+  -o <output>            directory or basename  of  outputfile(s),  use '-'
+                         for stdout
 
 compile options:
   -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
@@ -39,8 +41,8 @@ fill options:
                          used.
 
 datasource options:
-  -t <dstype>            datasource type:  none,  csv,  xml,  json,  mysql,
-                         postgres, oracle, generic (jdbc)
+  -t <dstype>            datasource type:  none,  csv,  xml,  json, jsonql,
+                         mysql, postgres, oracle, generic (jdbc)
   -H <dbhost>            database host
   -u <dbuser>            database user
   -p <dbpasswd>          database password
@@ -51,7 +53,8 @@ datasource options:
   --db-url <jdbcUrl>     jdbc url without user, passwd with type:generic
   --jdbc-dir <dir>       directory where  jdbc  driver  jars  are  located.
                          Defaults to ./jdbc
-  --data-file <file>     input file for file based datasource
+  --data-file <file>     input file for file based  datasource, use '-' for
+                         stdin
   --csv-first-row        first row contains column headers
   --csv-columns <list>   Comma separated list of column names
   --csv-record-del <delimiter>
@@ -63,6 +66,8 @@ datasource options:
   --xml-xpath <xpath>    XPath for XML Datasource
   --json-query <jsonquery>
                          JSON query string for JSON Datasource
+  --jsonql-query <jsonqlquery>
+                         JSONQL query string for JSONQL Datasource
 
 output options:
   -N <printername>       name of printer
