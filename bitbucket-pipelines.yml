@@ -47,15 +47,16 @@ pipelines:
   branches:
     java7*:
       - step:
-          name: Java7 Maven build (Java7 image not yet available)
-          #image: cenote/java7-not-yet-available
+          name: Java7 Maven build
+          image: maven:3.6-jdk-7
           caches:
             - maven
           script:
-            - mvn clean package -P snapshot
+            - mvn -B clean package -P snapshot
           artifacts:
             - target/*.zip
             - target/site/**
+
     java9*:
       - step:
           image: cenote/xenial-java9
