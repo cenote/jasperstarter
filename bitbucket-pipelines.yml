@@ -72,3 +72,37 @@ pipelines:
             - ARTIFACT=$(ls -1 target/*.zip|head -n1)
             - ARTIFACT_BASENAME=$(basename $ARTIFACT)
             - curl -X POST -v --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
+
+  custom:
+    java10-test:
+      - step:
+          name: Java10 Test
+          image: maven:3.6-jdk-10
+          caches:
+            - maven
+          script:
+            - mvn -B clean test
+          artifacts:
+            - target/**
+
+    java11-test:
+      - step:
+          name: Java11 Test
+          image: maven:3.6-jdk-11
+          caches:
+            - maven
+          script:
+            - mvn -B clean test
+          artifacts:
+            - target/**
+
+    java12-test:
+      - step:
+          name: Java12 Test
+          image: maven:3.6-jdk-12
+          caches:
+            - maven
+          script:
+            - mvn -B clean test
+          artifacts:
+            - target/**
