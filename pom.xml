@@ -21,7 +21,7 @@ limitations under the License.
     <groupId>de.cenote</groupId>
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
-    <version>3.4.0-java7</version>
+    <version>3.5.0-java7-SNAPSHOT</version>
 
     <prerequisites>
         <maven>2.2.1</maven>
