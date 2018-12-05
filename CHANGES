@@ -5,19 +5,48 @@ JasperStarter - Running JasperReports from command line
 Release notes - JasperStarter - Version 3.4.0
 ---------------------------------------------
 
+  JasperStarter-3.2.0 silently dropped Java7 support by using the
+  latest available JasperReports Library.
+  JasperReports-6.4.0 is the last release which works with Java7 so
+  JasperStarter-3.1.0 was the latest release supporting Java7.
+
+  Now JasperStarter needs Java8 at a minimum and is manually tested
+  with OpenJDK-8, OpenJDK-10, OpenJDK-11. Automatic testing is on the
+  way (see JAS-128).
+  There will be a special release supporting Java7.
+
+  "Diskless" operation using stdin and stdout for input data and
+  output is now complete. See ([JAS-97] and [JAS-89]).
+
+  A public API allows direct integration with Python using jpy
+  ([JAS-125]).
+
 Known bugs:
+    * [JAS-120] - JasperReports-6.7.0 Version does not match with
+                  reported version from the jar file in
+      This is an upstream error which causes JasperStarter to put out
+      a wrong JasperReports version number of 6.6.0 instead of 6.7.0
+      if you call: jasperstarter -V
 
 ** Bug
+    * [JAS-111] - JRE 1.7 incompatibility - not fixed in the main
+                  release but clarified.
+    * [JAS-122] - Runtime error if a chart with "chart customizers" is
+                  used
+    * [JAS-126] - Jasperstarter does not usefully propagate
+                  compilation errors
 
 ** New Feature
-    * "Diskless" operation using stdin and stdout for input data and output ([JAS-97] and [JAS-89]).
-    * Public API allows direct integration with Python using jpy ([JAS-125]).
+    * [JAS-97] - Use stdout for the resulting PDF (so we don't have to
+                 write to the hosting server's storage)
+    * [JAS-125] - Make report fill accessible via API
 
 ** Task
+    * [JAS-127] - Enable dependency caching in build pipeline
+    * [JAS-129] - Remove test dependency to font Arial
+    * [JAS-130] - launch4j-maven-plugin:1.5.2 depends on 32bit
+                  libraries
 
-** Improvement
-    * [JAS-97] - Accept stdout for output file
-    * [JAS-125] - Add public API access to report logic
 
 Release notes - JasperStarter - Version 3.3.0
 ---------------------------------------------
