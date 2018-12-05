@@ -8,7 +8,7 @@ ssh-keyscan -t rsa ${SF_HOST} >>  ~/.ssh/known_hosts
 # #[[ "${BITBUCKET_TAG}" =~ .*-([0-9]+.[0-9]+) ]]
 # #RELEASE_DIR=${BASH_REMATCH[0]}
 #RELEASE_DIR=test
-RELEASE_DIR=$(expr "${BITBUCKET_TAG}" : '\(.*-[0-9]*.[0-9]*\)')
+RELEASE_DIR=$(expr "${BITBUCKET_TAG}" : '\([^0-9]*-[0-9]*.[0-9]*\)')
 echo "upload relese to dir: $RELEASE_DIR"
 cd target
 mkdir $RELEASE_DIR
