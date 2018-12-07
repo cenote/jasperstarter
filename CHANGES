@@ -7,7 +7,7 @@ Release notes - JasperStarter - Version 3.4.1-java7
 
 ** Bug
     * [JAS-132] - Security alert on org.springframework:spring-core
-                  Updated springframework to 4.3.17
+                  Updated springframework to 4.3.21
 
     CVE-2016-5007 - moderate severity - Vulnerable versions: < 4.3.1
     CVE-2018-1275 - high severity - Vulnerable versions: < 4.3.16
