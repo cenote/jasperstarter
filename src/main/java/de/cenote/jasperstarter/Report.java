@@ -734,13 +734,13 @@ public class Report {
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
