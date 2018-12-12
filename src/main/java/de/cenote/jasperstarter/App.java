@@ -124,6 +124,8 @@ public class App {
             System.exit(1);
         } catch (InterruptedException ex) {
             errSink.println(ex.getMessage());
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
             System.exit(1);
         } catch (JRException ex) {
             errSink.println(ex.getMessage());
