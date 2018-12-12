@@ -436,7 +436,7 @@ public class Config {
      * @return a boolean.
      */
     public boolean hasJdbcDir() {
-        if (jdbcDir != null && !jdbcDir.equals("")) {
+        if (jdbcDir != null && !jdbcDir.getName().equals("")) {
             return true;
         } else {
             return false;
