@@ -647,6 +647,7 @@ public class ReportNGTest {
         config.jsonQuery = "contacts.person";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
+        instance.compileToFile(); // this is just a source for another test
         instance.fill();
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
@@ -1034,4 +1035,62 @@ public class ReportNGTest {
         config.setOutCharset(savedOutCharset);
         assertEquals(savedOutCharset, config.getOutCharset());
     }
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromJson() {
+		System.out.println("getMainDatasetQueryFromJson");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json compiled report.
+	 *
+	 */
+	@Test(dependsOnMethods = "testFillFromJsonDatasource")
+	public void testGetMainDatasetQueryFromJsonJasper() {
+		System.out.println("getMainDatasetQueryFromJsonJasper");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jasper";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json report jrprint. This is not possible.
+	 *
+	 */
+	@Test(dependsOnMethods = { "testFillFromJsonDatasource" })
+	public void testGetMainDatasetQueryFromJsonJrprint() {
+		System.out.println("getMainDatasetQueryFromJsonJrprint");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jrprint";
+		Report instance = new Report(config, new File(config.getInput()));
+		try {
+			datasetQuery = instance.getMainDatasetQuery();
+			fail("this point of code should never be reached");
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "No query for input type: JASPER_PRINT");
+		}
+	}
 }
