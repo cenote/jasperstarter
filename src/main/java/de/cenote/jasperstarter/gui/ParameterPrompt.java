@@ -167,7 +167,7 @@ public class ParameterPrompt {
                     //before closing the window, you'd do
                     //it here.
                     if (valid.get()
-                            | ((Integer) optionPane.getValue())
+                            || ((Integer) optionPane.getValue())
                             .intValue() == JOptionPane.CANCEL_OPTION) {
                         // cancel is possible on invalid options too
                         dialog.setVisible(false);
