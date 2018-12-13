@@ -1039,6 +1039,24 @@ public class ReportNGTest {
 	/**
 	 * Test of getMainDatasetQuery method, of class Report.
 	 *
+	 * Try to get a datasetQuery from a xml report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromXml() {
+		System.out.println("getMainDatasetQueryFromXml");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/CancelAck.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "/CancelResponse/CancelResult/ID");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
 	 * Try to get a datasetQuery from a json report definition.
 	 *
 	 */
@@ -1049,6 +1067,24 @@ public class ReportNGTest {
 		String datasetQuery = null;
 		config = new Config();
 		config.input = "target/test-classes/reports/json.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a jsonql report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromJsonql() {
+		System.out.println("getMainDatasetQueryFromJsonql");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/jsonql.jrxml";
 		Report instance = new Report(config, new File(config.getInput()));
 		datasetQuery = instance.getMainDatasetQuery();
 		assertEquals(datasetQuery, "contacts.person");
