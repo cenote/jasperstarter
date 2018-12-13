@@ -630,7 +630,28 @@ public class ReportNGTest {
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
     }
-    
+
+    /**
+     * Test of fill method with xml datasource omitting xpath, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromXmlDatasourceNoXpath() throws Exception {
+        System.out.println("fill from xmldatasourceNoXpath");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/CancelAck.jrxml";
+        config.output = "target/test-classes/reports/CancelAckNoXpath";
+        config.dbType = DsType.xml;
+        config.dataFile = new File("target/test-classes/CancelAck.xml");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/CancelAckNoXpath.jrprint")).exists(), true);
+    }
+
     /**
      * Test of fill method with json datasource, of class Report.
      *
@@ -654,6 +675,27 @@ public class ReportNGTest {
     }
 
     /**
+     * Test of fill method with json datasource omitting jsonQuery, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromJsonDatasourceNoJsonQuery() throws Exception {
+        System.out.println("fill from jsondatasource NoJsonQuery");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/json.jrxml";
+        config.output = "target/test-classes/reports/jsonNoQuery";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/jsonNoQuery.jrprint")).exists(), true);
+    }
+
+    /**
      * Test of fill method with jsonql datasource, of class Report.
      *
      * @throws java.lang.Exception if any.
@@ -664,7 +706,7 @@ public class ReportNGTest {
         Config config = null;
         config = new Config();
         config.input = "target/test-classes/reports/jsonql.jrxml";
-        config.dbType = DsType.json;
+        config.dbType = DsType.jsonql;
         config.dataFile = new File("target/test-classes/contacts.json");
         config.jsonQuery = "contacts.person";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
@@ -672,6 +714,27 @@ public class ReportNGTest {
         instance.fill();
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/jsonql.jrprint")).exists(), true);
+    }
+
+    /**
+     * Test of fill method with jsonql datasource omitting jsonQLQuery, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromJsonQLDatasourceNoJsonQLQuery() throws Exception {
+        System.out.println("fill from jsonqldatasource NoJsonQLQuery");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "target/test-classes/reports/jsonqlNoQuery";
+        config.dbType = DsType.jsonql;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/jsonqlNoQuery.jrprint")).exists(), true);
     }
 
     /**

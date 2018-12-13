@@ -309,14 +309,26 @@ public class Report {
                     JRCsvDataSource ds = db.getCsvDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else if (DsType.xml.equals(config.getDbType())) {
+                    if (config.xmlXpath == null) {
+                        // try to get xPath stored in the report
+                        config.xmlXpath = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JRXmlDataSource ds = db.getXmlDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);                
                 } else if (DsType.json.equals(config.getDbType())) {
+                    if (config.jsonQuery == null) {
+                        // try to get json query stored in the report
+                        config.jsonQuery = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JsonDataSource ds = db.getJsonDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else if (DsType.jsonql.equals(config.getDbType())) {
+                    if (config.jsonQLQuery == null) {
+                        // try to get jsonql query stored in the report
+                        config.jsonQLQuery = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JsonQLDataSource ds = db.getJsonQLDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);

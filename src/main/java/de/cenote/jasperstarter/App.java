@@ -495,13 +495,10 @@ public class App {
                 }
             } else if (DsType.xml.equals(config.getDbType())) {
               allArguments.get(Dest.DATA_FILE).required(true);
-              allArguments.get(Dest.XML_XPATH).required(true);
             } else if (DsType.json.equals(config.getDbType())) {
               allArguments.get(Dest.DATA_FILE).required(true);
-              allArguments.get(Dest.JSON_QUERY).required(true);
             } else if (DsType.jsonql.equals(config.getDbType())) {
               allArguments.get(Dest.DATA_FILE).required(true);
-              allArguments.get(Dest.JSONQL_QUERY).required(true);
             }
         }
         // parse again so changed arguments become effectiv
