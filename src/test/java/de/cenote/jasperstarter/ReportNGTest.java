@@ -630,7 +630,28 @@ public class ReportNGTest {
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/CancelAck.jrprint")).exists(), true);
     }
-    
+
+    /**
+     * Test of fill method with xml datasource omitting xpath, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromXmlDatasourceNoXpath() throws Exception {
+        System.out.println("fill from xmldatasourceNoXpath");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/CancelAck.jrxml";
+        config.output = "target/test-classes/reports/CancelAckNoXpath";
+        config.dbType = DsType.xml;
+        config.dataFile = new File("target/test-classes/CancelAck.xml");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/CancelAckNoXpath.jrprint")).exists(), true);
+    }
+
     /**
      * Test of fill method with json datasource, of class Report.
      *
@@ -647,9 +668,31 @@ public class ReportNGTest {
         config.jsonQuery = "contacts.person";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
         Report instance = new Report(config, new File(config.getInput()));
+        instance.compileToFile(); // this is just a source for another test
         instance.fill();
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/json.jrprint")).exists(), true);
+    }
+
+    /**
+     * Test of fill method with json datasource omitting jsonQuery, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromJsonDatasourceNoJsonQuery() throws Exception {
+        System.out.println("fill from jsondatasource NoJsonQuery");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/json.jrxml";
+        config.output = "target/test-classes/reports/jsonNoQuery";
+        config.dbType = DsType.json;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/jsonNoQuery.jrprint")).exists(), true);
     }
 
     /**
@@ -663,7 +706,7 @@ public class ReportNGTest {
         Config config = null;
         config = new Config();
         config.input = "target/test-classes/reports/jsonql.jrxml";
-        config.dbType = DsType.json;
+        config.dbType = DsType.jsonql;
         config.dataFile = new File("target/test-classes/contacts.json");
         config.jsonQuery = "contacts.person";
         config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
@@ -671,6 +714,27 @@ public class ReportNGTest {
         instance.fill();
         instance.exportJrprint();
         assertEquals(((File) new File("target/test-classes/reports/jsonql.jrprint")).exists(), true);
+    }
+
+    /**
+     * Test of fill method with jsonql datasource omitting jsonQLQuery, of class Report.
+     *
+     * @throws java.lang.Exception if any.
+     */
+    @Test
+    public void testFillFromJsonQLDatasourceNoJsonQLQuery() throws Exception {
+        System.out.println("fill from jsonqldatasource NoJsonQLQuery");
+        Config config = null;
+        config = new Config();
+        config.input = "target/test-classes/reports/jsonql.jrxml";
+        config.output = "target/test-classes/reports/jsonqlNoQuery";
+        config.dbType = DsType.jsonql;
+        config.dataFile = new File("target/test-classes/contacts.json");
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.jrprint));
+        Report instance = new Report(config, new File(config.getInput()));
+        instance.fill();
+        instance.exportJrprint();
+        assertEquals(((File) new File("target/test-classes/reports/jsonqlNoQuery.jrprint")).exists(), true);
     }
 
     /**
@@ -1034,4 +1098,98 @@ public class ReportNGTest {
         config.setOutCharset(savedOutCharset);
         assertEquals(savedOutCharset, config.getOutCharset());
     }
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a xml report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromXml() {
+		System.out.println("getMainDatasetQueryFromXml");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/CancelAck.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "/CancelResponse/CancelResult/ID");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromJson() {
+		System.out.println("getMainDatasetQueryFromJson");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a jsonql report definition.
+	 *
+	 */
+	@Test
+	public void testGetMainDatasetQueryFromJsonql() {
+		System.out.println("getMainDatasetQueryFromJsonql");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/jsonql.jrxml";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json compiled report.
+	 *
+	 */
+	@Test(dependsOnMethods = "testFillFromJsonDatasource")
+	public void testGetMainDatasetQueryFromJsonJasper() {
+		System.out.println("getMainDatasetQueryFromJsonJasper");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jasper";
+		Report instance = new Report(config, new File(config.getInput()));
+		datasetQuery = instance.getMainDatasetQuery();
+		assertEquals(datasetQuery, "contacts.person");
+	}
+
+	/**
+	 * Test of getMainDatasetQuery method, of class Report.
+	 *
+	 * Try to get a datasetQuery from a json report jrprint. This is not possible.
+	 *
+	 */
+	@Test(dependsOnMethods = { "testFillFromJsonDatasource" })
+	public void testGetMainDatasetQueryFromJsonJrprint() {
+		System.out.println("getMainDatasetQueryFromJsonJrprint");
+		Config config = null;
+		String datasetQuery = null;
+		config = new Config();
+		config.input = "target/test-classes/reports/json.jrprint";
+		Report instance = new Report(config, new File(config.getInput()));
+		try {
+			datasetQuery = instance.getMainDatasetQuery();
+			fail("this point of code should never be reached");
+		} catch (Exception e) {
+			assertEquals(e.getMessage(), "No query for input type: JASPER_PRINT");
+		}
+	}
 }

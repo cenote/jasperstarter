@@ -29,19 +29,11 @@ pipelines:
   tags:
     '*-*':
       - step:
-          name: Maven release build
+          name: Maven release build and upload
           caches:
             - maven
           script:
             - mvn clean package -P release,windows-setup
-          artifacts:
-            - target/*.zip
-            - target/*.bz2
-            - target/*.exe
-            - target/site/**
-      - step:
-          name: Upload release artifacts to sourceforge
-          script:
             - bash bitbucket-release-to-sourceforge.bash
 
   branches:

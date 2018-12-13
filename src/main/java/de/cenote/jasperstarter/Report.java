@@ -309,14 +309,26 @@ public class Report {
                     JRCsvDataSource ds = db.getCsvDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else if (DsType.xml.equals(config.getDbType())) {
+                    if (config.xmlXpath == null) {
+                        // try to get xPath stored in the report
+                        config.xmlXpath = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JRXmlDataSource ds = db.getXmlDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);                
                 } else if (DsType.json.equals(config.getDbType())) {
+                    if (config.jsonQuery == null) {
+                        // try to get json query stored in the report
+                        config.jsonQuery = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JsonDataSource ds = db.getJsonDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
                 } else if (DsType.jsonql.equals(config.getDbType())) {
+                    if (config.jsonQLQuery == null) {
+                        // try to get jsonql query stored in the report
+                        config.jsonQLQuery = getMainDatasetQuery();
+                    }
                     Db db = new Db();
                     JsonQLDataSource ds = db.getJsonQLDataSource(config);
                     jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ds);
@@ -734,13 +746,13 @@ public class Report {
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            Logger.getLogger(Report.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -800,5 +812,24 @@ public class Report {
                     + inputFile.getAbsolutePath());
         }
         return returnval;
+    }
+
+    /**
+     * For JSON, JSONQL and any other data types that need a query to be provided,
+     * an obvious default is to use the one written into the report, since that is
+     * likely what the report designer debugged/intended to be used. This provides
+     * access to the value so it can be used as needed.
+     *
+     * @return String of main dataset query.
+     * @throws IllegalArgumentException on an unexpected input type.
+     */
+    public String getMainDatasetQuery() throws IllegalArgumentException {
+        if  (initialInputType == InputType.JASPER_DESIGN) {
+            return jasperDesign.getMainDesignDataset().getQuery().getText();
+        } else if (initialInputType == InputType.JASPER_REPORT) {
+            return jasperReport.getMainDataset().getQuery().getText();
+        } else {
+            throw new IllegalArgumentException("No query for input type: " + initialInputType);
+        }
     }
 }

@@ -226,7 +226,7 @@ public class ParameterPanel extends JPanel {
                 if (imageParam != null) {
                     imageName = imageParam.toString();
                 }
-                if (!text.equals("") & !text.equals(imageName)) {
+                if (!text.equals("") && !text.equals(imageName)) {
 
                     File imageFile = new File(text);
                     if (!imageFile.isFile()) {
