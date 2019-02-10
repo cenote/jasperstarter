@@ -2,6 +2,23 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release notes - JasperStarter - Version 3.5.0
+---------------------------------------------
+
+** Bug
+    * [JAS-134] - "InterruptedException" should not be ignored in App.java
+    * [JAS-135] - comparisons between unrelated types in Config.java
+
+** New Feature
+    * [JAS-131] - Jasperstarter does not provide a way to use the query string saved in the report itself
+
+** Task
+    * [JAS-133] - Release Pipeline takes longer than before
+    * [JAS-136] - Throwable.printStackTrace(...) should not be called in Report.java setLookAndFeel()
+    * [JAS-137] - Do not use a bitwise operator with a Boolean-like operand in ParameterPanel.java
+    * [JAS-138] - Do not use a bitwise operator with a Boolean-like operand in ParameterPrompt.java
+
+
 Release notes - JasperStarter - Version 3.4.1
 ---------------------------------------------
 
