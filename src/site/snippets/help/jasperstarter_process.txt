@@ -28,7 +28,7 @@ options:
                          for stdout
 
 compile options:
-  -w, --write-jasper     write .jasper  file  to  imput  dir  if  jrxml  is
+  -w, --write-jasper     write .jasper  file  to  input  dir  if  jrxml  is
                          processed
 
 fill options:
