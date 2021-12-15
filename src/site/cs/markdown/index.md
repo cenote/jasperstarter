@@ -5,6 +5,9 @@ JasperStarter - Spouštění JasperReports z příkazového řádku
 JasperStarter je open-source spouštěč pro příkazový řádek a batch kompilátor pro
 [JasperReports][].
 
+**JasperStarter is not vulnerable to [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).**
+For more Information see Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+
 Má následující vlastnosti:
 
   * spustí jakýkoliv JasperReport, který potřebuje jdbc, csv či prázdný
