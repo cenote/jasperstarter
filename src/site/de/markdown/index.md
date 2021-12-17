@@ -5,8 +5,12 @@ JasperStarter - Ausführen von JasperReports über die Befehlszeile
 JasperStarter ist ein Opensource Befehlszeilen Starter und Batch Compiler für
 [JasperReports][].
 
-**JasperStarter ist nicht durch [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228) verwqundbar.**
-Für weitere Informationen siehe Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+**JasperStarter ist nicht durch [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228) verwundbar.**
+
+**Aber alle Releases einschließlich 3.5.0 enthalten log4j-1.2.17 welches von
+[CVE-2019-17571](https://nvd.nist.gov/vuln/detail/CVE-2019-17571) betroffen ist.**
+Ich kann nicht sagen, ob dies mit JasperStarter ausnutzbar ist aber Sie sollte auf 
+jeden Fall auf eine neuere Version von JasperStarter updaten.
 
 Es hat die folgenden Eigenschaften:
 
@@ -37,7 +41,7 @@ Es hat die folgenden Eigenschaften:
 
 Anforderungen
 
-  * Java 1.7 oder höher.
+  * Java 1.7 / Java 1.8
   * Ein JDBC 2.1 Treiber für Ihre Datenbank
 
 

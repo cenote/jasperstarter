@@ -6,7 +6,10 @@ JasperStarter je open-source spouštěč pro příkazový řádek a batch kompil
 [JasperReports][].
 
 **JasperStarter is not vulnerable to [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).**
-For more Information see Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+
+**But all releases including 3.5.0 contain log4j-1.2.17 which is affected by
+[CVE-2019-17571](https://nvd.nist.gov/vuln/detail/CVE-2019-17571).** I cannot say if it is possible to
+exploit this with JasperStarter but in any case you should update to a newer version of JasperStarter.
 
 Má následující vlastnosti:
 
@@ -35,7 +38,7 @@ Má následující vlastnosti:
 
 Požadavky
 
-  * Java 1.7 či vyšší
+  * Java 1.7 / Java 1.8 
   * JDBC 2.1 driver pro vaši databázi
 
 
