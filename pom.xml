@@ -90,6 +90,14 @@ limitations under the License.
         <name>Central Repository</name>
         <url>https://repo.maven.apache.org/maven2</url>
       </repository>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>cenote</id>
+        <name>Cenote Backup Repo</name>
+        <url>https://www.cenote.de/maven2</url>
+      </repository>
     </repositories>
     <pluginRepositories>
       <pluginRepository>
