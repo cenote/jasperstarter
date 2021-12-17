@@ -8,7 +8,10 @@ JasperStarter is an opensource command line launcher and batch compiler for
 The official homepage is [jasperstater.cenote.de][].
 
 **JasperStarter is not vulnerable to [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).**
-For more Information see Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+
+**But all releases including 3.5.0 contain log4j-1.2.17 which is affected by
+[CVE-2019-17571](https://nvd.nist.gov/vuln/detail/CVE-2019-17571).** I cannot say if it is possible to
+exploit this with JasperStarter but in any case you should update to a newer version of JasperStarter.
 
 It has the following features:
 
@@ -36,7 +39,7 @@ It has the following features:
 
 Requirements:
 
-  * Java 1.8 or higher
+  * Java 1.8
   * A JDBC 2.1 driver for your database
 
 
