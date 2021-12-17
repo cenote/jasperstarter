@@ -33,7 +33,8 @@ pipelines:
           caches:
             - maven
           script:
-            - mvn clean package -P release,windows-setup
+            #- mvn clean package -P release,windows-setup
+            - mvn clean package -P release
             - bash bitbucket-release-to-sourceforge.bash
 
   branches:

@@ -18,4 +18,4 @@ scp -r $RELEASE_DIR ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/
 # uploading...
 scp jasperstarter-*.zip ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/$RELEASE_DIR
 scp jasperstarter-*.bz2 ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/$RELEASE_DIR
-scp jasperstarter-*.exe ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/$RELEASE_DIR
+#scp jasperstarter-*.exe ${SF_USER}@${SF_HOST}:${SF_FILEBASE}/$RELEASE_DIR
