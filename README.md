@@ -7,6 +7,9 @@ JasperStarter is an opensource command line launcher and batch compiler for
 
 The official homepage is [jasperstater.cenote.de][].
 
+**JasperStarter is not vulnerable to [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).**
+For more Information see Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+
 It has the following features:
 
   * Run any JasperReport that needs a jdbc, csv, xml, json, jsonql or empty datasource

@@ -5,6 +5,9 @@ JasperStarter - Ausführen von JasperReports über die Befehlszeile
 JasperStarter ist ein Opensource Befehlszeilen Starter und Batch Compiler für
 [JasperReports][].
 
+**JasperStarter ist nicht durch [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228) verwqundbar.**
+Für weitere Informationen siehe Isssue [JAS-156](https://cenote-issues.atlassian.net/browse/JAS-156)
+
 Es hat die folgenden Eigenschaften:
 
   * Startet jeden JasperReport, der eine JDBC, CSV oder eine leere Datenquelle

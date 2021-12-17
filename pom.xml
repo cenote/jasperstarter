@@ -81,14 +81,29 @@ limitations under the License.
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<dependency.locations.enabled>false</dependency.locations.enabled>
     </properties>
-
     <repositories>
       <repository>
-        <id>jaspersoft.artifactoryonline.com</id>
-	<name>jaspersoft.artifactoryonline.com</name>
-	<url>https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/</url>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
       </repository>
     </repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <releases>
+          <updatePolicy>never</updatePolicy>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+      </pluginRepository>
+    </pluginRepositories>
     <build>
         <!--
         <finalName>${project.artifactId}-${project.version}</finalName>
@@ -187,7 +202,7 @@ limitations under the License.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.6</version>
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <archive>

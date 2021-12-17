@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -26,6 +29,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import de.cenote.jasperstarter.types.DsType;
+import de.cenote.jasperstarter.types.OutputFormat;
 
 /**
  * <p>AppNGTest class.</p>
@@ -548,4 +554,37 @@ public class AppNGTest {
         testfile1.delete();
         testfile2.delete();
     }
+
+    /**
+     * Test of private void processReport(Config config) method, of class App
+     *
+     *
+     * @throws java.lang.NoSuchMethodException if any.
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
+     * @throws java.lang.IllegalAccessException if any.
+     */
+    @Test
+    public void testProcessReport() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        System.out.println("processReport");
+        App app = new App();
+        String[] args = {};
+        Config config = new Config();
+        // if jdbcDir does not contain any .jar file, ApplicationClasspath.add is not executed
+        config.jdbcDir = new File("target");
+        // a resource is always added to the classpath - thus ApplicationClasspath.add is called here
+        config.setResource("target/test-classes/reports");
+        config.input = "target/test-classes/reports/Blank_A4_1.jrxml";
+        config.output = "target/test-classes/reports/processReport_Blank_A4_1";
+        config.dbType = DsType.none;
+        config.outputFormats = new ArrayList<OutputFormat>(Arrays.asList(OutputFormat.pdf));
+        Method method = app.getClass().getDeclaredMethod(
+                "processReport", Config.class);
+        method.setAccessible(true);
+        method.invoke(app,config);
+        //assertEquals(1,2);
+        assertEquals(((File) new File("target/test-classes/reports/processReport_Blank_A4_1.pdf")).exists(), true);
+
+    }
+
 }
