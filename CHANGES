@@ -2,6 +2,13 @@
 JasperStarter - Running JasperReports from command line
 ========================================================
 
+Release notes - JasperStarter - Version 3.6.2
+---------------------------------------------
+
+** Bug
+    * JAS-161 CVE-2021-44832 in log4j-2.17.0
+
+
 Release notes - JasperStarter - Version 3.6.1
 ---------------------------------------------
 

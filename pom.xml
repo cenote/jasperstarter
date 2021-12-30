@@ -22,7 +22,7 @@ limitations under the License.
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
     
-    <version>3.6.1</version>
+    <version>3.6.2</version>
 
     <prerequisites>
         <maven>2.2.1</maven>
