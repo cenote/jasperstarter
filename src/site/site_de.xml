@@ -53,9 +53,11 @@ limitations under the License.
         <menu name="Überblick">
             <item name="Einführung" href="index.html" />
             <item name="Verwendung" href="usage.html" />
+            <item name="FAQ" href="https://bitbucket.org/cenote/jasperstarter/src/main/FAQ.md" />
             <item name="Screenshots" href="screenshots.html" />
             <item name="Dateien" href="files.html" />
             <item name="Änderungen" href="changes.html" />
+            <item name="Contributing" href="https://bitbucket.org/cenote/jasperstarter/src/main/CONTRIBUTING.md" />
             <item name="Downloads" href="http://sourceforge.net/projects/jasperstarter/files/" />
             <item name="Sourceforge" href="http://sourceforge.net/projects/jasperstarter/" />
             <item name="OpenHub" href="http://www.openhub.net/p/jasperstarter" />            
