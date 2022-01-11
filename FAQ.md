@@ -23,7 +23,7 @@ generic](http://jasperstarter.cenote.de/index.html#Quickstart)
   and [using-ssl](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-using-ssl.html)
   
 **Q: I cannot compile/run a report that I created with the newest
-  Jaspersoft Studio. Is this a bug?
+  Jaspersoft Studio. Is this a bug?**
 
 **A:** No! JasperStarter is just a command line wrapper around the
   JasperReports library. It's features are defined by the version of
