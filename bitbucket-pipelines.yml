@@ -67,6 +67,17 @@ pipelines:
             - curl -X POST -v --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"${ARTIFACT}"
 
   custom:
+    windows-setup:
+      - step:
+          name: Windows Setup
+          image: cenote/jasperstarter-env
+          caches:
+            - maven
+          script:
+            - mvn clean package -P snapshot
+        artifacts:
+          - target/*.exe
+
     java10-test:
       - step:
           name: Java10 Test
