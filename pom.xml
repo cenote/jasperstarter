@@ -6,7 +6,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ limitations under the License.
     <groupId>de.cenote</groupId>
     <artifactId>jasperstarter</artifactId>
     <name>JasperStarter</name>
-    
+
     <version>3.7.0-SNAPSHOT</version>
 
     <prerequisites>
@@ -42,7 +42,7 @@ limitations under the License.
         </license>
     </licenses>
     <packaging>jar</packaging>
-    
+
     <scm>
         <connection>scm:git:https://bitbucket.org/cenote/jasperstarter.git</connection>
         <developerConnection>scm:git:git@bitbucket.org:cenote/jasperstarter.git</developerConnection>
@@ -64,7 +64,7 @@ limitations under the License.
             <email>vosskaem@users.sourceforge.net</email>
             <organization>Cenote GmbH</organization>
             <organizationUrl>http://www.cenote.de</organizationUrl>
-        </developer>    
+        </developer>
     </developers>
     <contributors>
         <contributor>
@@ -79,34 +79,45 @@ limitations under the License.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<dependency.locations.enabled>false</dependency.locations.enabled>
+        <dependency.locations.enabled>false</dependency.locations.enabled>
     </properties>
     <repositories>
-      <repository>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2</url>
-      </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <!-- START from the JasperReports pom.xml-->
+        <repository>
+            <id>jaspersoft-third-party</id>
+            <url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+        </repository>
+        <repository>
+            <id>jr-ce-releases</id>
+            <name>JasperReports CE Releases</name>
+            <url>https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases</url>
+        </repository>
+        <!-- END from the JasperReports pom.xml-->
     </repositories>
     <pluginRepositories>
-      <pluginRepository>
-        <releases>
-          <updatePolicy>never</updatePolicy>
-        </releases>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2</url>
-      </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </pluginRepository>
     </pluginRepositories>
     <build>
         <!--
-        <finalName>${project.artifactId}-${project.version}</finalName>
+            <finalName>${project.artifactId}-${project.version}</finalName>
         -->
         <resources>
             <resource>
@@ -116,27 +127,27 @@ limitations under the License.
         </resources>
         <plugins>
             <plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>2.1.12</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<verbose>true</verbose>
-					<dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
-					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-					<gitDescribe>
-						<always>true</always>
-						<abbrev>7</abbrev>
-						<dirty>-dirty</dirty>
-						<forceLongFormat>false</forceLongFormat>
-					</gitDescribe>
-				</configuration>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <gitDescribe>
+                        <always>true</always>
+                        <abbrev>7</abbrev>
+                        <dirty>-dirty</dirty>
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -154,8 +165,8 @@ limitations under the License.
                 <version>1.7</version>
                 <executions>
                     <execution>
-                        <id>create-indexfile</id> 
-                        <phase>pre-site</phase> 
+                        <id>create-indexfile</id>
+                        <phase>pre-site</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -167,8 +178,8 @@ limitations under the License.
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-files-readme</id> 
-                        <phase>prepare-package</phase> 
+                        <id>copy-files-readme</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -210,9 +221,9 @@ limitations under the License.
                             <mainClass>de.cenote.jasperstarter.App</mainClass>
                             <addClasspath>true</addClasspath>
                             <!--
-                            The projcet jar resides in ./lib as .jar
-                            and in ./bin wraped inside the .exe
-                            so classpath ../lib matches for both
+                                The projcet jar resides in ./lib as .jar
+                                and in ./bin wraped inside the .exe
+                                so classpath ../lib matches for both
                             -->
                             <classpathPrefix>../lib/</classpathPrefix>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -284,10 +295,10 @@ limitations under the License.
                         <configuration>
                             <descriptors>
                                 <descriptor>src/main/assembly/bin.xml</descriptor>
-                            </descriptors>                    
+                            </descriptors>
                         </configuration>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
             <!-- add site generation to the package phase -->
             <plugin>
@@ -300,10 +311,10 @@ limitations under the License.
                         <artifactId>doxia-module-markdown</artifactId>
                         <version>1.5</version>
                     </dependency>
-                </dependencies>                
+                </dependencies>
                 <configuration>
                     <locales>en,de,cs</locales>
-                </configuration>                               
+                </configuration>
                 <executions>
                     <execution>
                         <id>createsite</id>
@@ -328,572 +339,744 @@ limitations under the License.
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
-            </plugin>             
-        </plugins>
-    </build>
-    
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <id>project-reports</id>
-                        <reports>
-                            <report>summary</report>
-                            <report>license</report>
-                            <report>project-team</report>
-                            <report>scm</report>
-                            <report>issue-tracking</report>
-                            <!-- <report>cim</report> -->
-                            <!-- <report>distribution-management</report> -->
-                            <!-- <report>mailing-list</report> -->
-                            <!-- <report>dependency-info</report> -->
-                            <!-- <report>dependency-management</report> -->
-                            <!-- <report>dependencies</report> -->
-                            <!--
+            </plugin>
+</plugins>
+</build>
+
+<reporting>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>2.7</version>
+            <reportSets>
+                <reportSet>
+                    <id>project-reports</id>
+                    <reports>
+                        <report>summary</report>
+                        <report>license</report>
+                        <report>project-team</report>
+                        <report>scm</report>
+                        <report>issue-tracking</report>
+                        <!-- <report>cim</report> -->
+                        <!-- <report>distribution-management</report> -->
+                        <!-- <report>mailing-list</report> -->
+                        <!-- <report>dependency-info</report> -->
+                        <!-- <report>dependency-management</report> -->
+                        <!-- <report>dependencies</report> -->
+                        <!--
                             <report>dependency-convergence</report>
                             <report>plugins</report>
                             <report>plugin-management</report>
                             <report>modules</report>
-                            -->
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.4.0</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.sourceforge.argparse4j</groupId>
-            <artifactId>argparse4j</artifactId>
-            <version>0.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.toedter</groupId>
-            <artifactId>jcalendar</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mozilla/rhino -->
-        <dependency>
-            <groupId>org.mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.7.7.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>6.18.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-fonts</artifactId>
-            <version>6.18.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-functions</artifactId>
-            <version>6.18.1</version>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.jasperreports</groupId>
-          <artifactId>jasperreports-chart-customizers</artifactId>
-          <version>6.18.1</version>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.jasperreports</groupId>
-          <artifactId>jasperreports-chart-themes</artifactId>
-          <version>6.18.1</version>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-          <version>4.3.21.RELEASE</version>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
-          <version>4.3.21.RELEASE</version>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-expression</artifactId>
-          <version>4.3.21.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-bridge</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-gvt</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-util</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-svg-dom</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-dom</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-script</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-css</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-svggen</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-awt-util</artifactId>
-            <version>1.9.1</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-	<dependency>
-          <groupId>org.apache.xmlgraphics</groupId>
-          <artifactId>xmlgraphics-commons</artifactId>
-          <version>2.2</version>
-	</dependency>
-        <dependency>
-            <groupId>net.sf.barcode4j</groupId>
-            <artifactId>barcode4j</artifactId>
-            <version>2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.5-beta1</version>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-core</artifactId>
-          <version>2.17.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr</artifactId>
-            <version>3.0b5</version>
-        </dependency>
-        <dependency>
-          <groupId>com.google.zxing</groupId>
-          <artifactId>core</artifactId>
-          <version>2.3.0</version>
-        </dependency>
-    </dependencies>
-    
-    <profiles>
-        <profile>
-            <id>no-launch4j-on-mac</id>
-            <!--
+                        -->
+                    </reports>
+                </reportSet>
+            </reportSets>
+        </plugin>
+    </plugins>
+</reporting>
+
+<dependencies>
+    <!-- START JasperStarter Test Dependencies -->
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>6.11</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>2.4.0</version>
+        <scope>test</scope>
+    </dependency>
+    <!-- END JasperStarter Test Dependencies -->
+
+    <!-- START JasperStarter Dependencies -->
+    <dependency>
+        <groupId>net.sourceforge.argparse4j</groupId>
+        <artifactId>argparse4j</artifactId>
+        <version>0.5.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.toedter</groupId>
+        <artifactId>jcalendar</artifactId>
+        <version>1.4</version>
+    </dependency>
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.5</version>
+    </dependency>
+    <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>6.18.1</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-fonts</artifactId>
+        <version>6.18.1</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-functions</artifactId>
+        <version>6.18.1</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-chart-customizers</artifactId>
+        <version>6.18.1</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-chart-themes</artifactId>
+        <version>6.18.1</version>
+    </dependency>
+    <!-- END JasperStarter Dependencies -->
+
+    <!-- START JasperReports OPTIONAL Dependencies
+         copied from current JasperReports pom.xml
+    -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.4.24.Final</version>
+        <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>com.adobe.xmp</groupId>
+        <artifactId>xmpcore</artifactId>
+        <version>5.1.3</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>4.1.1</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>4.1.1</version>
+        <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.4</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>2.7.2</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy</artifactId>
+        <version>3.0.7</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.mozilla</groupId>
+        <artifactId>rhino</artifactId>
+        <version>1.7.11</version>
+    <scope>compile</scope></dependency>
+    <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>1.10.11</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>net.tascalate.javaflow</groupId>
+        <artifactId>net.tascalate.javaflow.api</artifactId>
+        <version>2.6.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>net.tascalate.javaflow</groupId>
+        <artifactId>net.tascalate.javaflow.tools.ant</artifactId>
+        <version>2.6.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>mondrian</groupId>
+        <artifactId>mondrian</artifactId>
+        <version>3.1.1.12687</version>
+        <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>javax.persistence-api</artifactId>
+        <version>2.2</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>antlr</groupId>
+        <artifactId>antlr</artifactId>
+        <version>2.7.5</version>
+        <scope>compile</scope>
+    </dependency>
+    <!-- we need this dependency here because it was removed from Java 11 -->
+    <dependency>
+        <groupId>javax.xml.soap</groupId>
+        <artifactId>javax.xml.soap-api</artifactId>
+        <version>1.4.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>javax.xml.soap</groupId>
+        <artifactId>saaj-api</artifactId>
+        <version>1.3</version>
+        <scope>runtime</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>jaxen</groupId>
+        <artifactId>jaxen</artifactId>
+        <version>1.1.6</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-anim</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-awt-util</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-bridge</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-dom</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-gvt</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-svg-dom</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-svggen</artifactId>
+        <version>1.14</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>5.1.4.RELEASE</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>5.1.4.RELEASE</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.barcode4j</groupId>
+        <artifactId>barcode4j</artifactId>
+        <version>2.1</version>
+        <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>avalon-framework</groupId>
+                <artifactId>avalon-framework-impl</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>net.sourceforge.barbecue</groupId>
+        <artifactId>barbecue</artifactId>
+        <version>1.5-beta1</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity-engine-core</artifactId>
+        <version>2.3</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis-ext</artifactId>
+        <version>1.3.04</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-core</artifactId>
+        <version>7.3.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-analyzers-common</artifactId>
+        <version>7.3.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-queryparser</artifactId>
+        <version>7.3.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.olap4j</groupId>
+        <artifactId>olap4j</artifactId>
+        <version>0.9.7.309-JS-3</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.13</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.4.12</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.google.zxing</groupId>
+        <artifactId>core</artifactId>
+        <version>3.4.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.ibm.icu</groupId>
+        <artifactId>icu4j</artifactId>
+        <version>57.1</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>2.4.2</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-metadata</artifactId>
+        <version>6.18.1</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.github.kklisura.cdt</groupId>
+        <artifactId>cdt-java-client</artifactId>
+        <version>2.0.0</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.kohsuke</groupId>
+        <artifactId>groovy-sandbox</artifactId>
+        <version>1.26-jaspersoft-2</version>
+        <scope>compile</scope>
+    </dependency>
+    <!-- END JasperReports OPTIONAL Dependencies -->
+</dependencies>
+
+<profiles>
+    <profile>
+        <id>no-launch4j-on-mac</id>
+        <!--
             disable launch4j on mac
-            -->
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                        <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.5.2</version>
-                        <executions>
-                            <execution>
-                                <id>l4j-cli</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        
-        <profile>
-            <id>dev</id>
-            <!--
+        -->
+        <activation>
+            <os>
+                <family>mac</family>
+            </os>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                    <artifactId>launch4j-maven-plugin</artifactId>
+                    <version>1.5.2</version>
+                    <executions>
+                        <execution>
+                            <id>l4j-cli</id>
+                            <phase>none</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+
+    <profile>
+        <id>dev</id>
+        <!--
             developement profile:
             quick build, no archives, no long run reports,
             result in dir target/jasperstarter-de-bin
-            -->
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <resources>
-                    <!--
+        -->
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <resources>
+                <!--
                     Copy all jdbc drivers from the projects basedir
                     to the test directory.
-                    -->
-                    <resource>
-                        <directory>${project.basedir}/jdbc</directory>
-                        <targetPath>${project.build.directory}/${project.artifactId}-dev-bin/jdbc</targetPath>
-                        <filtering>false</filtering>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>make-assembly</id>
-                                <configuration>
-                                    <finalName>${project.artifactId}</finalName>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/dev-bin.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-                            <!--
-                            <execution>
-                                <id>make-jar-with-deps</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <configuration>
-                                    <archive>
-                                        <manifest>
-                                            <mainClass>de.cenote.jasperstarter.App</mainClass>
-                                        </manifest>
-                                    </archive>
-                                    <descriptorRefs>
-                                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                                    </descriptorRefs>
-                                </configuration>
-                            </execution>
-                            -->
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-project-info-reports-plugin</artifactId>
-                        <reportSets>
-                            <reportSet>
-                                <id>project-reports</id>
-                                <reports>
-                                    <!--
-                                    <report>summary</report>
-                                    <report>license</report>
-                                    <report>project-team</report>
-                                    <report>scm</report>
-                                    <report>issue-tracking</report>
-                                    -->
-                                    <!-- <report>cim</report> -->
-                                    <!-- <report>distribution-management</report> -->
-                                    <!-- <report>mailing-list</report> -->
-                                    <!-- <report>dependency-info</report> -->
-                                    <!-- <report>dependency-management</report> -->
-                                    <!-- <report>dependencies</report> -->
-                                    <!--
-                                    <report>dependency-convergence</report>
-                                    <report>plugins</report>
-                                    <report>plugin-management</report>
-                                    <report>modules</report>
-                                    -->
-                                </reports>
-                            </reportSet>
-                        </reportSets>
-                    </plugin>
-                    <!--
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9</version>
-                    </plugin>
-                    -->
-                </plugins>
-            </reporting>
-        </profile>
-
-        <profile>
-            <id>release</id>
-            <!--
-            release profile:
-            adds the long running reports to the default build
-            -->
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-project-info-reports-plugin</artifactId>
-                        <reportSets>
-                            <reportSet>
-                                <id>project-reports</id>
-                                <reports>
-                                    <report>summary</report>
-                                    <report>license</report>
-                                    <report>project-team</report>
-                                    <report>scm</report>
-                                    <report>issue-tracking</report>
-                                    <!-- <report>cim</report> -->
-                                    <!-- <report>distribution-management</report> -->
-                                    <!-- <report>mailing-list</report> -->
-                                    <!-- <report>dependency-info</report> -->
-                                    <!-- <report>dependency-management</report> -->
-                                    <report>dependencies</report>
-                                    <!--
-                                    <report>dependency-convergence</report>
-                                    <report>plugins</report>
-                                    <report>plugin-management</report>
-                                    <report>modules</report>
-                                    -->
-                                </reports>
-                            </reportSet>
-                        </reportSets>
-                    </plugin>
-                    <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-javadoc-plugin</artifactId>
-                      <version>3.0.1</version>
-                      <configuration>
-                        <excludePackageNames>de.cenote.jasperstarter.gui:de.cenote.tools.*</excludePackageNames>
-                      </configuration>
-                      <reportSets>
-                        <reportSet>
-                          <id>default</id>
-                          <reports>
-                            <report>javadoc</report>
-                          </reports>
-                        </reportSet>
-                      </reportSets>
-                    </plugin>
-                </plugins>
-            </reporting>
-        </profile>
-
-        <profile>
-            <id>windows-setup</id>
-            <!--
-            additional profile for windows setup
-            -->
-            <activation>
-                <!-- @todo: only if NSIS is installed  -->
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/setup</directory>
-                        <includes>
-                            <include>setup*.nsi</include>
-                        </includes>
-                        <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
-                        <filtering>true</filtering>
-                    </resource>
-                    <resource>
-                        <directory>src/main/setup</directory>
-                        <includes>
-                            <include>*.nsh</include>
-                        </includes>
-                        <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
-                        <filtering>false</filtering>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>windows-setup-stage</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <configuration>
-                                    <finalName>${project.artifactId}</finalName>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/setup-w32.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.3.1</version>
-                        <executions>
-                            <execution>
-                                <id>windows-setup-compile</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>makensis</executable>
-                                    <workingDirectory>${project.basedir}/target/${project.artifactId}-win32</workingDirectory>
-                                    <arguments>
-                                        <argument>setup-win32.nsi</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>snapshot</id>
-            <!--
-            adding branch and revision number to final name
-            -->
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-              <finalName>${project.artifactId}-${project.version}-${git.branch}-${git.commit.id.abbrev}</finalName>
-                <plugins>
-                  <plugin>
+                -->
+                <resource>
+                    <directory>${project.basedir}/jdbc</directory>
+                    <targetPath>${project.build.directory}/${project.artifactId}-dev-bin/jdbc</targetPath>
+                    <filtering>false</filtering>
+                </resource>
+            </resources>
+            <plugins>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <executions>
-                      <execution>
-                        <id>make-assembly</id>
-                        <configuration>
-                          <descriptors>
-                            <descriptor>src/main/assembly/snapshot-bin.xml</descriptor>
-                          </descriptors>
-                        </configuration>
-                      </execution>
+                        <execution>
+                            <id>make-assembly</id>
+                            <configuration>
+                                <finalName>${project.artifactId}</finalName>
+                                <descriptors>
+                                    <descriptor>src/main/assembly/dev-bin.xml</descriptor>
+                                </descriptors>
+                            </configuration>
+                        </execution>
+                        <!--
+                            <execution>
+                            <id>make-jar-with-deps</id>
+                            <phase>package</phase>
+                            <goals>
+                            <goal>single</goal>
+                            </goals>
+                            <configuration>
+                            <archive>
+                            <manifest>
+                            <mainClass>de.cenote.jasperstarter.App</mainClass>
+                            </manifest>
+                            </archive>
+                            <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            </configuration>
+                            </execution>
+                        -->
                     </executions>
-                  </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>netbeans-private-testng</id>
-            <activation>
-                <property>
-                    <name>netbeans.testng.action</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.17</version>
-                        <configuration>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>target/nb-private/testng-suite.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-          <id>javadoc</id>
-          <activation>
-            <activeByDefault>false</activeByDefault>
-          </activation>
-          <reporting>
-            <plugins>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                </configuration>
-                <reportSets>
-                  <reportSet>
-                    <id>default</id>
-                    <reports>
-                      <report>javadoc</report>
-                      <report>test-javadoc</report>
-                    </reports>
-                  </reportSet>
-                </reportSets>
-              </plugin>
+                </plugin>
             </plugins>
-          </reporting>
-        </profile>
-    </profiles>
+        </build>
+        <reporting>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <reportSets>
+                        <reportSet>
+                            <id>project-reports</id>
+                            <reports>
+                                <!--
+                                    <report>summary</report>
+                                    <report>license</report>
+                                    <report>project-team</report>
+                                    <report>scm</report>
+                                    <report>issue-tracking</report>
+                                -->
+                                <!-- <report>cim</report> -->
+                                <!-- <report>distribution-management</report> -->
+                                <!-- <report>mailing-list</report> -->
+                                <!-- <report>dependency-info</report> -->
+                                <!-- <report>dependency-management</report> -->
+                                <!-- <report>dependencies</report> -->
+                                <!--
+                                    <report>dependency-convergence</report>
+                                    <report>plugins</report>
+                                    <report>plugin-management</report>
+                                    <report>modules</report>
+                                -->
+                            </reports>
+                        </reportSet>
+                    </reportSets>
+                </plugin>
+                <!--
+                    <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                    </plugin>
+                -->
+            </plugins>
+        </reporting>
+    </profile>
+
+    <profile>
+        <id>release</id>
+        <!--
+            release profile:
+            adds the long running reports to the default build
+        -->
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <reporting>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <reportSets>
+                        <reportSet>
+                            <id>project-reports</id>
+                            <reports>
+                                <report>summary</report>
+                                <report>license</report>
+                                <report>project-team</report>
+                                <report>scm</report>
+                                <report>issue-tracking</report>
+                                <!-- <report>cim</report> -->
+                                <!-- <report>distribution-management</report> -->
+                                <!-- <report>mailing-list</report> -->
+                                <!-- <report>dependency-info</report> -->
+                                <!-- <report>dependency-management</report> -->
+                                <report>dependencies</report>
+                                <!--
+                                    <report>dependency-convergence</report>
+                                    <report>plugins</report>
+                                    <report>plugin-management</report>
+                                    <report>modules</report>
+                                -->
+                            </reports>
+                        </reportSet>
+                    </reportSets>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <configuration>
+                        <excludePackageNames>de.cenote.jasperstarter.gui:de.cenote.tools.*</excludePackageNames>
+                    </configuration>
+                    <reportSets>
+                        <reportSet>
+                            <id>default</id>
+                            <reports>
+                                <report>javadoc</report>
+                            </reports>
+                        </reportSet>
+                    </reportSets>
+                </plugin>
+            </plugins>
+        </reporting>
+    </profile>
+
+    <profile>
+        <id>windows-setup</id>
+        <!--
+            additional profile for windows setup
+        -->
+        <activation>
+            <!-- @todo: only if NSIS is installed  -->
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <resources>
+                <resource>
+                    <directory>src/main/setup</directory>
+                    <includes>
+                        <include>setup*.nsi</include>
+                    </includes>
+                    <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
+                    <filtering>true</filtering>
+                </resource>
+                <resource>
+                    <directory>src/main/setup</directory>
+                    <includes>
+                        <include>*.nsh</include>
+                    </includes>
+                    <targetPath>${project.basedir}/target/${project.artifactId}-win32</targetPath>
+                    <filtering>false</filtering>
+                </resource>
+            </resources>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>windows-setup-stage</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                            <configuration>
+                                <finalName>${project.artifactId}</finalName>
+                                <descriptors>
+                                    <descriptor>src/main/assembly/setup-w32.xml</descriptor>
+                                </descriptors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.3.1</version>
+                    <executions>
+                        <execution>
+                            <id>windows-setup-compile</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <configuration>
+                                <executable>makensis</executable>
+                                <workingDirectory>${project.basedir}/target/${project.artifactId}-win32</workingDirectory>
+                                <arguments>
+                                    <argument>setup-win32.nsi</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+
+    <profile>
+        <id>snapshot</id>
+        <!--
+            adding branch and revision number to final name
+        -->
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <finalName>${project.artifactId}-${project.version}-${git.branch}-${git.commit.id.abbrev}</finalName>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id>
+                            <configuration>
+                                <descriptors>
+                                    <descriptor>src/main/assembly/snapshot-bin.xml</descriptor>
+                                </descriptors>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+
+    <profile>
+        <id>netbeans-private-testng</id>
+        <activation>
+            <property>
+                <name>netbeans.testng.action</name>
+            </property>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.17</version>
+                    <configuration>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>target/nb-private/testng-suite.xml</suiteXmlFile>
+                        </suiteXmlFiles>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    <profile>
+        <id>javadoc</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <reporting>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <configuration>
+                    </configuration>
+                    <reportSets>
+                        <reportSet>
+                            <id>default</id>
+                            <reports>
+                                <report>javadoc</report>
+                                <report>test-javadoc</report>
+                            </reports>
+                        </reportSet>
+                    </reportSets>
+                </plugin>
+            </plugins>
+        </reporting>
+    </profile>
+</profiles>
 </project>
