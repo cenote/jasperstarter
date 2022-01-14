@@ -35,6 +35,10 @@ limitations under the License.
 
     <custom>
         <fluidoSkin>
+            <topBarEnabled>false</topBarEnabled>
+            <sideBarEnabled>true</sideBarEnabled>
+            <leftColumnClass>span3</leftColumnClass>
+            <bodyColumnClass>span9</bodyColumnClass>
             <!-- <googleSearch/> -->
             <sourceLineNumbersEnabled>false</sourceLineNumbersEnabled>
             <twitter>
