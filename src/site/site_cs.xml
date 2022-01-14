@@ -63,7 +63,8 @@ limitations under the License.
             <item name="Changes" href="changes.html" />
             <item name="Contributing" href="https://bitbucket.org/cenote/jasperstarter/src/main/CONTRIBUTING.md" />
             <item name="Downloads" href="http://sourceforge.net/projects/jasperstarter/files/" />
-            <item name="Sourceforge" href="http://sourceforge.net/projects/jasperstarter/" />
+            <item name="Sourcecode" href="source-repository.html" />
+            <item name="Project Site" href="http://sourceforge.net/projects/jasperstarter/" />
             <item name="OpenHub" href="http://www.openhub.net/p/jasperstarter" />            
         </menu>
         <menu name="Howto">
