@@ -1,4 +1,4 @@
-image: cenote/jasperstarter-env
+image: cenote/jasperstarter-env-2004
 
 pipelines:
   default:
@@ -70,7 +70,7 @@ pipelines:
     windows-setup:
       - step:
           name: Windows Setup
-          image: cenote/jasperstarter-env
+          image: cenote/jasperstarter-env-2004
           caches:
             - maven
           script:
