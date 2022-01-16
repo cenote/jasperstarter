@@ -209,7 +209,7 @@ JasperStarter from within your IDE to call up a database based report.
 
 ### License
 
-Copyright 2012-2015 Cenote GmbH.
+Copyright 2012-2022 Cenote GmbH.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
