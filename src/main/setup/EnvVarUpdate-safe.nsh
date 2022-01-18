@@ -36,15 +36,17 @@
 !include "StrFunc.nsh"
 
 ; ---- Fix for conflict if StrFunc.nsh is already includes in main file -----------------------
-!macro _IncludeStrFunction StrFuncName
+!macro _IncludeStrFunction "StrFuncName"
   !ifndef ${StrFuncName}_INCLUDED
     ${${StrFuncName}}
   !endif
   !ifndef Un${StrFuncName}_INCLUDED
     ${Un${StrFuncName}}
   !endif
-  !define un.${StrFuncName} "${Un${StrFuncName}}"
+;  !define un.${StrFuncName} "${Un${StrFuncName}}"
+  !define un.${StrFuncName} '${Un${StrFuncName}}'
 !macroend
+
 
 !insertmacro _IncludeStrFunction StrTok
 !insertmacro _IncludeStrFunction StrStr
